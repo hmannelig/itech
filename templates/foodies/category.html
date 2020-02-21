@@ -1,4 +1,4 @@
-{% extends 'rango/base.html' %}
+{% extends 'foodies/base.html' %}
 {% load staticfiles %}
 
 {% block title_block %}
@@ -22,7 +22,7 @@
     <strong>No pages currently in category.</strong>
     {% endif %}
     {% if user.is_authenticated %}
-    <a href="{% url 'rango:add_page' category.slug %}">Add Page</a> <br />
+    <a href="{% url 'foodies:add_page' category.slug %}">Add Page</a> <br />
     {% endif %}
     {% else %}
     The specified category does not exist.
