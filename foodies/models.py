@@ -55,3 +55,27 @@ class Allergy(models.Model):
 
     def __str__(self):
         return self.name
+
+class Request(models.Model):
+    title = models.CharField(max_length=30, unique=True)
+    date = models.DateField()
+    price = models.ForeignKey() #NEEDS TO BE SPECIFIED
+    name = models.CharField(max_length=30)
+    email = models.EmailField()
+    content = models.CharField(max_length=200)
+    message = models.TextField()
+    user = models.ForeignKey() #NEEDS TO BE SPECIFIED
+    meal = models.ForeignKey() #NEEDS TO BE SPECIFIED
+
+    class Meta:
+        verbose_name_plural = 'Requests'
+
+    def __str__(self):
+        return self.name
+
+class Tags(models.Model):
+    name = models.CharField(max_length=30, unique= True)
+    meal = models.ManyToManyField() #NEEDS TO BE SPECIFIED
+
+    def __str__(self):
+        return self.name
