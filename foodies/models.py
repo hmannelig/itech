@@ -35,9 +35,32 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     website = models.URLField(blank=True)
     picture = models.ImageField(upload_to='profile_images', blank=True)
+    name = models.CharField(max_length=30, unique=True)
+    adress = models.CharField(max_length=100, unique=True)
+    personalDescription = models.CharField(max_length=200,  blank=True)
+    isCooker = models.CheckboxInput( null=False) # user needs to select from a box if he is gonna be a cooker or a dinner
+    isDnner = models.CheckboxInput( null=False)
+    isBestCooker= models.CheckboxInput( null=False)
+    role_id= models.ForeignKey() #NEEDS TO BE SPECIFIED
+    
 
     def __str__(self):
         return self.user.username
+
+class Review(models.Model):
+    title = models.CharField(max_length=50 )
+    date = models.DateField()
+    rating = model.PositiveSmallIntegerField (default=0, max=5)
+    content = models.CharField(max_length=200)
+    user = models.ForeignKey() #NEEDS TO BE SPECIFIED
+
+    class Meta:
+        verbose_name_plural = 'Reviews'
+
+    def __str__(self):
+        return self.title
+
+
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=128, unique=True)
