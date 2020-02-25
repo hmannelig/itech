@@ -2,12 +2,14 @@
 {% if categories %}
     {% for c in categories %}
         {% if c == current_category %}
-        <li><strong><a href="{% url 'foodies:show_category' c.slug %}">{{ c.name }}</a></strong></li>
+        <!--<li><strong><a href="{% url 'foodies:show_category' c.slug %}">{{ c.name }}</a></strong></li>-->
+        <button type="button" class="btn btn-outline-primary" disabled><li><strong><a href="{% url 'foodies:show_category' c.slug %}">{{ c.name }}</a></strong></li></button>
         {% else %}
-        <li><a href="{% url 'foodies:show_category' c.slug %}">{{ c.name }}</a></li>
+        <button type="button" class="btn btn-outline-primary" ><li><a href="{% url 'foodies:show_category' c.slug %}">{{ c.name }}</a></li></button>
+        
         {% endif %}
     {% endfor %}
 {% else %}
-    <li><strong>There are no categories present.</strong></li>
+    <li><strong>There are no meal categories present.</strong></li>
 {% endif %}
 </ul>

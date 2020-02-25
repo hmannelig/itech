@@ -1,5 +1,5 @@
 from django import forms
-from foodies.models import Page, Category, UserProfile
+from foodies.models import Meal, Category, UserProfile
 from django.contrib.auth.models import User
 
 
@@ -16,15 +16,16 @@ class CategoryForm(forms.ModelForm):
         model = Category
         fields = ('name',)
 
-class PageForm(forms.ModelForm):
-    title = forms.CharField(max_length=Page.TITLE_MAX_LENGTH,
-                            help_text="Please enter the title of the page.")
-    url = forms.URLField(max_length=Page.URL_MAX_LENGTH,
-                         help_text="Please enter the URL of the page.")
+class MealForm(forms.ModelForm):
+    title = forms.CharField(max_length=Meal.TITLE_MAX_LENGTH,
+                            help_text="Please enter the title of the meal.")
+    price = forms.FloatField(help_text="Please enter the price for this meal")
+    url = forms.URLField(max_length=Meal.URL_MAX_LENGTH,
+                         help_text="Please enter the URL of the meal page.")
     views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
     class Meta:
     # Provide an association between the ModelForm and a model
-        model = Page
+        model = Meal
     # What fields do we want to include in our form?
     # This way we don't need every field in the model present.
     # Some fields may allow NULL values; we may not want to include them.

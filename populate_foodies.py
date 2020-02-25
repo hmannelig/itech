@@ -5,58 +5,75 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'foodies_project.settings')
 import django
 
 django.setup()
-from foodies.models import Category, Page
+from foodies.models import Category, Meal
 
 
 
 def populate():
-    python_pages = [
-        {'title': 'Official Python Tutorial',
-         'url': 'http://docs.python.org/3/tutorial/',
-         'views': 250},
-        {'title': 'How to Think like a Computer Scientist',
-         'url': 'http://www.greenteapress.com/thinkpython/',
-         'views': 123},
-        {'title': 'Learn Python in 10 Minutes',
-         'url': 'http://www.korokithakis.net/tutorials/python/',
-         'views': 222}]
 
-    django_pages = [
-        {'title': 'Official Django Tutorial',
-         'url': 'https://docs.djangoproject.com/en/2.1/intro/tutorial01/',
+    african_meals = [
+        {'title': 'Egusi Soup from Nigeria',
+         'price': '12',
+         'url': 'http://www.africanbites.com/egusi-soup/',
          'views': 10},
-        {'title': 'Django Rocks',
-         'url': 'http://www.djangorocks.com/',
+        {'title': 'Thieboudienne from Senegal',
+         'price': '12',
+         'url': 'http://www.internationalcuisine.com/thieboudienne/',
          'views': 20},
-        {'title': 'How to Tango with Django',
-         'url': 'http://www.tangowithdjango.com/',
+        {'title': 'Muamba de Galinha from Angola',
+         'price': '12',
+         'url': 'http://www.africanbites.com/muamba-chickenmuamba-de-galinha/',
          'views': 22}]
 
-    other_pages = [
-        {'title': 'Bottle',
-         'url': 'http://bottlepy.org/docs/dev/',
+    american_meals = [
+        {'title': 'Tacos by Jamie Oliver',
+         'price': '12',
+         'url': 'http://www.jamieoliver.com/recipes/beef-recipes/beef-tacos/',
+         'views': 250},
+        {'title': 'Chicken Enchiladas',
+         'price': '12',
+         'url': 'http://www.delish.com/cooking/recipe-ideas/a49105/cheesy-chicken-enchiladas-recipe/',
+         'views': 123}]
+
+    asian_meals = [
+        {'title': 'Ramen from Japan',
+         'price': '12',
+         'url': 'http://www.justonecookbook.com/homemade-chashu-miso-ramen/',
          'views': 111},
-        {'title': 'Flask',
-         'url': 'http://flask.pocoo.org',
+        {'title': 'Vietnamese Summer Rolls',
+         'price': '12',
+         'url': 'https://www.bonappetit.com/recipe/vietnamese-summer-rollscxs',
          'views': 332}]
 
-    cats = {'Python': {'pages': python_pages, 'views': 128, 'likes': 64},
-            'Django': {'pages': django_pages, 'views': 64, 'likes': 32},
-            'Other Frameworks': {'pages': other_pages, 'views': 32, 'likes': 16}}
+    european_meals = [
+        {'title': 'Spaghetti Aglio e Olio from Italy',
+         'price': '12',
+         'url': 'https://www.allrecipes.com/recipe/222000/spaghetti-aglio-e-olio/',
+         'views': 111},
+        {'title': 'Sauerkraut from Germany',
+         'price': '12',
+         'url': 'https://www.allrecipes.com/recipe/228631/bavarian-sauerkraut/',
+         'views': 332}]
+
+    cats = {'African': {'meals': african_meals, 'views': 128, 'likes': 64},
+            'American': {'meals': american_meals, 'views': 64, 'likes': 32},
+            'Asian': {'meals': asian_meals, 'views': 32, 'likes': 16},
+            'European': {'meals': european_meals, 'views': 24, 'likes': 22}}
 
     for cat, cat_data in cats.items():
         c = add_cat(cat, views=cat_data['views'], likes=cat_data['likes'])
-        for p in cat_data['pages']:
-            add_page(c, p['title'], p['url'], views=p['views'])
+        for p in cat_data['meals']:
+            add_meal(c, p['title'], p['url'], p['price'], views=p['views'])
 
     for c in Category.objects.all():
-        for p in Page.objects.filter(category=c):
+        for p in Meal.objects.filter(category=c):
             print(f'- {c}: {p}')
 
 
-def add_page(cat, title, url, views=0):
-    p = Page.objects.get_or_create(category=cat, title=title)[0]
+def add_meal(cat, title, url, price, views=0):
+    p = Meal.objects.get_or_create(category=cat, title=title, price=price)[0]
     p.url = url
+    p.price = price
     p.views = views
     p.save()
     return p

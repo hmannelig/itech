@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from foodies.models import Category, Page
-from foodies.forms import CategoryForm, PageForm, UserForm, UserProfileForm
+from foodies.models import Category, Meal
+from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -10,11 +10,11 @@ from datetime import datetime
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
-    page_list = Page.objects.order_by('-views')[:5]
+    meal_list = Meal.objects.order_by('-views')[:5]
     context_dict = {}
     context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
     context_dict['categories'] = category_list
-    context_dict['pages'] = page_list
+    context_dict['meals'] = meal_list
     visitor_cookie_handler(request)
     return render(request, 'foodies/index.html', context=context_dict)
 
@@ -39,10 +39,12 @@ def show_category(request, category_name_slug):
 
         # Retrieve all of the associated pages.
         # The filter() will return a list of page objects or an empty list.
-        pages = Page.objects.filter(category=category)
+        meals = Meal.objects.filter(category=category)
 
         # Adds our results list to the template context under name pages.
-        context_dict['pages'] = pages
+       
+        context_dict['meals'] = meals
+        
         # We also add the category object from
         # the database to the context dictionary.
         # We'll use this in the template to verify that the category exists.
@@ -52,7 +54,7 @@ def show_category(request, category_name_slug):
         # Don't do anything -
         # the template will display the "no category" message for us.
         context_dict['category'] = None
-        context_dict['pages'] = None
+        context_dict['meals'] = None
     # Go render the response and return it to the client.
     return render(request, 'foodies/category.html', context=context_dict)
 
@@ -80,7 +82,7 @@ def add_category(request):
     return render(request, 'foodies/add_category.html', {'form': form})
 
 @login_required
-def add_page(request, category_name_slug):
+def add_meal(request, category_name_slug):
     try:
         category = Category.objects.get(slug=category_name_slug)
     except:
@@ -89,24 +91,24 @@ def add_page(request, category_name_slug):
     if category is None:
         return redirect('/foodies/')
 
-    form = PageForm()
+    form = MealForm()
 
     if request.method == 'POST':
-        form = PageForm(request.POST)
+        form = MealForm(request.POST)
 
         if form.is_valid():
             if category:
-                page = form.save(commit=False)
-                page.category = category
-                page.views = 0
-                page.save()
+                meal = form.save(commit=False)
+                meal.category = category
+                meal.views = 0
+                meal.save()
 
                 return redirect(reverse('foodies:show_category', kwargs={'category_name_slug': category_name_slug}))
         else:
             print(form.errors)
 
     context_dict = {'form': form, 'category': category}
-    return render(request, 'foodies/add_page.html', context=context_dict)
+    return render(request, 'foodies/add_meal.html', context=context_dict)
 
 
 def register(request):

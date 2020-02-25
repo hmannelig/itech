@@ -3,7 +3,7 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
 class Category(models.Model):
-    NAME_MAX_LENGTH = 128
+    NAME_MAX_LENGTH = 30
     name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True)
     views = models.IntegerField(default=0)
     likes = models.IntegerField(default=0)
@@ -20,14 +20,15 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-class Page(models.Model):
-    TITLE_MAX_LENGTH = 128
+class Meal(models.Model):
+    TITLE_MAX_LENGTH = 30
     URL_MAX_LENGTH = 200
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     title = models.CharField(max_length=TITLE_MAX_LENGTH)
     url = models.URLField(max_length=URL_MAX_LENGTH)
+    price = models.FloatField(default=0)
     views = models.IntegerField(default=0)
-
+    #Foreign Key from Meal class to Meal Category
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     def __str__(self):
         return self.title
 
@@ -66,6 +67,8 @@ class Ingredient(models.Model):
     name = models.CharField(max_length=128, unique=True)
     vegetable = models.CharField(max_length=128, blank=True)
     typeofmeat = models.CharField(max_length=128, blank=True)
+    #ForeignKey from Ingredient Class to Meal
+    meal = models.ForeignKey(Meal, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

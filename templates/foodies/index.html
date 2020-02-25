@@ -18,7 +18,7 @@
 </div>
 
 <div>
-    <h2>Most Liked Categories</h2>
+    <h2>Most Liked Meal Categories</h2>
 {% if categories %}
     <ul>
     {% for category in categories %}
@@ -26,20 +26,20 @@
     {% endfor %}
     </ul>
 {% else %}
-    <strong>There are no categories present.</strong>
+    <strong>There are no meal categories present.</strong>
 {% endif %}
 </div>
 
 <div>
-    <h2>Most Viewed Pages</h2>
-{% if pages %}
+    <h2>Most Viewed Meals</h2>
+{% if meals %}
     <ul>
-    {% for page in pages %}
-        <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+    {% for meal in meals %}
+        <li><a href="{{ meal.url }}">{{ meal.title }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
-    <strong>There are no pages present.</strong>
+    <strong>There are no meals present.</strong>
 {% endif %}
 </div>
 
