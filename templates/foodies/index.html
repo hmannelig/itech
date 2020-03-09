@@ -1,21 +1,35 @@
+
 {% extends 'foodies/base.html' %}
+
 {% load staticfiles %}
+
 
 {% block title_block %}
     Homepage
 {% endblock %}
 
 {% block body_block %}
-<h1>Foodies says...</h1>
+
+<h1>Foodies</h1>
+
 <div>
     {% if user.is_authenticated %}
-        howdy {{ user.username }}!
+        Welcome back! {{ user.username }}!
     {% else %}
-        hey there partner!
+       Welcome food lover!
     {% endif %}
     <br />
     <strong>{{ boldmessage }}</strong><br />
 </div>
+
+<div class="icon-bar">
+  <a class="active" href="#"><i class="fa fa-home"></i></a>
+  <a href="#"><i class="fa fa-search"></i></a>
+  <a href="#"><i class="fa fa-shopping-cart"></i></a>
+  <a href="#"><i class="fa fa-google-plus-square"></i></a>
+  <a href="#"><i class="fa fa-unlock"></i></a>
+</div>
+
 
 <div>
     <h2>Most Liked Meal Categories</h2>
@@ -43,6 +57,6 @@
 {% endif %}
 </div>
 
-<img src="{% static 'images/rango.jpg' %}" alt="Picture of Rango" />
+
 
 {% endblock %}

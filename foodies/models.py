@@ -36,8 +36,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     website = models.URLField(blank=True)
     picture = models.ImageField(upload_to='profile_images', blank=True)
-    name = models.CharField(max_length=30, unique=True)
-    adress = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=30, blank=True)
+    adress = models.CharField(max_length=100, blank=True)
     personalDescription = models.CharField(max_length=200,  blank=True)
     isCooker = models.BooleanField( default=False) # user needs to select from a box if he is gonna be a cooker or a dinner
     isDnner = models.BooleanField( default=False)
