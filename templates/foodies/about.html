@@ -1,5 +1,5 @@
 {% extends 'foodies/base.html' %}
-{% load staticfiles %}
+{% load static %}
 
 {% block title_block %}
     About Foodies
@@ -11,8 +11,10 @@
     here is the about page. <br />
    	This page has been put together by the team.<br />
     <p>Visits: {{ visits }}</p>
-	
 
+<img src="{% static 'foodies/images/about.jpg' %}" alt="Picture of HomePage" 
+	class = "rotateimg90"/>
+	
 </div>
 
 {% endblock %}

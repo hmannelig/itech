@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-{% load staticfiles %}
+{% load static %}
 {% load foodies_template_tags %}
 
 <html>
     <head lang="en">
         <meta charset="UTF-8" />
       	<meta name="viewport" content="width=device-width, initial-scale=1">
-      	<link rel="stylesheet" href="{% static 'css/foodies.css' %}">
+      	<link rel="stylesheet" href="{% static 'foodies/css/mycss.css' %}">
+
         
         <title>
             Foodies
@@ -22,20 +23,20 @@
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-   		
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">   		
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-        
-    </head>
-    <style>
+           <style>
     body {font-family: "Times New Roman";}
     body {background-color: #fff5e6;}
 	h1, h2,
 	{font-family: "Playfair Display"; letter-spacing: 5px}
 	h1   {color: #cc0000;}
+	
 	</style>
-
+	
+    </head>
+ 
         <div>
         {% block body_block %}
         {% endblock %}
