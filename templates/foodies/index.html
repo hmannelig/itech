@@ -4,59 +4,56 @@
 {% load static %}
 
 
+
+
 {% block title_block %}
     Homepage
 {% endblock %}
 
+
 {% block body_block %}
 
-<h1>Foodies</h1>
+</head>
+<body>
 
-<div>
-    {% if user.is_authenticated %}
+<div class="grid-container">
+
+ <div class="header">
+      {% if user.is_authenticated %}
+      	<h1>FOODIES!</h1>	
         Welcome back! {{ user.username }}!
     {% else %}
+    	<h1>FOODIES!</h1>
        Welcome food lover!
     {% endif %}
     <br />
     <strong>{{ boldmessage }}</strong><br />
-</div>
-
-<div class="icon-bar">
-  <a class="active" href="#"><i class="fa fa-home"></i></a>
-  <a href="#"><i class="fa fa-search"></i></a>
-  <a href="#"><i class="fa fa-shopping-cart"></i></a>
-  <a href="#"><i class="fa fa-google-plus-square"></i></a>
-  <a href="#"><i class="fa fa-unlock"></i></a>
-</div>
-
-
-<div>
-    <h2>Most Liked Meal Categories</h2>
-{% if categories %}
-    <ul>
-    {% for category in categories %}
-        <li><a href="{% url 'foodies:show_category' category.slug %}">{{ category.name }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <strong>There are no meal categories present.</strong>
-{% endif %}
-</div>
-
-<div>
-    <h2>Most Viewed Meals</h2>
-{% if meals %}
-    <ul>
-    {% for meal in meals %}
-        <li><a href="{{ meal.url }}">{{ meal.title }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <strong>There are no meals present.</strong>
-{% endif %}
-</div>
-
-
-
+ </div>
+  
+  <div class="left" style="background-color:# #ffffff;">Best Cooker</div>
+  <div class="middle" style="background-color:# #ffffff;">
+     <h2>Most Viewed Meals</h2>
+		{% if meals %}
+   			 <ul>
+    			{% for meal in meals %}
+        		<li><a href="{{ meal.url }}">{{ meal.title }}</a></li>
+    			{% endfor %}
+    		</ul>
+		{% else %}
+   			 <strong>There are no meals present.</strong>
+		{% endif %}
+  </div>  
+  <div class="right" style="background-color:# #ffffff;">
+       <h2>Most Liked Meal Categories</h2>
+       	{% if categories %}
+   			 <ul>
+  				{% for category in categories %}
+        		<li><a href="{% url 'foodies:show_category' category.slug %}">{{ category.name }}</a></li>
+    			{% endfor %}
+    		</ul>
+		{% else %}
+    		<strong>There are no meal categories present.</strong>
+		{% endif %}
+ </div>
+ 
 {% endblock %}

@@ -6,8 +6,9 @@
     <head lang="en">
         <meta charset="UTF-8" />
       	<meta name="viewport" content="width=device-width, initial-scale=1">
-      	<link rel="stylesheet" href="{% static 'foodies/css/mycss.css' %}">
-
+      	<link rel="stylesheet" href="{% static 'foodies/css/base.css' %}">
+      	<link rel="stylesheet" href="{% static 'foodies/css/index.css' %}">
+		<link rel="stylesheet" href="{% static 'foodies/css/about.css' %}">
         
         <title>
             Foodies
@@ -26,14 +27,30 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">   		
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-           <style>
+ <style>
     body {font-family: "Times New Roman";}
     body {background-color: #fff5e6;}
 	h1, h2,
 	{font-family: "Playfair Display"; letter-spacing: 5px}
 	h1   {color: #cc0000;}
 	
-	</style>
+	   </style>
+
+  <ul class="list-inline"">
+            {% if user.is_authenticated %}
+               <li><a href="{% url 'foodies:logout' %}">Logout</a>	
+			   </li>          		
+               <li><a href="{% url 'foodies:add_category' %}">Add a New Meal Category</a></li>
+            {% else %}
+                <li><a href="{% url 'foodies:register' %}">Sign Up</a></li>
+                <li><a href="{% url 'foodies:login' %}">Login</a></li>
+            {% endif %}
+                <li><a href="{% url 'foodies:about' %}">About</a></li>
+                <li><a href="{% url 'foodies:index' %}">Home</a></li>
+             
+  </ul>
+  
+
 	
     </head>
  
@@ -41,25 +58,34 @@
         {% block body_block %}
         {% endblock %}
         </div>
-        <div>
-            {% block sidebar_block %}
-                {% get_category_list category %}
-            {% endblock %}
-        </div>
-        <hr />
-        <div>
-            <ul>
+
+
+ 
+  
+ <footer class="footer w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">
+  <p class="w3-medium"> Find us: </a></p>	
+  <i class="fa fa-facebook-official w3-hover-opacity"></i>
+  <i class="fa fa-instagram w3-hover-opacity"></i>
+  <i class="fa fa-snapchat w3-hover-opacity"></i>
+  <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+  <i class="fa fa-twitter w3-hover-opacity"></i>
+  <i class="fa fa-linkedin w3-hover-opacity"></i>
+  
+  <ul class="list-inline"">
             {% if user.is_authenticated %}
-                <li><a href="{% url 'foodies:restricted' %}">Restricted Page</a></li>
-                <li><a href="{% url 'foodies:logout' %}">Logout</a></li>
-                <li><a href="{% url 'foodies:add_category' %}">Add a New Meal Category</a></li>
+               <li><a href="{% url 'foodies:logout' %}">Logout</a>	
+			   </li>          		
+               <li><a href="{% url 'foodies:add_category' %}">Add a New Meal Category</a></li>
             {% else %}
                 <li><a href="{% url 'foodies:register' %}">Sign Up</a></li>
                 <li><a href="{% url 'foodies:login' %}">Login</a></li>
             {% endif %}
                 <li><a href="{% url 'foodies:about' %}">About</a></li>
                 <li><a href="{% url 'foodies:index' %}">Index</a></li>
-            </ul>
-        </div>
-    </body>
+             
+  </ul>
+  
+  
+</footer>
+
 </html>

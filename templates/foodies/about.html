@@ -1,20 +1,31 @@
 {% extends 'foodies/base.html' %}
 {% load static %}
 
+
+
 {% block title_block %}
     About Foodies
+   
 {% endblock %}
+
+
 
 {% block body_block %}
 <h1>Foodies says...</h1>
-<div>
+
+
     here is the about page. <br />
    	This page has been put together by the team.<br />
     <p>Visits: {{ visits }}</p>
 
-<img src="{% static 'foodies/images/about.jpg' %}" alt="Picture of HomePage" 
-	class = "rotateimg90"/>
-	
+<div class= "aboutStyle">
+		
+	<img src="{% static 'foodies/images/about.jpg' %}" alt="Picture of about" />
+		<div class="rotateimg90"> </div>
+		<div class="aboutStyle"> </div>
+		
 </div>
+
+
 
 {% endblock %}

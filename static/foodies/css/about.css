@@ -1,0 +1,23 @@
+/*
+ * Styles for Foodies webpage
+ */
+ 
+ /**
+ * Rotate Image for the about tab
+ */
+ .rotateimg90 {
+  -webkit-transform:rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+} 
+ 
+
+ 
+.aboutStyle
+{
+background-image:url('{% static 'foodies/images/about.jpg' %}');
+background-repeat:no-repeat;
+background-size:50%;
+}
