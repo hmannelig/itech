@@ -13,7 +13,6 @@ class Category(models.Model):
        self.slug = slugify(self.name)
        super(Category, self).save(*args, **kwargs)
 
-
     class Meta:
         verbose_name_plural = 'Categories'
 
@@ -51,7 +50,7 @@ class UserProfile(models.Model):
 class Review(models.Model):
     title = models.CharField(max_length=50 )
     date = models.DateField()
-    #rating = models.PositiveSmallIntegerField (default=0, max=5)
+    rating = models.PositiveSmallIntegerField (default=0, max=5)
     content = models.CharField(max_length=200)
     #user = models.ForeignKey() #NEEDS TO BE SPECIFIED
 
