@@ -1,23 +1,17 @@
 /*
  * Styles for Foodies webpage
  */
- 
- /**
- * Add background image and rotate it 90 degrees
- */
 
  
 
  
 .aboutStyle
 {
-background-image:url('../images/about.jpg');
+background-image:url('../images/aboutback.jpg');
 background-repeat:no-repeat;
-background-size:50%;
-height:1080px;
-  -webkit-transform:rotate(90deg);
-  -moz-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  -o-transform: rotate(90deg);
-  transform: rotate(90deg);
+background-size:cover;
+height:500px;
+width: 100%;
+  -o-background-size: cover;
+
 }
