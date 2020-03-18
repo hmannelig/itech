@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+  
     <title>Contact Foodies</title>
     
     <style>
@@ -58,15 +59,7 @@
       top: 20px;
       right: 10px;
       }
-      .circle {
-      position: absolute;
-      bottom: 80px;
-      left: -55px;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: #fff;
-      }
+   
       .form-inner {
       padding: 40px;
       }
@@ -106,18 +99,24 @@
     </style>
     
     
-  </head>
+ </head>
   <body>
+
+  
     <form action="/" class="decor">
        <div class="form-inner">
-        <h1>Contact Foodies</h1>
+        <p><a href="{% url 'foodies:index' %}">Return to Home</a></p>
+        <h1>Contact Foodies</h1>       
         <input type="text" placeholder="Username">
         <input type="email" placeholder="Email">
         <textarea placeholder="Message..." rows="5"></textarea>
         <button type="submit" href="/">Submit</button>
       </div>
     </form>
+    
+    
   </body>
+
 
   
 </html>
