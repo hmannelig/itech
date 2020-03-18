@@ -13,6 +13,7 @@ class Category(models.Model):
        self.slug = slugify(self.name)
        super(Category, self).save(*args, **kwargs)
 
+
     class Meta:
         verbose_name_plural = 'Categories'
 
@@ -35,13 +36,15 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     website = models.URLField(blank=True)
     picture = models.ImageField(upload_to='profile_images', blank=True)
-    name = models.CharField(max_length=30, unique=True)
-    adress = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=30, blank=True)
+    adress = models.CharField(max_length=100, blank=True)
     personalDescription = models.CharField(max_length=200,  blank=True)
-    isCooker = models.CheckboxInput( null=False) # user needs to select from a box if he is gonna be a cooker or a dinner
-    isDnner = models.CheckboxInput( null=False)
-    isBestCooker= models.CheckboxInput( null=False)
-    role_id= models.ForeignKey() #NEEDS TO BE SPECIFIED
+    isCooker = models.BooleanField( default=False) # user needs to select from a box if he is gonna be a cooker or a dinner
+    isDnner = models.BooleanField( default=False)
+    isBestCooker= models.BooleanField( default=False)
+    user = models.OneToOneField(User, related_name="profile")
+    role = models.CharField()
+    #role_id= models.ForeignKey() #NEEDS TO BE SPECIFIED
     
 
     def __str__(self):
@@ -50,9 +53,9 @@ class UserProfile(models.Model):
 class Review(models.Model):
     title = models.CharField(max_length=50 )
     date = models.DateField()
-    rating = models.PositiveSmallIntegerField (default=0, max=5)
+    #rating = models.PositiveSmallIntegerField (default=0, max=5)
     content = models.CharField(max_length=200)
-    user = models.ForeignKey() #NEEDS TO BE SPECIFIED
+    #user = models.ForeignKey() #NEEDS TO BE SPECIFIED
 
     class Meta:
         verbose_name_plural = 'Reviews'
@@ -84,13 +87,13 @@ class Allergy(models.Model):
 class Request(models.Model):
     title = models.CharField(max_length=30, unique=True)
     date = models.DateField()
-    price = models.ForeignKey() #NEEDS TO BE SPECIFIED
+   #price = models.ForeignKey() #NEEDS TO BE SPECIFIED
     name = models.CharField(max_length=30)
     email = models.EmailField()
     content = models.CharField(max_length=200)
     message = models.TextField()
-    user = models.ForeignKey() #NEEDS TO BE SPECIFIED
-    meal = models.ForeignKey() #NEEDS TO BE SPECIFIED
+    #user = models.ForeignKey() #NEEDS TO BE SPECIFIED
+    #meal = models.ForeignKey() #NEEDS TO BE SPECIFIED
 
     class Meta:
         verbose_name_plural = 'Requests'
@@ -100,7 +103,7 @@ class Request(models.Model):
 
 class Tags(models.Model):
     name = models.CharField(max_length=30, unique= True)
-    meal = models.ManyToManyField() #NEEDS TO BE SPECIFIED
+    #meal = models.ManyToManyField() #NEEDS TO BE SPECIFIED
 
     def __str__(self):
         return self.name

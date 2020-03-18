@@ -1,46 +1,100 @@
 <!DOCTYPE html>
-{% load staticfiles %}
+{% load static %}
 {% load foodies_template_tags %}
 
 <html>
     <head lang="en">
         <meta charset="UTF-8" />
+      	<meta name="viewport" content="width=device-width, initial-scale=1">
+      	<link rel="stylesheet" href="{% static 'foodies/css/base.css' %}">
+      	<link rel="stylesheet" href="{% static 'foodies/css/index.css' %}">
+		<link rel="stylesheet" href="{% static 'foodies/css/about.css' %}">
+        
         <title>
-            Foodies -
+            Foodies
             {% block title_block %}
-                How to Tango with Django!
+                
             {% endblock %}
         </title>
+       
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <link rel="stylesheet" href="{% static 'css/foodies.css' %}" />
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">   		
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+ <style>
+    body {font-family: "Times New Roman";}
+    body {background-color: #fff5e6;}
+	h1, h2,
+	{font-family: "Playfair Display"; letter-spacing: 5px}
+	h1   {color: #cc0000;}
+	
+	   </style>
+
+  <ul class="list-inline">
+            {% if user.is_authenticated %}
+               <li><a href="{% url 'foodies:logout' %}">Logout</a>	
+			   </li>          		
+               <li><a href="{% url 'foodies:add_category' %}">Add a New Meal Category</a></li>
+            {% else %}
+                <li><a href="{% url 'foodies:register' %}">Sign Up</a></li>
+                <li><a href="{% url 'foodies:login' %}">Login</a></li>
+
+                <!-- The following links are only for testing that the urls and views are working properly -->
+                <li><a href="{% url 'foodies:user_profile' %}">User Profile</a></li>
+                <li><a href="{% url 'foodies:reviews' %}">Reviews</a></li>
+                <li><a href="{% url 'foodies:register_diners' %}">Register Diners</a></li>
+                <li><a href="{% url 'foodies:register_cookers' %}">Register Cookers</a></li>
+                <li><a href="{% url 'foodies:search' %}">Search</a></li>
+                <li><a href="{% url 'foodies:search_cookers' %}">Search Cookers</a></li>
+                <li><a href="{% url 'foodies:contact_us' %}">Contact us</a></li>
+            {% endif %}
+                <li><a href="{% url 'foodies:about' %}">About</a></li>
+                <li><a href="{% url 'foodies:index' %}">Home</a></li>
+             
+  </ul>
+  
+
+	
     </head>
-    <body>
+ 
         <div>
         {% block body_block %}
         {% endblock %}
         </div>
-        <div>
-            {% block sidebar_block %}
-                {% get_category_list category %}
-            {% endblock %}
-        </div>
-        <hr />
-        <div>
-            <ul>
+
+
+ 
+  
+ <footer class="footer w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">
+  <p class="w3-medium"> Find us: </a></p>	
+  <i class="fa fa-facebook-official w3-hover-opacity"></i>
+  <i class="fa fa-instagram w3-hover-opacity"></i>
+  <i class="fa fa-snapchat w3-hover-opacity"></i>
+  <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+  <i class="fa fa-twitter w3-hover-opacity"></i>
+  <i class="fa fa-linkedin w3-hover-opacity"></i>
+  
+  <ul class="list-inline">
             {% if user.is_authenticated %}
-                <li><a href="{% url 'foodies:restricted' %}">Restricted Page</a></li>
-                <li><a href="{% url 'foodies:logout' %}">Logout</a></li>
-                <li><a href="{% url 'foodies:add_category' %}">Add a New Meal Category</a></li>
+               <li><a href="{% url 'foodies:logout' %}">Logout</a>	
+			   </li>          		
+               <li><a href="{% url 'foodies:add_category' %}">Add a New Meal Category</a></li>
             {% else %}
                 <li><a href="{% url 'foodies:register' %}">Sign Up</a></li>
                 <li><a href="{% url 'foodies:login' %}">Login</a></li>
             {% endif %}
                 <li><a href="{% url 'foodies:about' %}">About</a></li>
                 <li><a href="{% url 'foodies:index' %}">Index</a></li>
-            </ul>
-        </div>
-    </body>
+             
+  </ul>
+  
+  
+</footer>
+
 </html>
