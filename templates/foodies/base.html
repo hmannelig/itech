@@ -27,16 +27,16 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">   		
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
- <style>
+<style>
     body {font-family: "Times New Roman";}
     body {background-color: #fff5e6;}
 	h1, h2,
 	{font-family: "Playfair Display"; letter-spacing: 5px}
 	h1   {color: #cc0000;}
 	
-	   </style>
+</style>
 
-  <ul class="list-inline">
+<ul class="list-inline">
             {% if user.is_authenticated %}
                <li><a href="{% url 'foodies:logout' %}">Logout</a>	
 			   </li>          		
@@ -53,11 +53,7 @@
                 <li><a href="{% url 'foodies:search' %}">Search</a></li>
                 <li><a href="{% url 'foodies:search_cookers' %}">Search Cookers</a></li>
                 <li><a href="{% url 'foodies:contact_us' %}">Contact us</a></li>
-             
-                
-               
-              
-                
+
             {% endif %}
                 <li><a href="{% url 'foodies:about' %}">About</a></li>
                 <li><a href="{% url 'foodies:index' %}">Home</a></li>
