@@ -20,4 +20,5 @@
 background-image:url('{% static 'foodies/images/about.jpg' %}');
 background-repeat:no-repeat;
 background-size:50%;
+height: 500px;
 }
