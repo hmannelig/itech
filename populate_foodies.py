@@ -55,10 +55,24 @@ def populate():
          'url': 'https://www.allrecipes.com/recipe/228631/bavarian-sauerkraut/',
          'views': 332}]
 
-    cats = {'African': {'meals': african_meals, 'views': 128, 'likes': 64},
-            'American': {'meals': american_meals, 'views': 64, 'likes': 32},
-            'Asian': {'meals': asian_meals, 'views': 32, 'likes': 16},
-            'European': {'meals': european_meals, 'views': 24, 'likes': 22}}
+    cats = {
+            'African': 
+                {
+                    'meals': african_meals, 'views': 128, 'likes': 64
+                },
+            'American': 
+                {
+                    'meals': american_meals, 'views': 64, 'likes': 32
+                },
+            'Asian': 
+                {
+                    'meals': asian_meals, 'views': 32, 'likes': 16
+                },
+            'European': 
+                {
+                    'meals': european_meals, 'views': 24, 'likes': 22
+                }
+            }
 
     for cat, cat_data in cats.items():
         c = add_cat(cat, views=cat_data['views'], likes=cat_data['likes'])

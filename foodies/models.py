@@ -1,6 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 
 class Category(models.Model):
     NAME_MAX_LENGTH = 30
@@ -32,7 +33,7 @@ class Meal(models.Model):
         return self.title
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     website = models.URLField(blank=True)
     picture = models.ImageField(upload_to='profile_images', blank=True)
     name = models.CharField(max_length=30, blank=True)
@@ -41,8 +42,7 @@ class UserProfile(models.Model):
     isCooker = models.BooleanField( default=False) # user needs to select from a box if he is gonna be a cooker or a dinner
     isDnner = models.BooleanField( default=False)
     isBestCooker= models.BooleanField( default=False)
-    #role_id= models.ForeignKey() #NEEDS TO BE SPECIFIED
-    
+    #role_id= models.ForeignKey()
 
     def __str__(self):
         return self.user.username
@@ -50,7 +50,7 @@ class UserProfile(models.Model):
 class Review(models.Model):
     title = models.CharField(max_length=50 )
     date = models.DateField()
-    rating = models.PositiveSmallIntegerField (default=0, max=5)
+    # rating = models.PositiveSmallIntegerField(default=0, max=5)
     content = models.CharField(max_length=200)
     #user = models.ForeignKey() #NEEDS TO BE SPECIFIED
 
@@ -59,8 +59,6 @@ class Review(models.Model):
 
     def __str__(self):
         return self.title
-
-
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=128, unique=True)
