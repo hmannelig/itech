@@ -12,7 +12,6 @@ def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
     meal_list = Meal.objects.order_by('-views')[:5]
     context_dict = {}
-    context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
     context_dict['categories'] = category_list
     context_dict['meals'] = meal_list
     visitor_cookie_handler(request)
@@ -243,3 +242,24 @@ def visitor_cookie_handler(request):
         request.session['last_visit'] = last_visit_cookie
 
     request.session['visits'] = visits
+
+def user_profile(request):
+    return HttpResponse("This is user profile")
+
+def reviews(request):
+    return HttpResponse("This is reviews")
+
+def register_diners(request):
+    return HttpResponse("This is register diners")
+
+def register_cookers(request):
+    return HttpResponse("This is register cookers")
+
+def search(request):
+    return HttpResponse("This is search")
+
+def search_cookers(request):
+    return HttpResponse("This is search cooker")
+
+def contact_us(request):
+    return HttpResponse("This is contact us")
