@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 
 class Category(models.Model):
     NAME_MAX_LENGTH = 30
-    name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True)
+    #name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True)
+    name = models.CharField(max_length=NAME_MAX_LENGTH)
     views = models.IntegerField(default=0)
     likes = models.IntegerField(default=0)
     slug = models.SlugField(unique=True)
@@ -28,7 +29,7 @@ class Meal(models.Model):
     price = models.FloatField(default=0)
     views = models.IntegerField(default=0)
     #Foreign Key from Meal class to Meal Category
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, default='Category Not Selected')
     def __str__(self):
         return self.title
 
@@ -39,11 +40,11 @@ class UserProfile(models.Model):
     name = models.CharField(max_length=30, blank=True)
     adress = models.CharField(max_length=100, blank=True)
     personalDescription = models.CharField(max_length=200,  blank=True)
-    isCooker = models.BooleanField( default=False) # user needs to select from a box if he is gonna be a cooker or a dinner
-    isDnner = models.BooleanField( default=False)
-    isBestCooker= models.BooleanField( default=False)
-    user = models.OneToOneField(User, related_name="profile")
-    role = models.CharField()
+    isCooker = models.BooleanField(default=False) # user needs to select from a box if he is gonna be a cooker or a dinner
+    isDnner = models.BooleanField(default=False)
+    isBestCooker= models.BooleanField(default=False)
+    # user = models.OneToOneField(User, related_name="profile")
+    role = models.CharField(max_length=50, blank=True)
     #role_id= models.ForeignKey() #NEEDS TO BE SPECIFIED
     
 
@@ -51,7 +52,7 @@ class UserProfile(models.Model):
         return self.user.username
 
 class Review(models.Model):
-    title = models.CharField(max_length=50 )
+    title = models.CharField(max_length=50)
     date = models.DateField()
     #rating = models.PositiveSmallIntegerField (default=0, max=5)
     content = models.CharField(max_length=200)

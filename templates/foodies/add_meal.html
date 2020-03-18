@@ -8,7 +8,7 @@
 {% block body_block %}
 <h1>Add a Meal to {{ category.name }}</h1>
 <div>
-    <form id="add_meal_form" method="post" action="{% url 'foodies:add_meal' category.slug %}">
+    <form id="add_meal_form" method="post" action="{% url 'foodies:add_meal' %}">
         {% csrf_token %}
         {% csrf_token %}
         {% for hidden in form.hidden_fields %}

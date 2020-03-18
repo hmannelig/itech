@@ -58,16 +58,23 @@ def populate():
     cats = {'African': {'meals': african_meals, 'views': 128, 'likes': 64},
             'American': {'meals': american_meals, 'views': 64, 'likes': 32},
             'Asian': {'meals': asian_meals, 'views': 32, 'likes': 16},
-            'European': {'meals': european_meals, 'views': 24, 'likes': 22}}
+            'European': {'meals': european_meals, 'views': 24, 'likes': 22},
+            'Category Not Selected': {}}
 
     for cat, cat_data in cats.items():
-        c = add_cat(cat, views=cat_data['views'], likes=cat_data['likes'])
-        for p in cat_data['meals']:
-            add_meal(c, p['title'], p['url'], p['price'], views=p['views'])
+            if cat_data:
+                c = add_cat(cat, views=cat_data['views'], likes=cat_data['likes'])
+                for p in cat_data['meals']:
+                    add_meal(c, p['title'], p['url'], p['price'], views=p['views'])
+            else:
+                c = add_cat(cat, views=0, likes=0)
 
     for c in Category.objects.all():
-        for p in Meal.objects.filter(category=c):
-            print(f'- {c}: {p}')
+        if p:
+            for p in Meal.objects.filter(category=c):
+                print(f'- {c}: {p}')
+        else:
+            print(f'- {c}')
 
 
 def add_meal(cat, title, url, price, views=0):
