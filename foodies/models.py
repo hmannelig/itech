@@ -37,11 +37,11 @@ class UserProfile(models.Model):
     website = models.URLField(blank=True)
     picture = models.ImageField(upload_to='profile_images', blank=True)
     name = models.CharField(max_length=30, blank=True)
-    adress = models.CharField(max_length=100, blank=True)
+    address = models.CharField(max_length=100, blank=True)
     personalDescription = models.CharField(max_length=200,  blank=True)
-    isCooker = models.BooleanField( default=False) # user needs to select from a box if he is gonna be a cooker or a dinner
-    isDnner = models.BooleanField( default=False)
-    isBestCooker= models.BooleanField( default=False)
+    isCooker = models.BooleanField(default=False) # user needs to select from a box if he is gonna be a cooker or a dinner
+    isDinner = models.BooleanField(default=False)
+    isBestCooker= models.BooleanField(default=False)
     #role_id= models.ForeignKey()
 
     def __str__(self):
