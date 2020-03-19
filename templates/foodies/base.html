@@ -27,20 +27,21 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">   		
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
- <style>
+<style>
     body {font-family: "Times New Roman";}
     body {background-color: #fff5e6;}
 	h1, h2,
 	{font-family: "Playfair Display"; letter-spacing: 5px}
 	h1   {color: #cc0000;}
 	
-	   </style>
+</style>
 
-  <ul class="list-inline">
+<ul class="list-inline">
             {% if user.is_authenticated %}
                <li><a href="{% url 'foodies:logout' %}">Logout</a>	
 			   </li>          		
                <li><a href="{% url 'foodies:add_category' %}">Add a New Meal Category</a></li>
+                <li><a href="{% url 'foodies:add_meal' %}">Add new meal</a></li>
             {% else %}
                 <li><a href="{% url 'foodies:register' %}">Sign Up</a></li>
                 <li><a href="{% url 'foodies:login' %}">Login</a></li>
@@ -48,11 +49,12 @@
                 <!-- The following links are only for testing that the urls and views are working properly -->
                 <li><a href="{% url 'foodies:user_profile' %}">User Profile</a></li>
                 <li><a href="{% url 'foodies:reviews' %}">Reviews</a></li>
-                <li><a href="{% url 'foodies:register_diners' %}">Register Diners</a></li>
-                <li><a href="{% url 'foodies:register_cookers' %}">Register Cookers</a></li>
+                <li><a href="{% url 'foodies:register_diners' %}">Register As a Diner</a></li>
+                <li><a href="{% url 'foodies:register_cookers' %}">Register As a Cooker</a></li>
                 <li><a href="{% url 'foodies:search' %}">Search</a></li>
                 <li><a href="{% url 'foodies:search_cookers' %}">Search Cookers</a></li>
                 <li><a href="{% url 'foodies:contact_us' %}">Contact us</a></li>
+
             {% endif %}
                 <li><a href="{% url 'foodies:about' %}">About</a></li>
                 <li><a href="{% url 'foodies:index' %}">Home</a></li>
@@ -80,7 +82,7 @@
   <i class="fa fa-twitter w3-hover-opacity"></i>
   <i class="fa fa-linkedin w3-hover-opacity"></i>
   
-  <ul class="list-inline"">
+  <ul class="list-inline">
             {% if user.is_authenticated %}
                <li><a href="{% url 'foodies:logout' %}">Logout</a>	
 			   </li>          		

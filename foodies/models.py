@@ -1,7 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser 
 
 class Category(models.Model):
     NAME_MAX_LENGTH = 30
@@ -36,11 +36,11 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     picture = models.ImageField(upload_to='profile_images', blank=True)
     name = models.CharField(max_length=30, blank=True)
-    adress = models.CharField(max_length=100, blank=True)
+    address = models.CharField(max_length=100, blank=True)
     personalDescription = models.CharField(max_length=200,  blank=True)
-    isCooker = models.BooleanField( default=False) # user needs to select from a box if he is gonna be a cooker or a dinner
-    isDnner = models.BooleanField( default=False)
-    isBestCooker = models.BooleanField( default=False)
+    isCooker = models.BooleanField(default=False) # user needs to select from a box if he is gonna be a cooker or a dinner
+    isDinner = models.BooleanField(default=False)
+    isBestCooker= models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username

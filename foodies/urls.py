@@ -6,7 +6,7 @@ app_name = 'foodies'
 urlpatterns = [
     path('', views.index, name='index'),
     path('about/', views.about, name='about'),
-    path('category/<slug:category_name_slug>/add_meal/', views.add_meal, name='add_meal'), #/categories
+    path('category/<slug:category_name_slug>/add_meal/', views.add_meal, name='add_meal_cat'), #/categories
     path('category/<slug:category_name_slug>/', views.show_category, name='show_category'), #/categories/african
     path('add_category/', views.add_category, name='add_category'),
     path('register/', views.register, name='register'),  # New mapping!
@@ -20,4 +20,5 @@ urlpatterns = [
     path('search/', views.search, name='search'),  #/search
     path('search-cookers/', views.search_cookers, name='search_cookers'),  #/search
     path('contact-us/', views.contact_us, name = 'contact_us'), #/contact-us
+    path('add_meal/', views.add_meal, name='add_meal'),  # /add_meal
 ]

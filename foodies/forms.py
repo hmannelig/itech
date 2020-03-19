@@ -23,35 +23,28 @@ class MealForm(forms.ModelForm):
     url = forms.URLField(max_length=Meal.URL_MAX_LENGTH,
                          help_text="Please enter the URL of the meal page.")
     views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
+
     class Meta:
-    # Provide an association between the ModelForm and a model
         model = Meal
-    # What fields do we want to include in our form?
-    # This way we don't need every field in the model present.
-    # Some fields may allow NULL values; we may not want to include them.
-    # Here, we are hiding the foreign key.
-    # we can either exclude the category field from the form,
         exclude = ('category',)
-    # or specify the fields to include (don't include the category field).
-    # fields = ('title', 'url', 'views')
-    def clean(self):
-        cleaned_data = self.cleaned_data
-        url = cleaned_data.get('url')
-        # If url is not empty and doesn't start with 'http://',
-        # then prepend 'http://'.
-        if url and not url.startswith('http://'):
-            url = f'http://{url}'
-            cleaned_data['url'] = url
-        return cleaned_data
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
 
+    isCooker = forms.BooleanField()
+    isDinner = forms.BooleanField()
+
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        self.fields['isCooker'].label = "Are you a cooker?"
+        self.fields['isDinner'].label = "Are you a dinner?"
+
     class Meta:
         model = User
-        fields = ('username', 'email', 'password',)
+        fields = ('username', 'email',)
 
 class UserProfileForm(forms.ModelForm):
+
     class Meta:
         model = UserProfile
         fields = ('picture',)

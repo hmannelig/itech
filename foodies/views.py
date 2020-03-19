@@ -18,6 +18,8 @@ def index(request):
     return render(request, 'foodies/index.html', context=context_dict)
 
 
+
+
 def about(request):
     context_dict = {}
     visitor_cookie_handler(request)
@@ -41,9 +43,9 @@ def show_category(request, category_name_slug):
         meals = Meal.objects.filter(category=category)
 
         # Adds our results list to the template context under name pages.
-       
+
         context_dict['meals'] = meals
-        
+
         # We also add the category object from
         # the database to the context dictionary.
         # We'll use this in the template to verify that the category exists.
@@ -56,6 +58,7 @@ def show_category(request, category_name_slug):
         context_dict['meals'] = None
     # Go render the response and return it to the client.
     return render(request, 'foodies/category.html', context=context_dict)
+
 
 @login_required
 def add_category(request):
@@ -80,15 +83,22 @@ def add_category(request):
         # Render the form with error messages (if any).
     return render(request, 'foodies/add_category.html', {'form': form})
 
+
 @login_required
-def add_meal(request, category_name_slug):
-    try:
-        category = Category.objects.get(slug=category_name_slug)
-    except:
-        category = None
+def add_meal(request):
+    #try:
+     #   category = Category.objects.get(slug=category_name_slug)
+    #except:
+     #   category = None
     # You cannot add a page to a Category that does not exist...
-    if category is None:
-        return redirect('/foodies/')
+
+    # context_dict = {'form': form, 'category': category}
+    # return redirect('/foodies/')
+    # return render(request, 'foodies/add_meal.html')
+
+    #if category is None:
+    #category = 'Category Not Selected'
+    #context_dict = {category}
 
     form = MealForm()
 
@@ -96,18 +106,19 @@ def add_meal(request, category_name_slug):
         form = MealForm(request.POST)
 
         if form.is_valid():
-            if category:
-                meal = form.save(commit=False)
-                meal.category = category
-                meal.views = 0
-                meal.save()
-
-                return redirect(reverse('foodies:show_category', kwargs={'category_name_slug': category_name_slug}))
+            #if :category
+            form.save(commit=True)
+            #meal.category = 'Category Not Selected'
+            #meal.views = 0
+            #meal.save()
+            #if category == 'Category Not Selected':
+             #   return redirect(reverse('foodies:show_category', kwargs={'category': category_name_slug}))
+            #else:
+            return redirect('/foodies/')
         else:
             print(form.errors)
 
-    context_dict = {'form': form, 'category': category}
-    return render(request, 'foodies/add_meal.html', context=context_dict)
+    return render(request, 'foodies/add_meal.html', {'form': form})
 
 
 def register(request):
@@ -209,9 +220,11 @@ def user_login(request):
         # blank dictionary object...
         return render(request, 'foodies/login.html')
 
+
 @login_required
 def restricted(request):
     return render(request, 'foodies/restricted.html')
+
 
 # Use the login_required() decorator to ensure only those logged in can
 # access the view.
@@ -244,16 +257,16 @@ def visitor_cookie_handler(request):
     request.session['visits'] = visits
 
 def user_profile(request):
-    return HttpResponse("This is user profile")
+    return render(request, 'foodies/user_profile.html')
 
 def reviews(request):
-    return HttpResponse("This is reviews")
+    return render(request, 'foodies/reviews.html')
 
 def register_diners(request):
-    return HttpResponse("This is register diners")
+    return render(request, 'foodies/register_diners.html')
 
 def register_cookers(request):
-    return HttpResponse("This is register cookers")
+    return render(request, 'foodies/register_cookers.html')
 
 def search(request):
     return HttpResponse("This is search")
@@ -262,4 +275,5 @@ def search_cookers(request):
     return HttpResponse("This is search cooker")
 
 def contact_us(request):
-    return HttpResponse("This is contact us")
+    return render(request, 'foodies/contact_us.html')
+
