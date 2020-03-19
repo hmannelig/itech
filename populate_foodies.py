@@ -55,26 +55,33 @@ def populate():
          'url': 'https://www.allrecipes.com/recipe/228631/bavarian-sauerkraut/',
          'views': 332}]
 
-    cats = {'African': {'meals': african_meals, 'views': 128, 'likes': 64},
-            'American': {'meals': american_meals, 'views': 64, 'likes': 32},
-            'Asian': {'meals': asian_meals, 'views': 32, 'likes': 16},
-            'European': {'meals': european_meals, 'views': 24, 'likes': 22},
-            'Category Not Selected': {}}
+    cats = {
+            'African': 
+                {
+                    'meals': african_meals, 'views': 128, 'likes': 64
+                },
+            'American': 
+                {
+                    'meals': american_meals, 'views': 64, 'likes': 32
+                },
+            'Asian': 
+                {
+                    'meals': asian_meals, 'views': 32, 'likes': 16
+                },
+            'European': 
+                {
+                    'meals': european_meals, 'views': 24, 'likes': 22
+                }
+            }
 
     for cat, cat_data in cats.items():
-            if cat_data:
-                c = add_cat(cat, views=cat_data['views'], likes=cat_data['likes'])
-                for p in cat_data['meals']:
-                    add_meal(c, p['title'], p['url'], p['price'], views=p['views'])
-            else:
-                c = add_cat(cat, views=0, likes=0)
+        c = add_cat(cat, views=cat_data['views'], likes=cat_data['likes'])
+        for p in cat_data['meals']:
+            add_meal(c, p['title'], p['url'], p['price'], views=p['views'])
 
     for c in Category.objects.all():
-        if p:
-            for p in Meal.objects.filter(category=c):
-                print(f'- {c}: {p}')
-        else:
-            print(f'- {c}')
+        for p in Meal.objects.filter(category=c):
+            print(f'- {c}: {p}')
 
 
 def add_meal(cat, title, url, price, views=0):
@@ -84,6 +91,7 @@ def add_meal(cat, title, url, price, views=0):
     p.views = views
     p.save()
     return p
+
 
 
 def add_cat(name, views=0, likes=0):
