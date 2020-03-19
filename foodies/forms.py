@@ -34,6 +34,11 @@ class UserForm(forms.ModelForm):
     isCooker = forms.BooleanField()
     isDinner = forms.BooleanField()
 
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        self.fields['isCooker'].label = "Are you a cooker?"
+        self.fields['isDinner'].label = "Are you a dinner?"
+
     class Meta:
         model = User
         fields = ('username', 'email',)
