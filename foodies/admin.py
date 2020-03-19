@@ -1,6 +1,7 @@
 from django.contrib import admin
 from foodies.models import Category, Meal, UserProfile, Ingredient, Allergy
 
+
 class MealAdmin(admin.ModelAdmin):
     list_display = ('title', 'category', 'url')
 

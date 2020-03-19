@@ -34,15 +34,13 @@ class Meal(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    website = models.URLField(blank=True)
     picture = models.ImageField(upload_to='profile_images', blank=True)
     name = models.CharField(max_length=30, blank=True)
     adress = models.CharField(max_length=100, blank=True)
     personalDescription = models.CharField(max_length=200,  blank=True)
     isCooker = models.BooleanField( default=False) # user needs to select from a box if he is gonna be a cooker or a dinner
     isDnner = models.BooleanField( default=False)
-    isBestCooker= models.BooleanField( default=False)
-    #role_id= models.ForeignKey()
+    isBestCooker = models.BooleanField( default=False)
 
     def __str__(self):
         return self.user.username
@@ -72,6 +70,7 @@ class Ingredient(models.Model):
 
 class Allergy(models.Model):
     name = models.CharField(max_length=128, unique=True)
+    users = models.ManyToManyField(UserProfile)
 
     class Meta:
         verbose_name_plural = 'Allergies'
@@ -82,13 +81,13 @@ class Allergy(models.Model):
 class Request(models.Model):
     title = models.CharField(max_length=30, unique=True)
     date = models.DateField()
-   #price = models.ForeignKey() #NEEDS TO BE SPECIFIED
+    # price = models.ForeignKey() #NEEDS TO BE SPECIFIED
     name = models.CharField(max_length=30)
     email = models.EmailField()
     content = models.CharField(max_length=200)
     message = models.TextField()
-    #user = models.ForeignKey() #NEEDS TO BE SPECIFIED
-    #meal = models.ForeignKey() #NEEDS TO BE SPECIFIED
+    # user = models.ForeignKey() #NEEDS TO BE SPECIFIED
+    # meal = models.ForeignKey() #NEEDS TO BE SPECIFIED
 
     class Meta:
         verbose_name_plural = 'Requests'
