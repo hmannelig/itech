@@ -12,5 +12,12 @@ body {
 	background-color: #fff5e6;
 }
 
-
+header .navbar-dark .navbar-nav .active>.nav-link, 
+header .navbar-dark .navbar-nav .nav-link,
+header .navbar-dark .navbar-nav .nav-link.active, 
+header .navbar-dark .navbar-nav .nav-link.show, 
+header .navbar-dark .navbar-nav .show>.nav-link,
+header .navbar-dark .navbar-brand {
+	color:#cc0000;
+}
 
