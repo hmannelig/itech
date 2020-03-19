@@ -31,13 +31,13 @@ class MealForm(forms.ModelForm):
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
 
-    isCooker = forms.BooleanField()
-    isDinner = forms.BooleanField()
+    isCooker = forms.BooleanField(initial=False, required=False, label='Are you a cooker?')
+    isDinner = forms.BooleanField(initial=False, required=False, label='Are you a dinner?')
 
-    def __init__(self, *args, **kwargs):
-        super(UserForm, self).__init__(*args, **kwargs)
-        self.fields['isCooker'].label = "Are you a cooker?"
-        self.fields['isDinner'].label = "Are you a dinner?"
+    #def __init__(self, *args, **kwargs):
+        #super(UserForm, self).__init__(*args, **kwargs)
+        #self.fields['isCooker'].label = "Are you a cooker?"
+        #self.fields['isDinner'].label = "Are you a dinner?"
 
     class Meta:
         model = User

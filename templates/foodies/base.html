@@ -9,6 +9,7 @@
       	<link rel="stylesheet" href="{% static 'foodies/css/base.css' %}">
       	<link rel="stylesheet" href="{% static 'foodies/css/index.css' %}">
 		<link rel="stylesheet" href="{% static 'foodies/css/about.css' %}">
+        <link rel="stylesheet" href="{% static 'foodies/css/user_profile.css' %}">
         
         <title>
             Foodies
@@ -26,77 +27,147 @@
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">   		
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+		<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <style>
     body {font-family: "Times New Roman";}
     body {background-color: #fff5e6;}
 	h1, h2,
 	{font-family: "Playfair Display"; letter-spacing: 5px}
 	h1   {color: #cc0000;}
+	a {color:#000000}
 	
 </style>
 
-<ul class="list-inline">
-            {% if user.is_authenticated %}
-               <li><a href="{% url 'foodies:logout' %}">Logout</a>	
-			   </li>          		
-               <li><a href="{% url 'foodies:add_category' %}">Add a New Meal Category</a></li>
-                <li><a href="{% url 'foodies:add_meal' %}">Add new meal</a></li>
-            {% else %}
-                <li><a href="{% url 'foodies:register' %}">Sign Up</a></li>
-                <li><a href="{% url 'foodies:login' %}">Login</a></li>
-
-                <!-- The following links are only for testing that the urls and views are working properly -->
-                <li><a href="{% url 'foodies:user_profile' %}">User Profile</a></li>
-                <li><a href="{% url 'foodies:reviews' %}">Reviews</a></li>
-                <li><a href="{% url 'foodies:register_diners' %}">Register As a Diner</a></li>
-                <li><a href="{% url 'foodies:register_cookers' %}">Register As a Cooker</a></li>
-                <li><a href="{% url 'foodies:search' %}">Search</a></li>
-                <li><a href="{% url 'foodies:search_cookers' %}">Search Cookers</a></li>
-                <li><a href="{% url 'foodies:contact_us' %}">Contact us</a></li>
-
-            {% endif %}
-                <li><a href="{% url 'foodies:about' %}">About</a></li>
-                <li><a href="{% url 'foodies:index' %}">Home</a></li>
-             
-  </ul>
-  
-
-	
     </head>
  
-        <div>
+ <header>
+ 
+ <!--Navbar-->
+<nav class="mb-1 navbar navbar-expand-lg navbar-dark orange lighten-1">
+
+  <!-- Navbar brand -->
+  <a class="navbar-brand" href="#"><img src="{% static 'foodies/images/logo2.png' %}" /></a>
+
+  <!-- Collapse button -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+    aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!-- Collapsible content -->
+  <div class="collapse navbar-collapse" id="basicExampleNav">
+
+    <!-- Links -->
+    <ul class="navbar-nav mr-auto">
+     
+      <li class="nav-item active">  	
+        <a class="nav-link" href="{% url 'foodies:index' %}">Home
+          <span class="sr-only">(current)</span>
+        </a>
+        </li>
+       {% if user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'foodies:logout' %}">Logout</a>
+      </li>
+
+       <li class="nav-item">
+        <a class="nav-link" href="{% url 'foodies:add_meal' %}">Add new meal</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'foodies:user_profile' %}">User Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'foodies:reviews' %}">Reviews</a>
+      </li>
+      
+       {% else %}
+        <li class="nav-item">
+        <a class="nav-link" href="{% url 'foodies:register' %}">Sign Up</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="{% url 'foodies:login' %}">Login</a>
+      </li>
+
+	{% endif %}
+      <li class="nav-item">
+        <a class="nav-link" href="foodies:about">About</a>
+      </li>
+       <li class="nav-item">
+        <a class="nav-link" href="foodies:index">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="foodies:contact_us">Contact us</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="foodies:search_cookers">Search Cookers</a>
+      </li>
+
+      <!-- Dropdown -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">Dropdown</a>
+        <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </li>
+
+    </ul>
+    <!-- Links -->
+
+    <form class="form-inline">
+      <div class="md-form my-0">
+        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+      </div>
+    </form>
+  </div>
+  <!-- Collapsible content -->
+
+</nav>
+<!--/.Navbar-->
+  <div>
         {% block body_block %}
         {% endblock %}
         </div>
+ </header>
+       
 
 
  
   
  <footer class="footer w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">
   <p class="w3-medium"> Find us: </a></p>	
-  <i class="fa fa-facebook-official w3-hover-opacity"></i>
-  <i class="fa fa-instagram w3-hover-opacity"></i>
-  <i class="fa fa-snapchat w3-hover-opacity"></i>
-  <i class="fa fa-pinterest-p w3-hover-opacity"></i>
-  <i class="fa fa-twitter w3-hover-opacity"></i>
-  <i class="fa fa-linkedin w3-hover-opacity"></i>
+  <a href="https://www.facebook.com/"target="_blank">
+  <i class="fa fa-facebook-official w3-hover-opacity" ></i>  </a>
+  
+  <a href="https://www.instagram.com/"target="_blank">
+  <i class="fa fa-instagram w3-hover-opacity"></i>  </a>
+    
+  <a href="https://www.pinterest.co.uk/"target="_blank">
+  <i class="fa fa-pinterest-p w3-hover-opacity"></i>  </a>
+  
+  <a href="https://twitter.com/"target="_blank">
+  <i class="fa fa-twitter w3-hover-opacity"></i>  </a>
+
   
   <ul class="list-inline">
             {% if user.is_authenticated %}
-               <li><a href="{% url 'foodies:logout' %}">Logout</a>	
-			   </li>          		
-               <li><a href="{% url 'foodies:add_category' %}">Add a New Meal Category</a></li>
-            {% else %}
+               <li><a href="{% url 'foodies:logout' %}">Logout</a></li>			   
+		   {% else %}
                 <li><a href="{% url 'foodies:register' %}">Sign Up</a></li>
                 <li><a href="{% url 'foodies:login' %}">Login</a></li>
+                <li><a href="{% url 'foodies:contact_us' %}">Contact us</a></li>
             {% endif %}
-                <li><a href="{% url 'foodies:about' %}">About</a></li>
-                <li><a href="{% url 'foodies:index' %}">Index</a></li>
+            	<li><a href="{% url 'foodies:index' %}">Home</a></li>
+                <li><a href="{% url 'foodies:about' %}">About</a></li>                
+                <li><a href="{% url 'foodies:contact_us' %}">Contact us</a></li>
              
   </ul>
   
-  
+
 </footer>
 
 </html>
