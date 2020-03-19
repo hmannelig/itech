@@ -3,7 +3,7 @@ from foodies.models import Category, Meal, UserProfile, Ingredient, Allergy
 
 
 class MealAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'url')
+    list_display = ('title', 'url')
 
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}

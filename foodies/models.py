@@ -3,13 +3,26 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser 
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    picture = models.ImageField(upload_to='profile_images', blank=True)
+    name = models.CharField(max_length=30, blank=True)
+    address = models.CharField(max_length=100, blank=True)
+    personalDescription = models.CharField(max_length=200,  blank=True, verbose_name="Personal Description")
+    isCooker = models.BooleanField(default=False, verbose_name="Cooker")
+    isDinner = models.BooleanField(default=False, verbose_name="Diner")
+    isBestCooker = models.BooleanField(default=False, verbose_name="Best Cooker")
+
+    def __str__(self):
+        return self.user.username
+
 class Category(models.Model):
     NAME_MAX_LENGTH = 30
-    name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True)
+    name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True, default="Category Not Selected")
     views = models.IntegerField(default=0)
     likes = models.IntegerField(default=0)
     slug = models.SlugField(unique=True)
-
+    
     def save(self, *args, **kwargs):
        self.slug = slugify(self.name)
        super(Category, self).save(*args, **kwargs)
@@ -20,6 +33,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
 class Meal(models.Model):
     TITLE_MAX_LENGTH = 30
     URL_MAX_LENGTH = 200
@@ -27,30 +41,18 @@ class Meal(models.Model):
     url = models.URLField(max_length=URL_MAX_LENGTH)
     price = models.FloatField(default=0)
     views = models.IntegerField(default=0)
-    #Foreign Key from Meal class to Meal Category
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.SET_DEFAULT, default="Category Not Selected")
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=True, null=True)
+
     def __str__(self):
         return self.title
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    picture = models.ImageField(upload_to='profile_images', blank=True)
-    name = models.CharField(max_length=30, blank=True)
-    address = models.CharField(max_length=100, blank=True)
-    personalDescription = models.CharField(max_length=200,  blank=True)
-    isCooker = models.BooleanField(default=False) # user needs to select from a box if he is gonna be a cooker or a dinner
-    isDinner = models.BooleanField(default=False)
-    isBestCooker= models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.user.username
-
 class Review(models.Model):
-    title = models.CharField(max_length=50 )
+    title = models.CharField(max_length=50)
     date = models.DateField()
-    # rating = models.PositiveSmallIntegerField(default=0, max=5)
+    rating = models.PositiveIntegerField(default=5)
     content = models.CharField(max_length=200)
-    #user = models.ForeignKey() #NEEDS TO BE SPECIFIED
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
 
     class Meta:
         verbose_name_plural = 'Reviews'
@@ -61,9 +63,8 @@ class Review(models.Model):
 class Ingredient(models.Model):
     name = models.CharField(max_length=128, unique=True)
     vegetable = models.CharField(max_length=128, blank=True)
-    typeofmeat = models.CharField(max_length=128, blank=True)
-    #ForeignKey from Ingredient Class to Meal
-    meal = models.ForeignKey(Meal, on_delete=models.CASCADE)
+    typeofmeat = models.CharField(max_length=128, blank=True, verbose_name="Tye of Meat")
+    meal = models.ManyToManyField(Meal)
 
     def __str__(self):
         return self.name
@@ -81,13 +82,12 @@ class Allergy(models.Model):
 class Request(models.Model):
     title = models.CharField(max_length=30, unique=True)
     date = models.DateField()
-    # price = models.ForeignKey() #NEEDS TO BE SPECIFIED
     name = models.CharField(max_length=30)
     email = models.EmailField()
     content = models.CharField(max_length=200)
     message = models.TextField()
-    # user = models.ForeignKey() #NEEDS TO BE SPECIFIED
-    # meal = models.ForeignKey() #NEEDS TO BE SPECIFIED
+    dinner = models.PositiveIntegerField(default=None)
+    cooker = models.PositiveIntegerField(default=None)
 
     class Meta:
         verbose_name_plural = 'Requests'
@@ -97,7 +97,7 @@ class Request(models.Model):
 
 class Tags(models.Model):
     name = models.CharField(max_length=30, unique= True)
-    #meal = models.ManyToManyField() #NEEDS TO BE SPECIFIED
+    meal = models.ManyToManyField(Meal)
 
     def __str__(self):
         return self.name
