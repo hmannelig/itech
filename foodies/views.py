@@ -244,16 +244,18 @@ def visitor_cookie_handler(request):
     request.session['visits'] = visits
 
 def user_profile(request):
-    return HttpResponse("This is user profile")
+    
+
+    return render(request, 'foodies/user_profile.html')
 
 def reviews(request):
-    return HttpResponse("This is reviews")
+    return render(request, 'foodies/reviews.html')
 
 def register_diners(request):
-    return HttpResponse("This is register diners")
+    return render(request, 'foodies/register_diners.html')
 
 def register_cookers(request):
-    return HttpResponse("This is register cookers")
+     return render(request, 'foodies/register_cookers.html')
 
 def search(request):
     return HttpResponse("This is search")
@@ -262,4 +264,4 @@ def search_cookers(request):
     return HttpResponse("This is search cooker")
 
 def contact_us(request):
-    return HttpResponse("This is contact us")
+    return render(request, 'foodies/contact_us.html')
