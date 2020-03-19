@@ -138,6 +138,9 @@ def register(request):
         # If the two forms are valid...
         if user_form.is_valid() and profile_form.is_valid():
             # Save the user's form data to the database.
+            if request.POST(isCooker) is False and request.POST(isDinner) is False:
+                return redirect('foodies/register/')
+
             user = user_form.save()
 
             # Now we hash the password with the set_password method.
@@ -151,6 +154,8 @@ def register(request):
             # until we're ready to avoid integrity problems.
             profile = profile_form.save(commit=False)
             profile.user = user
+
+
 
             # Did the user provide a profile picture?
             # If so, we need to get it from the input form and
@@ -175,8 +180,7 @@ def register(request):
         profile_form = UserProfileForm()
 
     # Render the template depending on the context.
-    return render(request, 'foodies/register.html',
-                  context={'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
+    return render(request, 'foodies/register.html', context={'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
 
 
 def user_login(request):
