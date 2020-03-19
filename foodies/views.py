@@ -18,6 +18,8 @@ def index(request):
     return render(request, 'foodies/index.html', context=context_dict)
 
 
+
+
 def about(request):
     context_dict = {}
     visitor_cookie_handler(request)
