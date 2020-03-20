@@ -7,7 +7,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 
-
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
     meal_list = Meal.objects.order_by('-views')[:5]
@@ -22,7 +21,6 @@ def about(request):
     visitor_cookie_handler(request)
     context_dict['visits'] = request.session['visits']
     return render(request, 'foodies/about.html', context=context_dict)
-
 
 def show_category(request, category_name_slug):
     context_dict = {}
@@ -41,7 +39,6 @@ def show_category(request, category_name_slug):
 
     return render(request, 'foodies/category.html', context=context_dict)
 
-
 @login_required
 def add_category(request):
     form = CategoryForm()
@@ -57,7 +54,6 @@ def add_category(request):
             print(form.errors)
 
     return render(request, 'foodies/add_category.html', {'form': form})
-
 
 @login_required
 def add_meal(request):
@@ -94,7 +90,6 @@ def add_meal(request):
             print(form.errors)
 
     return render(request, 'foodies/add_meal.html', {'form': form})
-
 
 def register(request):
     # A boolean value for telling the template
@@ -158,7 +153,6 @@ def register(request):
     # Render the template depending on the context.
     return render(request, 'foodies/register.html', context={'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
 
-
 def user_login(request):
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == 'POST':
@@ -200,11 +194,9 @@ def user_login(request):
         # blank dictionary object...
         return render(request, 'foodies/login.html')
 
-
 @login_required
 def restricted(request):
     return render(request, 'foodies/restricted.html')
-
 
 # Use the login_required() decorator to ensure only those logged in can
 # access the view.
@@ -215,13 +207,11 @@ def user_logout(request):
     # Take the user back to the homepage.
     return redirect(reverse('foodies:index'))
 
-
 def get_server_side_cookie(request, cookie, default_val=None):
     val = request.session.get(cookie)
     if not val:
         val = default_val
     return val
-
 
 def visitor_cookie_handler(request):
     visits = int(get_server_side_cookie(request, 'visits', '1'))
@@ -237,7 +227,7 @@ def visitor_cookie_handler(request):
     request.session['visits'] = visits
 
 def user_profile(request):
-    return render(request, 'foodies/user_profile.html')
+    return render(request, 'foodies/user_profile_base.html')
 
 def reviews(request):
     return render(request, 'foodies/reviews.html')
@@ -256,4 +246,3 @@ def search_cookers(request):
 
 def contact_us(request):
     return render(request, 'foodies/contact_us.html')
-
