@@ -22,37 +22,36 @@
     <strong>{{ boldmessage }}</strong><br />
 </div>  
   
-<div class="container">
-	<div class="row">
-		<div class="col-sm-3">
-			<h2>Best Cooker</h2>
-		</div>
-		<div class="col-sm-4">
-			<h2>Most Viewed Meals</h2>
-			{% if meals %}
-				<ul>
-					{% for meal in meals %}    						 
-					<li><a href="{{ meal.url }}">{{ meal.title }}</a></li>
-					<p class="viewed_meals"></p>
-					{% endfor %}
-				</ul>
-			{% else %}
-				<strong>There are no meals present.</strong>
-			{% endif %}
-		</div>
-		<div class="col-sm-5">
-			<h2>Most Liked Meal Categories</h2>
-			{% if categories %}
-				<ul>
-					{% for category in categories %}
-					<li><a href="{% url 'foodies:show_category' category.slug %}">{{ category.name }}</a></li>
-					{% endfor %}
-				</ul>
-			{% else %}
-				<strong>There are no meal categories present.</strong>
-			{% endif %}
-		</div>
-	</div>
+  <div class="row">
+    <div class="col-sm-3">
+      <h2>Best Cooker</h2>
+    </div>
+    <div class="col-sm-4">
+      <h2>Most Viewed Meals</h2>
+		{% if meals %}
+   			 <ul>
+    			{% for meal in meals %}    						 
+        		<li><a href="{{ meal.url }}">{{ meal.title }}</a></li>
+        		 <p class="viewed_meals"></p>
+    			{% endfor %}
+    		</ul>
+		{% else %}
+   			 <strong>There are no meals present.</strong>
+		{% endif %}
+    </div>
+    <div class="col-sm-5">
+      <h2>Most Liked Meal Categories</h2>
+       	{% if categories %}
+   			 <ul>
+  				{% for category in categories %}
+        		<li><a href="{% url 'foodies:show_category' category.slug %}">{{ category.name }}</a></li>
+    			{% endfor %}
+    		</ul>
+		{% else %}
+    		<strong>There are no meal categories present.</strong>
+		{% endif %}
+    </div>
+  </div>
 </div>
  
 {% endblock %}

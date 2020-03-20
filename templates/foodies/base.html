@@ -21,13 +21,18 @@
       	<link rel="stylesheet" href="{% static 'foodies/css/index.css' %}">
 		<link rel="stylesheet" href="{% static 'foodies/css/about.css' %}">
         <link rel="stylesheet" href="{% static 'foodies/css/user_profile.css' %}">
+        <link rel="stylesheet" href="{% static 'foodies/css/contact_us.css' %}">
+        
+        
     </head>
 	<body>
 		{% include 'foodies/header.html' %}
 
-		<section class="container mb-4">
-			{% block body_block %}
-			{% endblock %}
+		<section>
+			<div class="container"> 
+				{% block body_block %}
+				{% endblock %}
+			</div>
 		</section>
 
 		{% include 'foodies/footer.html' %}
