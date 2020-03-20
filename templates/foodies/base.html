@@ -4,170 +4,37 @@
 
 <html>
     <head lang="en">
-        <meta charset="UTF-8" />
-      	<meta name="viewport" content="width=device-width, initial-scale=1">
-      	<link rel="stylesheet" href="{% static 'foodies/css/base.css' %}">
-      	<link rel="stylesheet" href="{% static 'foodies/css/index.css' %}">
-		<link rel="stylesheet" href="{% static 'foodies/css/about.css' %}">
-        <link rel="stylesheet" href="{% static 'foodies/css/user_profile.css' %}">
-        
         <title>
             Foodies
             {% block title_block %}
                 
             {% endblock %}
         </title>
-       
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <meta charset="UTF-8" />
+      	<meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		
+		<link rel="stylesheet" href="{% static 'foodies/css/base.css' %}">
+      	<link rel="stylesheet" href="{% static 'foodies/css/index.css' %}">
+		<link rel="stylesheet" href="{% static 'foodies/css/about.css' %}">
+        <link rel="stylesheet" href="{% static 'foodies/css/user_profile.css' %}">
+    </head>
+	<body>
+
+		{% include 'foodies/header.html' %}
+
+		<section>
+			{% block body_block %}
+			{% endblock %}
+		</section>
+
+		{% include 'foodies/footer.html' %}
+
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">   		
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-		<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-		<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<style>
-    body {font-family: "Times New Roman";}
-    body {background-color: #fff5e6;}
-	h1, h2,
-	{font-family: "Playfair Display"; letter-spacing: 5px}
-	h1   {color: #cc0000;}
-	a {color:#000000}
-	
-</style>
-
-    </head>
- 
- <header>
- 
- <!--Navbar-->
-<nav class="mb-1 navbar navbar-expand-lg navbar-dark orange lighten-1">
-
-  <!-- Navbar brand -->
-  <a class="d-inline-block" href="#"><img class="w-50 mx-auto" src="{% static 'foodies/images/logo2.png' %}" style="max-width:230px;" /></a>
-
-  <!-- Collapse button -->
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
-    aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <!-- Collapsible content -->
-  <div class="collapse navbar-collapse" id="basicExampleNav">
-
-    <!-- Links -->
-    <ul class="navbar-nav mr-auto">
-     
-      <li class="nav-item active">  	
-        <a class="nav-link" href="{% url 'foodies:index' %}">Home
-          <span class="sr-only">(current)</span>
-        </a>
-        </li>
-       {% if user.is_authenticated %}
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'foodies:logout' %}">Logout</a>
-      </li>
-
-       <li class="nav-item">
-        <a class="nav-link" href="{% url 'foodies:add_meal' %}">Add new meal</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'foodies:user_profile' %}">User Profile</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'foodies:reviews' %}">Reviews</a>
-      </li>
-      
-       {% else %}
-        <li class="nav-item">
-        <a class="nav-link" href="{% url 'foodies:register' %}">Sign Up</a>
-      </li>
-        <li class="nav-item">
-        <a class="nav-link" href="{% url 'foodies:login' %}">Login</a>
-      </li>
-
-	{% endif %}
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'foodies:about' %}">About Foodies</a>
-      </li>
-       <li class="nav-item">
-        <a class="nav-link" href="{% url 'foodies:index' %}">Home</a>
-      </li>
-      <li class="nav-item">
-       <a class="nav-link" href="{% url 'foodies:contact_us' %}">Contact Us</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="foodies:search_cookers">Search Cookers</a>
-      </li>
-
-      <!-- Dropdown -->
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">Dropdown</a>
-        <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-      </li>
-
-    </ul>
-    <!-- Links -->
-
-    <form class="form-inline">
-      <div class="md-form my-0">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-      </div>
-    </form>
-  </div>
-  <!-- Collapsible content -->
-
-</nav>
-<!--/.Navbar-->
-  <div>
-        {% block body_block %}
-        {% endblock %}
-        </div>
- </header>
-       
-
-
- 
-  
- <footer class="footer w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">
-  <p class="w3-medium"> Find us: </a></p>	
-  <a href="https://www.facebook.com/"target="_blank">
-  <i class="fa fa-facebook-official w3-hover-opacity" ></i>  </a>
-  
-  <a href="https://www.instagram.com/"target="_blank">
-  <i class="fa fa-instagram w3-hover-opacity"></i>  </a>
-    
-  <a href="https://www.pinterest.co.uk/"target="_blank">
-  <i class="fa fa-pinterest-p w3-hover-opacity"></i>  </a>
-  
-  <a href="https://twitter.com/"target="_blank">
-  <i class="fa fa-twitter w3-hover-opacity"></i>  </a>
-
-  
-  <ul class="list-inline">
-            {% if user.is_authenticated %}
-               <li><a href="{% url 'foodies:logout' %}">Logout</a></li>			   
-		   {% else %}
-                <li><a href="{% url 'foodies:register' %}">Sign Up</a></li>
-                <li><a href="{% url 'foodies:login' %}">Login</a></li>
-                <li><a href="{% url 'foodies:contact_us' %}">Contact us</a></li>
-            {% endif %}
-            	<li><a href="{% url 'foodies:index' %}">Home</a></li>
-                <li><a href="{% url 'foodies:about' %}">About</a></li>                
-                <li><a href="{% url 'foodies:contact_us' %}">Contact us</a></li>
-             
-  </ul>
-  
-
-</footer>
-
+	</body>
 </html>
