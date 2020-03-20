@@ -21,14 +21,14 @@
 
     <ul class="list-inline">
         {% if user.is_authenticated %}
-        <li><a href="{% url 'foodies:logout' %}">Logout</a></li>			   
+        <li class="list-inline-item"><a href="{% url 'foodies:logout' %}">Logout</a></li>			   
         {% else %}
-        <li><a href="{% url 'foodies:register' %}">Sign Up</a></li>
-        <li><a href="{% url 'foodies:login' %}">Login</a></li>
-        <li><a href="{% url 'foodies:contact_us' %}">Contact us</a></li>
+        <li class="list-inline-item"><a href="{% url 'foodies:register' %}">Sign Up</a></li>
+        <li class="list-inline-item"><a href="{% url 'foodies:login' %}">Login</a></li>
+        <li class="list-inline-item"><a href="{% url 'foodies:contact_us' %}">Contact us</a></li>
         {% endif %}
-        <li><a href="{% url 'foodies:index' %}">Home</a></li>
-        <li><a href="{% url 'foodies:about' %}">About</a></li>                
-        <li><a href="{% url 'foodies:contact_us' %}">Contact us</a></li>
+        <li class="list-inline-item"><a href="{% url 'foodies:index' %}">Home</a></li>
+        <li class="list-inline-item"><a href="{% url 'foodies:about' %}">About</a></li>                
+        <li class="list-inline-item"><a href="{% url 'foodies:contact_us' %}">Contact us</a></li>
     </ul>
 </footer>
