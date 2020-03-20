@@ -8,13 +8,27 @@
 
 {% block body_block %}
 
-<div class= "aboutStyle">	
-    <h1>Foodies</h1>
-    <p>Welcome food lover</p>
-    <p>This is the about page</p>
-   	<p>This website has been put together by the foodies team.</p>
-   	<p>It is all about offering home-made food with friendly prices.</p>
-    <p>Visits: {{ visits }}</p>
-</div>
 
+<div class= "aboutStyle">	
+    <h1>About Foodies</h1>
+    
+  		<div class="row"> 
+  			<div class="col"> <p>Welcome food lover!</p> </div>
+  		</div>	
+  		<div class="row"> 
+  			<div class="col"> <p> This is the about page.</p> </div>
+  		</div>	
+  		<div class="row">
+  			<div class="col"> <p>This website has been put together by the Foodies team.</p> </div>
+  		</div>
+  		<div class="row"> 
+  			<div class="col"> <p>It is all about offering home-made food with friendly prices.</p> </div>
+  		</div>	
+  		<div class="row"> 
+  			<div class="col"> <p>Visits: {{ visits }}</p> </div>
+  		</div>
+  		
+
+ </div>  
+  
 {% endblock %}
