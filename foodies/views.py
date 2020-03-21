@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from foodies.models import Category, Meal
 from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, mealIngredientMultiForm
 from django.urls import reverse
