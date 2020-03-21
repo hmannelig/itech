@@ -105,6 +105,7 @@ def register(request):
             # Save the user's form data to the database.
             data = request.POST.copy()
             if data.get('isCooker') == None and data.get('isDinner') == None:
+                messages.error(request, 'Invalid: Check at least 1 checkbox for Cooker or Dinner or both.')
                 return HttpResponseRedirect('/foodies/register')
 
             user = user_form.save()
