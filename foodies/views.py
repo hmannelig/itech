@@ -19,8 +19,6 @@ def index(request):
     return render(request, 'foodies/index.html', context=context_dict)
 
 
-
-
 def about(request):
     context_dict = {}
     visitor_cookie_handler(request)
@@ -122,7 +120,7 @@ def register(request):
         # If the two forms are valid...
         if user_form.is_valid() and profile_form.is_valid():
             # Save the user's form data to the database.
-            if request.POST(isCooker) is False and request.POST(isDinner) is False:
+            if user_form.get('isCooker') is False and user_form.get('isDinner') is False:
                 return redirect('foodies/register/')
 
             user = user_form.save()

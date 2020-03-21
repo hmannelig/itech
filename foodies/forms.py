@@ -43,6 +43,7 @@ class IngredientsForm(forms.ModelForm):
         model = Ingredient
         fields = ('name', 'vegetable', 'typeofmeat','meal')
 
+# This form takes the IngredientsForm and the MealForm at the same time for being handled in views
 class mealIngredientMultiForm(MultiModelForm):
     form_classes = {
         'meal': MealForm,
@@ -62,7 +63,7 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email',)
+        fields = ('username', 'email','isCooker','isDinner')
 
 class UserProfileForm(forms.ModelForm):
 
