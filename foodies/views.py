@@ -216,7 +216,8 @@ def visitor_cookie_handler(request):
 @login_required
 def user_profile(request):
     user_info = request.user
-
+    print(UserProfile.objects.get(isCooker))
+    
     return render(request, 'foodies/user_profile_base.html', context={'user_info': user_info})
 
 def reviews(request):
