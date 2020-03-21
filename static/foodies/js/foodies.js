@@ -50,8 +50,7 @@ function registerForm(e) {
 //     e.preventDefault();
 //     registerForm(e);
 // });
-
-$('#login_form').submit(function(e) {
-    // e.preventDefault();
-    // sendLoginDetails(e);
-});
+// $('#login_form').submit(function(e) {
+//     // e.preventDefault();
+//     // sendLoginDetails(e);
+// });
