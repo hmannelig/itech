@@ -8,6 +8,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.contrib.auth import get_user_model
+from django.contrib import messages
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
@@ -60,13 +61,18 @@ def add_category(request):
 @login_required
 def add_meal(request):
 
-    form = mealIngredientMultiForm()
+    form = mealIngredientMultiForm
 
     if request.method == 'POST':
-        ingredientsMeal = form(request.POST)
+        ingredientsMeal = mealIngredientMultiForm(request.POST)
+
         if ingredientsMeal.is_valid():
-            form['meal'].save(commit=True)
-            form['ingredient'].save(commit=True)
+
+            ingredient = ingredientsMeal['ingredients'].save(commit=False)
+            meal = ingredientsMeal['meal'].save(commit=False)
+
+            ingredient.save()
+            meal.save()
 
             return redirect(reverse('foodies:show_category'))
         else:
@@ -153,8 +159,9 @@ def user_login(request):
                 return HttpResponse("Your Foodies account is disabled.")
         else:
             print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
-
+            messages.error(request, 'Invalid login details.')
+            return redirect(reverse('foodies:login'))
+            
     else:
         return render(request, 'foodies/login.html')
 
