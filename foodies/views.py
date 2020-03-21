@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-from foodies.models import Category, Meal
+from foodies.models import Category, Meal, User, UserProfile
 from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, mealIngredientMultiForm
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -211,8 +211,11 @@ def visitor_cookie_handler(request):
 
     request.session['visits'] = visits
 
+@login_required
 def user_profile(request):
-    return render(request, 'foodies/user_profile_base.html')
+    user_info = request.user
+
+    return render(request, 'foodies/user_profile_base.html', context={'user_info': user_info})
 
 def reviews(request):
     return render(request, 'foodies/reviews.html')
