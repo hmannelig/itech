@@ -19,8 +19,8 @@ Foodies says: <strong>thank you for registering!</strong>
 	
     {% csrf_token %}
 	{{form|crispy }}
-    {{ user_form|crispy}}   
-    {{ profile_form|crispy}}
+    {{user_form|crispy}}   
+    {{profile_form|crispy}}
    
     <input type="submit" name="submit" value="Register" />
 </form>
