@@ -1,23 +1,14 @@
 {% extends 'foodies/base.html' %}
 {% load staticfiles %}
-
-{% load crispy_forms_tags %}
-
 {% block title_block %}
-    Login
+Login
 {% endblock %}
-
 {% block body_block %}
-
+<h1>Login to Rango</h1>
 <form id="login_form" method="post" action="{% url 'foodies:login' %}">
-    {% csrf_token %}
+{% csrf_token %}
 
-	<div class="row justify-content-center">
-	
-		<div class="col-12 col-md-8 col-lg-6 pb-5">			
-                    <!--Form with header-->
 
-                    <form action="mail.php" method="post">
                         <div class="card border-dark rounded-0">
                             <div class="card-header p-0">
                                 <div class="bg-info text-white text-center py-2">
@@ -44,14 +35,11 @@
                                     </div>
                                 </div>
                                 <div class="text-center">
-                                    <input type="submit" value="Submit" class="btn btn-info btn-block rounded-0 py-2">
+                                    <input type="submit" value="submit" class="btn btn-info btn-block rounded-0 py-2">
                                 </div>
                             </div>
 
                         </div>
                     </form>
-                 </div>
-	</div>
 
-</form>
 {% endblock %}
