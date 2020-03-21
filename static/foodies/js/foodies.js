@@ -46,11 +46,11 @@ function registerForm(e) {
     });
 }
 
-$('#user_form').submit(function(e) {
-    e.preventDefault();
-    registerForm(e);
-});
-$('#login_form').submit(function(e) {
-    // e.preventDefault();
-    // sendLoginDetails(e);
-});
+// $('#user_form').submit(function(e) {
+//     e.preventDefault();
+//     registerForm(e);
+// });
+// $('#login_form').submit(function(e) {
+//     // e.preventDefault();
+//     // sendLoginDetails(e);
+// });
