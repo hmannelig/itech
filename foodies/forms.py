@@ -4,7 +4,7 @@ from crispy_forms.layout import Submit
 from betterforms.multiform import MultiModelForm
 from foodies.models import Meal, Category, UserProfile, Ingredient
 from django.contrib.auth.models import User
-
+from django.core.exceptions import ValidationError
 
 class CategoryForm(forms.ModelForm):
     name = forms.CharField(max_length=Category.NAME_MAX_LENGTH,
@@ -54,6 +54,12 @@ class mealIngredientMultiForm(MultiModelForm):
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
+
+    def clean(self):
+       email = self.cleaned_data.get('email')
+       if User.objects.filter(email=email).exists():
+            raise ValidationError("Email exists")
+       return self.cleaned_data
 
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
