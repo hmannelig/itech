@@ -12,6 +12,6 @@ function sendLoginDetails(e) {
 }
 
 $('#login_form').submit(function(e) {
-    e.preventDefault();
-    sendLoginDetails(e);
+    // e.preventDefault();
+    // sendLoginDetails(e);
 });

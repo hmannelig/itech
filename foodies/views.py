@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from foodies.models import Category, Meal
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect
+from foodies.models import Category, Meal, UserProfile, User
 from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 
@@ -110,7 +111,7 @@ def register(request):
             # Save the user's form data to the database.
             data = request.POST.copy()
             if data.get('isCooker') == None and data.get('isDinner') == None:
-               return redirect('foodies/register/')
+                return HttpResponseRedirect('/foodies/register')
 
             user = user_form.save()
 
@@ -126,8 +127,6 @@ def register(request):
             profile = profile_form.save(commit=False)
             profile.user = user
 
-
-
             # Did the user provide a profile picture?
             # If so, we need to get it from the input form and
             # put it in the UserProfile model.
@@ -140,6 +139,7 @@ def register(request):
             # Update our variable to indicate that the template
             # registration was successful.
             registered = True
+            login(request, user)
         else:
             # Invalid form or forms - mistakes or something else?
             # Print problems to the terminal.
@@ -154,44 +154,24 @@ def register(request):
     return render(request, 'foodies/register.html', context={'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
 
 def user_login(request):
-    # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == 'POST':
-        # Gather the username and password provided by the user.
-        # This information is obtained from the login form.
-        # We use request.POST.get('<variable>') as opposed
-        # to request.POST['<variable>'], because the
-        # request.POST.get('<variable>') returns None if the
-        # value does not exist, while request.POST['<variable>']
-        # will raise a KeyError exception.
+
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        # Use Django's machinery to attempt to see if the username/password
-        # combination is valid - a User object is returned if it is.
         user = authenticate(username=username, password=password)
-
-        # If we have a User object, the details are correct.
-        # If None (Python's way of representing the absence of a value), no user
-        # with matching credentials was found.
+        
         if user:
-            # Is the account active? It could have been disabled.
             if user.is_active:
-                # If the account is valid and active, we can log the user in.
-                # We'll send the user back to the homepage.
                 login(request, user)
                 return redirect(reverse('foodies:index'))
             else:
-                # An inactive account was used - no logging in!
                 return HttpResponse("Your Foodies account is disabled.")
         else:
-            # Bad login details were provided. So we can't log the user in.
             print(f"Invalid login details: {username}, {password}")
             return HttpResponse("Invalid login details supplied.")
-    # The request is not a HTTP POST, so display the login form.
-    # This scenario would most likely be a HTTP GET.
+
     else:
-        # No context variables to pass to the template system, hence the
-        # blank dictionary object...
         return render(request, 'foodies/login.html')
 
 @login_required
