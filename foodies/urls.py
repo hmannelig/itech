@@ -21,4 +21,5 @@ urlpatterns = [
     path('search-cookers/', views.search_cookers, name='search_cookers'),  #/search
     path('contact-us/', views.contact_us, name = 'contact_us'), #/contact-us
     path('add_meal/', views.add_meal, name='add_meal'),  # /add_meal
+    path('request/', views.request, name='request'),  # /add_meal
 ]

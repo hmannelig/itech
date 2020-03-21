@@ -211,6 +211,6 @@ def search_cookers(request):
 def contact_us(request):
     return render(request, 'foodies/contact_us.html')
 
-def request_meal(request):
+def request(request):
     return render(request, 'foodies/request.html')
 
