@@ -10,22 +10,17 @@
 
 {% block body_block %}
 
-</head>
-<body>
-
-
  <div class="header">
       {% if user.is_authenticated %}
       	<h1>FOODIES!</h1>	
         Welcome back! {{ user.username }}!
     {% else %}
     	<h1>FOODIES!</h1>
-       Welcome food lover!
+       	Welcome food lover!
     {% endif %}
     <br />
     <strong>{{ boldmessage }}</strong><br />
- </div>
-  
+</div>  
   
   <div class="row">
     <div class="col-sm-3">
