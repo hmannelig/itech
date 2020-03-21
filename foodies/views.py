@@ -73,13 +73,14 @@ def add_meal(request):
 
             ingredient.save()
             meal.save()
-            print(ingredientsMeal['meal']['category'])
 
-            clean_cat = ingredientsMeal['meal']
-            clean_cat.clean('category')
+            cleaned_data = ingredientsMeal['meal'].cleaned_data
+            cleaned_data = cleaned_data['category'].name.lower()
+            #clean_cat = ingredientsMeal['meal'].fields['category'].name
+            #clean_cat.clean('category')
 
             #category = '/foodies/category/' + ingredientsMeal['meal'].label_from_instance(ingredientsMeal['meal'].fields['category']) + '/'
-            category = '/foodies/category/' + clean_cat + '/'
+            category = '/foodies/category/' + cleaned_data + '/'
             #return redirect(reverse('foodies:show_category'))
             return HttpResponseRedirect(category)
         else:

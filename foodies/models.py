@@ -13,7 +13,7 @@ class UserProfile(models.Model):
     isBestCooker = models.BooleanField(default=False, verbose_name="Best Cooker")
 
     def __str__(self):
-        return self.user.username
+        return u'{0}'.format(self.user.username)
 
 class Category(models.Model):
     NAME_MAX_LENGTH = 30
