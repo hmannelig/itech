@@ -8,6 +8,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.contrib.auth import get_user_model
+from django.contrib import messages
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
@@ -165,8 +166,9 @@ def user_login(request):
                 return HttpResponse("Your Foodies account is disabled.")
         else:
             print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
-
+            messages.error(request, 'Invalid login details.')
+            return redirect(reverse('foodies:login'))
+            
     else:
         return render(request, 'foodies/login.html')
 
