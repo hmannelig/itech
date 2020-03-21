@@ -24,15 +24,33 @@ function registerForm(e) {
         return false;
     }
     console.log($(e.target));
+    console.log($(e.target).attr('action'));
 
-    $(e.target).submit();
+    $.ajax({
+        url: $(e.target).attr('action'),
+        type: "POST",
+        data: {
+            username    : $('#' + formId + ' [name=username]').val(),
+            email       : $('#' + formId + ' [name=email]').val(),
+            password    : $('#' + formId + ' [name=password]').val(),
+            name        : $('#' + formId + ' [name=name]').val(),
+            isCooker    : $('#' + formId + ' [name=isCooker]').is(":checked"),
+            isDinner    : $('#' + formId + ' [name=isDinner]').is(":checked")
+        }
+    })
+    .success(function(e) {
+        console.log('big success');
+    })
+    .error(function(e) {
+        console.log('big error');
+    });
 }
 
-$('#user_form').submit(function(e) {
-    // e.preventDefault();
-    // registerForm(e);
-});
-$('#login_form').submit(function(e) {
-    // e.preventDefault();
-    // sendLoginDetails(e);
-});
+// $('#user_form').submit(function(e) {
+//     e.preventDefault();
+//     registerForm(e);
+// });
+// $('#login_form').submit(function(e) {
+//     // e.preventDefault();
+//     // sendLoginDetails(e);
+// });

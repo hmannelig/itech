@@ -26,4 +26,13 @@ Foodies says: <strong>thank you for registering!</strong>
     </form>
 </div>
 {% endif %}
+<div>
+    {% for message in messages %}
+    <div class="alert alert-success">
+        <a class="close" href="#" data-dismiss="alert">×</a>
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+</div>
 {% endblock %}

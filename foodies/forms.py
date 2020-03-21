@@ -27,6 +27,9 @@ class MealForm(forms.ModelForm):
     category = forms.ModelChoiceField(queryset=Category.objects.all().order_by('name'), help_text="Please select the category for this meal")
     views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
 
+    def label_from_instance(self, obj):
+        return "%s" %(obj)
+
     class Meta:
         model = Meal
         #exclude = ('category',)
@@ -70,4 +73,4 @@ class UserProfileForm(forms.ModelForm):
 
     class Meta:
         model = UserProfile
-        fields = ('name',)
+        fields = ('name', 'isCooker', 'isDinner')

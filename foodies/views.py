@@ -8,6 +8,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.contrib.auth import get_user_model
+from django.contrib import messages
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
@@ -73,7 +74,11 @@ def add_meal(request):
             ingredient.save()
             meal.save()
 
-            return redirect(reverse('foodies:show_category'))
+            cleaned_data = ingredientsMeal['meal'].cleaned_data
+            cleaned_data = cleaned_data['category'].name.lower()
+            category = '/foodies/category/' + cleaned_data + '/'
+
+            return HttpResponseRedirect(category)
         else:
             return redirect('/foodies/')
     else:
@@ -100,6 +105,7 @@ def register(request):
             # Save the user's form data to the database.
             data = request.POST.copy()
             if data.get('isCooker') == None and data.get('isDinner') == None:
+                messages.error(request, 'Invalid: Check at least 1 checkbox for Cooker or Dinner or both.')
                 return HttpResponseRedirect('/foodies/register')
 
             user = user_form.save()
@@ -115,6 +121,15 @@ def register(request):
             # until we're ready to avoid integrity problems.
             profile = profile_form.save(commit=False)
             profile.user = user
+            profile.name = data.get('name')
+            
+            if data.get('isCooker') is not None:
+                profile.isCooker = True
+
+            print(data.get('isDiner'))
+            print(data.get('isDinner'))
+            if data.get('isDiner') is not None:
+                profile.isDinner = True
 
             # Did the user provide a profile picture?
             # If so, we need to get it from the input form and
@@ -158,8 +173,9 @@ def user_login(request):
                 return HttpResponse("Your Foodies account is disabled.")
         else:
             print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
-
+            messages.error(request, 'Invalid login details.')
+            return redirect(reverse('foodies:login'))
+            
     else:
         return render(request, 'foodies/login.html')
 
