@@ -35,6 +35,14 @@ Login
                                 <div class="text-center">
                                     <input type="submit" value="submit" class="btn btn-info btn-block rounded-0 py-2">
                                 </div>
+                                <div>
+                                    {% for message in messages %}
+                                    <div class="alert alert-success">
+                                        <a class="close" href="#" data-dismiss="alert">×</a>
+                                        {{ message }}
+                                    </div>
+                                    {% endfor %}
+                                </div>
                             </div>
 
                         </div>
