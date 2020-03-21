@@ -33,7 +33,6 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-
 class Meal(models.Model):
     TITLE_MAX_LENGTH = 30
     URL_MAX_LENGTH = 200
@@ -46,6 +45,15 @@ class Meal(models.Model):
 
     def __str__(self):
         return self.title
+
+class Ingredient(models.Model):
+    name = models.CharField(max_length=128, unique=True)
+    vegetable = models.CharField(max_length=128, blank=True)
+    typeofmeat = models.CharField(max_length=128, blank=True, verbose_name="Tye of Meat")
+    meal = models.ManyToManyField(Meal)
+
+    def __str__(self):
+        return self.name
 
 class Review(models.Model):
     title = models.CharField(max_length=50)
@@ -60,14 +68,7 @@ class Review(models.Model):
     def __str__(self):
         return self.title
 
-class Ingredient(models.Model):
-    name = models.CharField(max_length=128, unique=True)
-    vegetable = models.CharField(max_length=128, blank=True)
-    typeofmeat = models.CharField(max_length=128, blank=True, verbose_name="Tye of Meat")
-    meal = models.ManyToManyField(Meal)
 
-    def __str__(self):
-        return self.name
 
 class Allergy(models.Model):
     name = models.CharField(max_length=128, unique=True)

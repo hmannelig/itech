@@ -23,15 +23,14 @@ class MealForm(forms.ModelForm):
     title = forms.CharField(max_length=Meal.TITLE_MAX_LENGTH,
                             help_text="Please enter the title of the meal.")
     price = forms.FloatField(help_text="Please enter the price for this meal")
-    url = forms.URLField(max_length=Meal.URL_MAX_LENGTH,
-                         help_text="Please enter the URL of the meal page.")
-
+    url = forms.URLField(max_length=Meal.URL_MAX_LENGTH, help_text="Please enter the URL of the meal page.")
+    category = forms.ModelChoiceField(queryset=Category.objects.all().order_by('name'), help_text="Please select the category for this meal")
     views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
 
     class Meta:
         model = Meal
-        exclude = ('category',)
-        fields = ('title', 'price', 'url',)
+        #exclude = ('category',)
+        fields = ('title', 'url', 'price', 'category')
 
 class IngredientsForm(forms.ModelForm):
     name = forms.CharField(required=True, help_text="Please enter one ingredient")
@@ -41,7 +40,7 @@ class IngredientsForm(forms.ModelForm):
 
     class Meta:
         model = Ingredient
-        fields = ('name', 'vegetable', 'typeofmeat','meal')
+        fields = ('name', 'vegetable', 'typeofmeat',)
 
 # This form takes the IngredientsForm and the MealForm at the same time for being handled in views
 class mealIngredientMultiForm(MultiModelForm):
