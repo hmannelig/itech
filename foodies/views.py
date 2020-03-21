@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from foodies.models import Category, Meal
-from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm
+from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, mealIngredientMultiForm
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from django.contrib.auth import get_user_model
 
 
 def index(request):
@@ -86,36 +87,19 @@ def add_category(request):
 
 @login_required
 def add_meal(request):
-    #try:
-     #   category = Category.objects.get(slug=category_name_slug)
-    #except:
-     #   category = None
-    # You cannot add a page to a Category that does not exist...
 
-    # context_dict = {'form': form, 'category': category}
-    # return redirect('/foodies/')
-    # return render(request, 'foodies/add_meal.html')
-
-    #if category is None:
-    #category = 'Category Not Selected'
-    #context_dict = {category}
-
-    form = MealForm()
+    form = mealIngredientMultiForm()
 
     if request.method == 'POST':
-        form = MealForm(request.POST)
+        ingredientsMeal = form(request.POST)
+        if ingredientsMeal.is_valid():
+            form['meal'].save(commit=True)
+            form['ingredient'].save(commit=True)
 
-        if form.is_valid():
-            #if :category
-            form.save(commit=True)
-            #meal.category = 'Category Not Selected'
-            #meal.views = 0
-            #meal.save()
-            #if category == 'Category Not Selected':
-             #   return redirect(reverse('foodies:show_category', kwargs={'category': category_name_slug}))
-            #else:
-            return redirect('/foodies/')
+            return redirect(reverse('foodies:show_category'))
         else:
+            return redirect('/foodies/')
+    else:
             print(form.errors)
 
     return render(request, 'foodies/add_meal.html', {'form': form})
@@ -154,8 +138,6 @@ def register(request):
             # until we're ready to avoid integrity problems.
             profile = profile_form.save(commit=False)
             profile.user = user
-
-
 
             # Did the user provide a profile picture?
             # If so, we need to get it from the input form and
