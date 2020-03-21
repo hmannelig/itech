@@ -215,7 +215,12 @@ def visitor_cookie_handler(request):
 def user_profile(request):
     user_info = request.user
 
-    return render(request, 'foodies/user_profile_base.html', context={'user_info': user_info})
+    user_meals = [{}]
+
+    for u in Meal.objects.filter(user=user_info):
+        user_meals = [{'title': u.name, 'url': u.url, 'price': u.price, 'views': u.views, 'category': u.categor}]
+
+    return render(request, 'foodies/user_profile_base.html', context={'user_info': user_info, 'user_meals': user_meals})
 
 def reviews(request):
     return render(request, 'foodies/reviews.html')
