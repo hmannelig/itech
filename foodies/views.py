@@ -58,7 +58,6 @@ def show_category(request, category_name_slug):
     # Go render the response and return it to the client.
     return render(request, 'foodies/category.html', context=context_dict)
 
-
 @login_required
 def add_category(request):
     form = CategoryForm()
@@ -86,13 +85,18 @@ def add_category(request):
 @login_required
 def add_meal(request):
 
-    form = mealIngredientMultiForm()
+    form = mealIngredientMultiForm
 
     if request.method == 'POST':
-        ingredientsMeal = form(request.POST)
+        ingredientsMeal = mealIngredientMultiForm(request.POST)
+
         if ingredientsMeal.is_valid():
-            form['meal'].save(commit=True)
-            form['ingredient'].save(commit=True)
+
+            ingredient = ingredientsMeal['ingredients'].save(commit=False)
+            meal = ingredientsMeal['meal'].save(commit=False)
+
+            ingredient.save()
+            meal.save()
 
             return redirect(reverse('foodies:show_category'))
         else:
