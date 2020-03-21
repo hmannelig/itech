@@ -123,6 +123,15 @@ def register(request):
             # until we're ready to avoid integrity problems.
             profile = profile_form.save(commit=False)
             profile.user = user
+            profile.name = data.get('name')
+            
+            if data.get('isCooker') is not None:
+                profile.isCooker = True
+
+            print(data.get('isDiner'))
+            print(data.get('isDinner'))
+            if data.get('isDiner') is not None:
+                profile.isDinner = True
 
             # Did the user provide a profile picture?
             # If so, we need to get it from the input form and
