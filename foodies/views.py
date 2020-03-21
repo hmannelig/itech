@@ -120,8 +120,9 @@ def register(request):
         # If the two forms are valid...
         if user_form.is_valid() and profile_form.is_valid():
             # Save the user's form data to the database.
-            if user_form.get('isCooker') is False and user_form.get('isDinner') is False:
-                return redirect('foodies/register/')
+
+            #if request.POST(isCooker) is False and request.POST(isDinner) is False:
+             #   return redirect('foodies/register/')
 
             user = user_form.save()
 
@@ -260,4 +261,7 @@ def search_cookers(request):
 
 def contact_us(request):
     return render(request, 'foodies/contact_us.html')
+
+def request_meal(request):
+    return render(request, 'foodies/request.html')
 
