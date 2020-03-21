@@ -73,14 +73,11 @@ def add_meal(request):
 
             ingredient.save()
             meal.save()
-            print(ingredientsMeal['meal']['category'])
 
-            clean_cat = ingredientsMeal['meal']
-            clean_cat.clean('category')
+            cleaned_data = ingredientsMeal['meal'].cleaned_data
+            cleaned_data = cleaned_data['category'].name.lower()
+            category = '/foodies/category/' + cleaned_data + '/'
 
-            #category = '/foodies/category/' + ingredientsMeal['meal'].label_from_instance(ingredientsMeal['meal'].fields['category']) + '/'
-            category = '/foodies/category/' + clean_cat + '/'
-            #return redirect(reverse('foodies:show_category'))
             return HttpResponseRedirect(category)
         else:
             return redirect('/foodies/')
@@ -108,6 +105,7 @@ def register(request):
             # Save the user's form data to the database.
             data = request.POST.copy()
             if data.get('isCooker') == None and data.get('isDinner') == None:
+                messages.error(request, 'Invalid: Check at least 1 checkbox for Cooker or Dinner or both.')
                 return HttpResponseRedirect('/foodies/register')
 
             user = user_form.save()
@@ -216,9 +214,13 @@ def visitor_cookie_handler(request):
 @login_required
 def user_profile(request):
     user_info = request.user
-    print(UserProfile.objects.get(isCooker))
-    
-    return render(request, 'foodies/user_profile_base.html', context={'user_info': user_info})
+
+    user_meals = [{}]
+
+    for u in Meal.objects.filter(user=user_info):
+        user_meals = [{'title': u.name, 'url': u.url, 'price': u.price, 'views': u.views, 'category': u.categor}]
+
+    return render(request, 'foodies/user_profile_base.html', context={'user_info': user_info, 'user_meals': user_meals})
 
 def reviews(request):
     return render(request, 'foodies/reviews.html')
