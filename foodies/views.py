@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from foodies.models import Category, Meal
+#added UserProfile for isCooker, isDinner
+from foodies.models import Category, Meal, UserProfile
 from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -138,8 +139,9 @@ def register(request):
         # If the two forms are valid...
         if user_form.is_valid() and profile_form.is_valid():
             # Save the user's form data to the database.
-            if request.POST(isCooker) is False and request.POST(isDinner) is False:
-                return redirect('foodies/register/')
+            data = request.POST.copy()
+            if data.get('isCooker') == None and data.get('isDinner') == None:
+                return HttpResponseRedirect('/foodies/register')
 
             user = user_form.save()
 
