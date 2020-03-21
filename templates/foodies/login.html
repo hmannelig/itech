@@ -7,8 +7,6 @@ Login
 <h1>Login to Rango</h1>
 <form id="login_form" method="post" action="{% url 'foodies:login' %}">
 {% csrf_token %}
-
-
                         <div class="card border-dark rounded-0">
                             <div class="card-header p-0">
                                 <div class="bg-info text-white text-center py-2">
@@ -41,5 +39,8 @@ Login
 
                         </div>
                     </form>
-
+                 </div>
+	</div>
+	
+</form>
 {% endblock %}
