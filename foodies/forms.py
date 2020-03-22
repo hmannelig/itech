@@ -90,10 +90,9 @@ class UserUpdateForm(forms.ModelForm):
             raise ValidationError("This email already exists")
        return self.cleaned_data
 
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(UserUpdateForm, self).__init__(*args, **kwargs)
         self.fields['email'].required = True
-        self.user = user
 
     class Meta:
         model = User
