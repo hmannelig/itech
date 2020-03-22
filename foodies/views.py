@@ -295,6 +295,7 @@ def user_profile_update(request):
 
     return render(request, 'foodies/user_profile_update.html',
                             context={
+                                        'user_info': request.user,
                                         'profile_title': profile_title,
                                         'user_form': user_form, 
                                         'profile_form': profile_form
@@ -320,7 +321,7 @@ def user_meals(request):
                     'price': e.price,
                     'views': e.views,
                     'category': e.category,
-                    }
+                }
 
     profile_title = "User Meals"
 

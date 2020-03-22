@@ -99,6 +99,7 @@ class UserUpdateForm(forms.ModelForm):
         fields = ('username', 'email','password',)
 
 class UserProfileUpdateForm(forms.ModelForm):
+    # name = forms.CharField(initial=False, required=False, label='Are you a cooker?', value=request.user.username)
     isCooker = forms.BooleanField(initial=False, required=False, label='Are you a cooker?')
     isDinner = forms.BooleanField(initial=False, required=False, label='Are you a dinner?')
 
