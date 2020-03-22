@@ -109,7 +109,7 @@ def register(request):
             data = request.POST.copy()
             if data.get('isCooker') == None and data.get('isDinner') == None:
                 messages.error(request, 'Invalid: Check at least 1 checkbox for Cooker or Dinner or both.')
-                return HttpResponseRedirect('/foodies/register')
+                return HttpResponseRedirect('/register')
 
             user = user_form.save()
 
@@ -254,7 +254,42 @@ def user_profile_update(request):
     profile_title = "Update User Profile"
 
 
+<<<<<<< HEAD
    
+=======
+        if user_form.is_valid() and profile_form.is_valid():
+            data = request.POST.copy()
+            if data.get('isCooker') == None and data.get('isDinner') == None:
+                messages.error(request, 'Invalid: Check at least 1 checkbox for Cooker or Dinner or both.')
+                return HttpResponseRedirect('/register')
+
+            user = user_form.save()
+
+            user.set_password(user.password)
+            user.save()
+
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            profile.name = data.get('name')
+
+            if data.get('isCooker') is not None:
+                profile.isCooker = True
+
+            if data.get('isDiner') is not None:
+                profile.isDinner = True
+
+            if 'picture' in request.FILES:
+                profile.picture = request.FILES['picture']
+
+            profile.save()
+
+            login(request, user)
+        else:
+            print(user_form.errors, profile_form.errors)
+    else:
+        user_form = UserUpdateForm(request.user)
+        profile_form = UserProfileUpdateForm()
+>>>>>>> refs/remotes/origin/master
 
     return render(request, 'foodies/user_profile_update.html',
                             context={
