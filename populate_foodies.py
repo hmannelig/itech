@@ -5,7 +5,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'foodies_project.settings')
 import django
 
 django.setup()
-from foodies.models import Category, Meal
+from foodies.models import Category, Meal, User, UserProfile
 
 
 
@@ -55,6 +55,34 @@ def populate():
          'url': 'https://www.allrecipes.com/recipe/228631/bavarian-sauerkraut/',
          'views': 332}]
 
+    # Elpida = [
+    #     {'username': 'Elpi',
+    #      'email': 'elpi@email.com',
+    #      'password': 'user',
+    #      'isCooker': True,
+    #      'isDinner': True}
+    # ]
+    #
+    # Pablo = [
+    #     {'username': 'Pablo',
+    #      'email': 'pablo@email.com',
+    #      'password': 'user',
+    #      'isCooker': False,
+    #      'isDinner': True}
+    # ]
+    #
+    # Efra = [
+    #     {'username': 'Efra',
+    #      'email': 'efra@email.com',
+    #      'password': 'user',
+    #      'isCooker': True,
+    #      'isDinner': False}
+    # ]
+
+    # users = {tuple(Elpida), tuple(Pablo), tuple(Efra)}
+    # for user in users:
+    #     add_user(user)
+
     cats = {
             'African': 
                 {
@@ -83,6 +111,14 @@ def populate():
         for p in Meal.objects.filter(category=c):
             print(f'- {c}: {p}')
 
+# def add_user(user):
+#     u = User.objects.get_or_create(username=user['username'], email=user['email'])[0]
+#     u.save()
+#     u.set_password(user['password'])
+#     u.save()
+#
+#     uprof = UserProfile.objects.get_or_create(user=u, isCooker=user['isCooker'], isDinner=user['isDinner'])
+#     uprof.save()
 
 def add_meal(cat, title, url, price, views=0):
     p = Meal.objects.get_or_create(category=cat, title=title, price=price)[0]
@@ -91,8 +127,6 @@ def add_meal(cat, title, url, price, views=0):
     p.views = views
     p.save()
     return p
-
-
 
 def add_cat(name, views=0, likes=0):
     c = Category.objects.get_or_create(name=name)[0]
