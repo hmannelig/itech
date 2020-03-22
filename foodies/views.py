@@ -290,8 +290,8 @@ def user_profile_update(request):
         else:
             print(user_form.errors, profile_form.errors)
     else:
-        user_form = UserUpdateForm()
-        profile_form = UserUpdateForm()
+        user_form = UserUpdateForm(request.user)
+        profile_form = UserProfileUpdateForm()
 
     return render(request, 'foodies/user_profile_update.html',
                             context={
@@ -350,7 +350,7 @@ def user_requests(request):
             'content': e.category,
             'message': e.category,
             'dinner': e.category,
-            'cooker': e.category,
+            'cooker': e.category
         }
 
     profile_title = "User Requests"
