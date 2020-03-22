@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-from foodies.models import Category, Meal, User, UserProfile
+from foodies.models import Category, Meal, User, UserProfile, Request
 from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, mealIngredientMultiForm
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -211,16 +211,49 @@ def visitor_cookie_handler(request):
 
     request.session['visits'] = visits
 
+
 @login_required
 def user_profile(request):
-    user_info = request.user
+    
+    try:
+        user = User.objects.get(username=request.user.username)
+    except User.DoesNotExist:
+        return None
 
-    user_meals = [{}]
+    profile_title = "User Profile"
 
-    for u in Meal.objects.filter(user=user_info):
-        user_meals = [{'title': u.name, 'url': u.url, 'price': u.price, 'views': u.views, 'category': u.categor}]
+    userProfile = UserProfile.objects.filter(user=user)[0]
+    user_info = {
+        'id': userProfile.id,
+        'email': user.email,
+        'picture': userProfile.picture,
+        'name': userProfile.name,
+        'address': userProfile.address,
+        'personalDescription': userProfile.personalDescription,
+        'isCooker': userProfile.isCooker,
+        'isDinner': userProfile.isDinner,
+        'isBestCooker': userProfile.isBestCooker,
+    }
 
-    return render(request, 'foodies/user_profile_base.html', context={'user_info': user_info, 'user_meals': user_meals})
+    user_meals = Meal.objects.filter(user=userProfile)
+    user_requests = Request(cooker=userProfile.id)
+
+    return render(request, 'foodies/user_profile.html', context={   'profile_title': profile_title,
+                                                                    'user_info': user_info, 
+                                                                    'user_meals': user_meals, 
+                                                                    'user_requests': user_requests})
+
+@login_required
+def user_meals(request):
+    profile_title = "User Meals"
+
+    return render(request, 'foodies/user_meals.html', context={'profile_title': profile_title,})
+
+@login_required
+def user_requests(request):
+    profile_title = "User Requests"
+
+    return render(request, 'foodies/user_requests.html', context={'profile_title': profile_title,})
 
 def reviews(request):
     return render(request, 'foodies/reviews.html')

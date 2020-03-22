@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block body_block %}
+<div class="container"> 
     {% if category %}
     <h1>{{ category.name }}</h1>
     
@@ -27,4 +28,5 @@
     {% else %}
     The specified meal category does not exist.
     {% endif %}
+</div>
 {% endblock %} 

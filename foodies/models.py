@@ -8,6 +8,7 @@ class UserProfile(models.Model):
     picture = models.ImageField(upload_to='profile_images', blank=True)
     name = models.CharField(max_length=30, blank=True)
     address = models.CharField(max_length=100, blank=True)
+    phone = models.CharField(max_length=30, blank=True)
     personalDescription = models.CharField(max_length=200,  blank=True, verbose_name="Personal Description")
     isCooker = models.BooleanField(default=False, verbose_name="Cooker")
     isDinner = models.BooleanField(default=False, verbose_name="Diner")

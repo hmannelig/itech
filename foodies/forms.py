@@ -58,7 +58,7 @@ class UserForm(forms.ModelForm):
     def clean(self):
        email = self.cleaned_data.get('email')
        if User.objects.filter(email=email).exists():
-            raise ValidationError("Email exists")
+            raise ValidationError("This email already exists")
        return self.cleaned_data
 
     def __init__(self, *args, **kwargs):

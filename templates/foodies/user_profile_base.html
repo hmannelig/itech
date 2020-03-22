@@ -6,29 +6,20 @@
 {% endblock %}
 
 {% block body_block %}
-<h1>User Profile</h1>
+<h1>{{ profile_title }}</h1>
 
-<section class="row mt-3">
-    <div class="col-sm-3 profile-menu">
-        <div class="list-group" id="list-tab" role="tablist">
-            <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="home">User Profile</a>
-            <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-meals" role="tab" aria-controls="profile">Meals</a>
-            <a class="list-group-item list-group-item-action" id="list-requests-list" data-toggle="list" href="#list-requests" role="tab" aria-controls="requests">Requests</a>
+<section class="container">
+    <section class="row mt-3">
+        <div class="col-sm-3">
+            <a class="list-group-item list-group-item-action {% if request.path == '/user-profile/' %} active {% endif %}" href="{% url 'foodies:user_profile' %}" aria-controls="home">User Profile</a>
+            <a class="list-group-item list-group-item-action {% if request.path == '/user-profile/meals/' %} active {% endif %}" href="{% url 'foodies:user_meals' %}" aria-controls="profile">Meals</a>
+            <a class="list-group-item list-group-item-action {% if request.path == '/user-profile/requests/' %} active {% endif %}" href="{% url 'foodies:user_requests' %}" aria-controls="requests">Requests</a>
         </div>
-    </div>
-    <div class="col-sm-9">
-        <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="list-profile" role="tabpanel" aria-labelledby="list-home-list">
-        		  {% include 'foodies/user_profile.html' %}
-            </div>
-            <div class="tab-pane fade" id="list-meals" role="tabpanel" aria-labelledby="list-profile-list">
-        		  {% include 'foodies/user_meals.html' %}
-            </div>
-            <div class="tab-pane fade" id="list-requests" role="tabpanel" aria-labelledby="list-requests-list">
-        		  {% include 'foodies/user_requests.html' %}
-            </div>
+        <div class="col-sm-9">
+            {% block profile_block %}
+            {% endblock %}
         </div>
-    </div>
+    </section>
 </section>
 {% endblock %}
         

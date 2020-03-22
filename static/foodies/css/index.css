@@ -63,3 +63,8 @@
 	background-size:50%;
 	height:100px;
 }
+
+.hero {
+  min-height: 250px;
+  background-image: url('../images/back.jpg');
+}

@@ -8,31 +8,32 @@
 {% endblock %}
 
 {% block body_block %}
-<h1>Register for Foodies</h1>
-{% if registered %}
-Foodies says: <strong>thank you for registering!</strong>
-<a href="{% url 'foodies:index' %}">Return to the homepage.</a><br />
-{% else %}
+<div class="container"> 
+    <h1>Register for Foodies</h1>
+    {% if registered %}
+    Foodies says: <strong>thank you for registering!</strong>
+    <a href="{% url 'foodies:index' %}">Return to the homepage.</a><br />
+    {% else %}
 
-<div class="col-sm-6 offset-sm-3">
-    <form id="user_form" class="pb-4" method="post" action="{% url 'foodies:register' %}" enctype="multipart/form-data">
+    <div class="col-sm-6 offset-sm-3">
+        <form id="user_form" class="pb-4" method="post" action="{% url 'foodies:register' %}" enctype="multipart/form-data">
+            
+            {% csrf_token %}
+            {{ form | crispy }}
+            {{ user_form | crispy }}   
+            {{ profile_form | crispy }}
         
-        {% csrf_token %}
-        {{ form | crispy }}
-        {{ user_form | crispy }}   
-        {{ profile_form | crispy }}
-    
-        <input type="submit" name="submit" value="Register" />
-    </form>
-</div>
-{% endif %}
-<div>
-    {% for message in messages %}
-    <div class="alert alert-success">
-        <a class="close" href="#" data-dismiss="alert">×</a>
-        {{ message }}
+            <input type="submit" name="submit" value="Register" />
+        </form>
     </div>
-    {% endfor %}
-</div>
+    {% endif %}
+    <div>
+        {% for message in messages %}
+        <div class="alert alert-success">
+            <a class="close" href="#" data-dismiss="alert">×</a>
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
