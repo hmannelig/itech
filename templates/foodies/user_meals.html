@@ -8,8 +8,10 @@
 {% block profile_block %}
 
 <div class="accordion">
-    <div class="card">
-        Header Meals
+     <div class="card">
+    	<i class="fas fa-utensils">
+        <a href="{% url 'foodies:add_meal' %}">Add a new meal</a>
+        </i>
     </div>
     <div class="card">
         <div class="card-header" id="headingOne">
