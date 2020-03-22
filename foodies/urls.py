@@ -14,6 +14,7 @@ urlpatterns = [
     path('restricted/', views.restricted, name='restricted'),
     path('logout/', views.user_logout, name='logout'),
     path('user-profile/', views.user_profile, name = 'user_profile'), #/user-profile
+    path('user-profile/update/', views.user_profile_update, name = 'user_profile_update'), #/user-profile
     path('user-profile/meals/', views.user_meals, name='user_meals'),  #/user-profile/meals
     path('user-profile/requests/', views.user_requests, name='user_requests'),  #/user-profile/requests
     path('user-profile/reviews/', views.reviews, name='reviews'),  #/user-profile/reviews
@@ -23,5 +24,7 @@ urlpatterns = [
     path('search-cookers/', views.search_cookers, name='search_cookers'),  #/search
     path('contact-us/', views.contact_us, name = 'contact_us'), #/contact-us
     path('add_meal/', views.add_meal, name='add_meal'),  # /add_meal
-    path('request/', views.request, name='request'),  # /add_meal
+    path('request/', views.request, name='request'),  # /request a meal
+    path('search/', views.search, name='search'),
+    
 ]

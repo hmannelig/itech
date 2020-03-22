@@ -1,0 +1,68 @@
+{% extends 'foodies/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Search
+{% endblock %}
+
+{% block body_block %}
+
+<div class="container">
+	<h1>Search with Foodies</h1>
+
+	<div class="row">
+		<div class="col-sm-12">
+			<form class="form-inline w-100" id="user-form" method="get" action="{% url 'foodies:search' %}">
+				{% csrf_token %}
+
+				<div class="form-group">
+					<input class="form-control" type="text" size="50" name="query" id="query" value="{{ query }}" />
+				</div>
+				<button class="btn btn-primary" type="submit" name="submit">Search</button>
+			</form>
+		</div>
+		{% if results_ingred|length > 0 %}
+		<div class="col-sm-12">
+			<h2>Ingredients</h2>
+			{% for each_object in results_ingred %} // results is list here so pick each element object using for loop 
+				<a href="{% url 'user_detail' pk=each_object.pk %}"></a>
+				<!--Upon successful search object image with hyperlink appears -->
+				<p>{{each_object.name}}</p>
+				<p>{{each_object.vegetable }}</p>
+				<p>{{each_object.typeofmeat}}</p>    
+				{% endfor %}
+		</div>
+		{% endif %}
+		{% if results_meals|length > 0 %}
+		<div class="col-sm-12">
+			<h2>Meal</h2>
+			{% for each_object in results_meals %} // results is list here so pick each element object using for loop 
+				<a href="{% url 'user_detail' pk=each_object.pk %}"></a>
+				<p>{{each_object.title}}</p>
+				<p>{{each_object.category }}</p>
+				
+			{% endfor %}
+		</div>
+		{% endif %}
+		{% if results_cats|length > 0 %}
+		<div class="col-sm-12">
+			<h2>Category</h2>
+			{% for each_object in results_cats %} // results is list here so pick each element object using for loop 
+				<a href="{% url 'user_detail' pk=each_object.pk %}"></a>
+				<p>{{each_object.name}}</p>
+				<p>{{each_object.vegetable }}</p>
+				<p>{{each_object.typeofmeat}}</p>    
+			{% endfor %}
+			</div>
+		{% endif %}
+		{% if results_cats|length <= 0 and results_meals|length <= 0 and results_ingred|length <= 0 %}
+		<div class="col-sm-12">
+			<h3 class="mt-3 text-center">Nothing found for the search <strong>{{ query }}</strong></h3>
+		</div>
+		{% endif %}
+	</div>
+
+
+</div>	
+
+{% endblock %}

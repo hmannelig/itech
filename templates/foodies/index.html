@@ -23,12 +23,17 @@
     		<div class="col-sm-12">
       			<h2>Most Viewed Meals</h2>
 				{% if meals %}
-				<ul>
+				<div class="row">
+					
 					{% for meal in meals %}    						 
-					<li><a href="{{ meal.url }}">{{ meal.title }}</a></li>
-					<p class="viewed_meals"></p>
+						<div class="col-sm-4">
+							<div class="text-center">
+							<a href="{{ meal.url }}">{{ meal.title }}</a>
+								<p class="viewed_meals"></p>
+						</div>
+					</div>
 					{% endfor %}
-				</ul>
+				</div>
 				{% else %}
 				<strong>There are no meals present.</strong>
 				{% endif %}
