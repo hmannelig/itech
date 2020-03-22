@@ -201,13 +201,11 @@ def user_logout(request):
     # Take the user back to the homepage.
     return redirect(reverse('foodies:index'))
 
-
 def get_server_side_cookie(request, cookie, default_val=None):
     val = request.session.get(cookie)
     if not val:
         val = default_val
     return val
-
 
 def visitor_cookie_handler(request):
     visits = int(get_server_side_cookie(request, 'visits', '1'))
@@ -221,7 +219,6 @@ def visitor_cookie_handler(request):
         request.session['last_visit'] = last_visit_cookie
 
     request.session['visits'] = visits
-
 
 @login_required
 def user_profile(request):
@@ -353,23 +350,18 @@ def user_requests(request):
     profile_title = "User Requests"
 
     return render(request, 'foodies/user_requests.html', context={'profile_title': profile_title, 'requests_array': requests_array})
-    #return redirect(reverse('foodies:user_requests'), context={'profile_title': profile_title, 'requests_array': requests_array})
 
 def reviews(request):
     return render(request, 'foodies/reviews.html')
 
-
 def register_diners(request):
     return render(request, 'foodies/register_diners.html')
-
 
 def register_cookers(request):
     return render(request, 'foodies/register_cookers.html')
 
-
 def search_cookers(request):
     return HttpResponse("This is search cooker")
-
 
 def contact_us(request):
     return render(request, 'foodies/contact_us.html')
@@ -392,11 +384,6 @@ def request_meal(request):
 
     return render(request, 'foodies/request.html',
               context={'meal_form': meal_form})
-
-#
-# def request(request):
-#     return render(request, 'foodies/request.html')
-
 
 def search(request):
 
