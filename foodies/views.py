@@ -65,27 +65,31 @@ def add_category(request):
     return render(request, 'foodies/add_category.html', {'form': form})
 
 
+@login_required
 def add_meal(request):
     form = mealIngredientMultiForm
+
     if request.method == 'POST':
         ingredientsMeal = mealIngredientMultiForm(request.POST)
+
         if ingredientsMeal.is_valid():
+
             ingredient = ingredientsMeal['ingredients'].save(commit=False)
             meal = ingredientsMeal['meal'].save(commit=False)
+
             ingredient.save()
             meal.save()
 
             cleaned_data = ingredientsMeal['meal'].cleaned_data
             cleaned_data = cleaned_data['category'].name.lower()
-            
-            category = '/category/' + cleaned_data + '/'
-        
+            category = '/foodies/category/' + cleaned_data + '/'
 
             return HttpResponseRedirect(category)
         else:
-            return redirect('/foodies/user_profile')
+            return redirect('/foodies/')
     else:
-            print(form.errors)
+        print(form.errors)
+
     return render(request, 'foodies/add_meal.html', {'form': form})
 
 
@@ -253,10 +257,10 @@ def user_profile_update(request):
 
     profile_title = "Update User Profile"
 
+    if request.method == 'POST':
+        user_form = UserUpdateForm(request.POST)
+        profile_form = UserProfileUpdateForm(request.POST)
 
-<<<<<<< HEAD
-   
-=======
         if user_form.is_valid() and profile_form.is_valid():
             data = request.POST.copy()
             if data.get('isCooker') == None and data.get('isDinner') == None:
@@ -289,7 +293,6 @@ def user_profile_update(request):
     else:
         user_form = UserUpdateForm(request.user)
         profile_form = UserProfileUpdateForm()
->>>>>>> refs/remotes/origin/master
 
     return render(request, 'foodies/user_profile_update.html',
                             context={
@@ -313,13 +316,13 @@ def user_meals(request):
     meals_array=[]
 
     for e in user_meals:
-        meals_array[e] = meals_info = {
+        meals_array.append({
                     'title': e.title,
                     'url': e.url,
                     'price': e.price,
                     'views': e.views,
                     'category': e.category,
-                }
+                })
 
     profile_title = "User Meals"
 
