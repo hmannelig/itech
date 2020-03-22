@@ -90,8 +90,9 @@ class UserUpdateForm(forms.ModelForm):
             raise ValidationError("This email already exists")
        return self.cleaned_data
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         super(UserUpdateForm, self).__init__(*args, **kwargs)
+        user = user
         self.fields['email'].required = True
 
     class Meta:
@@ -103,7 +104,7 @@ class UserProfileUpdateForm(forms.ModelForm):
     isDinner = forms.BooleanField(initial=False, required=False, label='Are you a dinner?')
 
     def __init__(self, *args, **kwargs):
-        super(UserProfileForm, self).__init__(*args, **kwargs)
+        super(UserProfileUpdateForm, self).__init__(*args, **kwargs)
         self.fields['name'].required = True
 
     class Meta:
