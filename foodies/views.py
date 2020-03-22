@@ -278,13 +278,36 @@ def request(request):
     return render(request, 'foodies/request.html')
 
 def search(request):
-    result_list = []
-    query = ''
+    try:
+        if 'q' in request.GET:# this will be GET now 
+            querystring = request.GET.get('q')# passing in the query value to search view using the 'q' parameter
+            if len(querystring) == 0:
+                return redirect('index')
+            else:
+                pass
+    except:
+        pass
 
-    if request.method == 'POST':
-        query = request.POST['query'].strip()
+    results = {}
 
-        if query:
-            result_list = run_query(query)
-    
-    return render(request, 'foodies/search.html', {'result_list': result_list, 'query': query})
+    if 'q' in request.GET:
+        querystring = request.GET.get('q')
+        if querystring is not None:
+            results_ingred = UserModel.objects.filter(
+                Q(ingredient__icontains=querystring)).order_by('pk')# filter returns a list
+            results_meals = UserModel.objects.filter(
+                Q(meal__icontains=querystring)).order_by('pk')
+            results_cats = UserModel.objects.filter(
+                Q(category__icontains=querystring)).order_by('pk')
+            context = {
+                'results_ingred': results_ingred,
+                'results_meals': results_meals,
+                'results_cats': results_cats,
+            }
+            template = 'foodies/search.html'
+            return render(request, template, context)
+        else:
+            return redirect('index')
+            context = {}
+    else:
+        return render(request, "foodies/search.html")

@@ -48,21 +48,19 @@
 								class="nav-link {% if request.path == '/contact-us/' %} active {% endif %}"
 								href="{% url 'foodies:contact_us' %}">Contact Us</a></li>
 							<div class="md-form my-0">
-								<li class="nav-item ">
-									<div>
-										<form class="form-inline" id="user-form" method="post"
-											action="{% url 'foodies:search' %}">
-											{% csrf_token %}
-											<div class="form-group">
-												<input class="form-control" type="text" size="50"
-													name="query" id="query" value="{{ query }}" />
-											</div>
-											<button class="btn btn-primary" type="submit" name="submit">Search</button>
-										</form>
-									</div>
-								</li>
+								<li class="nav-item">
+								<form name="exampleform" method="GET" action="{% url 'foodies:search' %}">
+								<a
+								class="nav-link {% if request.path == '/search/' %} active {% endif %}"
+								href="{% url 'foodies:search' %}"></a></li>
+										
+								</div>
+								<button class="btn btn-primary" type="submit" name="submit">Search</button>
+									
 							</div>
-						</ul>
+							
+							</div>
+					
 					</div>
 				</div>
 		</nav>
