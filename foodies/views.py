@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from foodies.models import Category, Meal, User, UserProfile, Request
-from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, mealIngredientMultiForm
+from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, mealIngredientMultiForm, UserUpdateForm, UserProfileUpdateForm
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -132,8 +132,6 @@ def register(request):
             if data.get('isCooker') is not None:
                 profile.isCooker = True
 
-            print(data.get('isDiner'))
-            print(data.get('isDinner'))
             if data.get('isDiner') is not None:
                 profile.isDinner = True
 
@@ -252,6 +250,53 @@ def user_profile(request):
                                                                  'user_info': user_info,
                                                                  'user_meals': user_meals,
                                                                  'user_requests': user_requests, })
+
+@login_required
+def user_profile_update(request):
+
+    if request.method == 'POST':
+        user_form = UserUpdateForm(request.POST)
+        profile_form = UserProfileUpdateForm(request.POST)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            data = request.POST.copy()
+            if data.get('isCooker') == None and data.get('isDinner') == None:
+                messages.error(request, 'Invalid: Check at least 1 checkbox for Cooker or Dinner or both.')
+                return HttpResponseRedirect('/foodies/register')
+
+            user = user_form.save()
+
+            user.set_password(user.password)
+            user.save()
+
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            profile.name = data.get('name')
+
+            if data.get('isCooker') is not None:
+                profile.isCooker = True
+
+            if data.get('isDiner') is not None:
+                profile.isDinner = True
+
+            if 'picture' in request.FILES:
+                profile.picture = request.FILES['picture']
+
+            profile.save()
+
+            login(request, user)
+        else:
+            print(user_form.errors, profile_form.errors)
+    else:
+        user_form = UserUpdateForm()
+        profile_form = UserUpdateForm()
+
+    return render(request, 'foodies/user_profile_update.html',
+                            context={
+                                        'user_form': user_form, 
+                                        'profile_form': profile_form
+                                    })
+    
 
 @login_required
 def user_meals(request):
