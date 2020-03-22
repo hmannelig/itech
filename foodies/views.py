@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from foodies.models import Category, Meal, User, UserProfile, Request
+from foodies.models import Category, Meal, User, UserProfile, Request, Ingredient
 from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, mealIngredientMultiForm, UserUpdateForm, UserProfileUpdateForm
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -10,6 +10,7 @@ from datetime import datetime
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 from foodies.bing_search import run_query
+from django.db.models import Q
 
 
 def index(request):
@@ -369,10 +370,6 @@ def register_cookers(request):
     return render(request, 'foodies/register_cookers.html')
 
 
-def search(request):
-    return HttpResponse("This is search")
-
-
 def search_cookers(request):
     return HttpResponse("This is search cooker")
 
@@ -385,36 +382,22 @@ def request(request):
     return render(request, 'foodies/request.html')
 
 def search(request):
-    try:
-        if 'q' in request.GET:# this will be GET now 
-            querystring = request.GET.get('q')# passing in the query value to search view using the 'q' parameter
-            if len(querystring) == 0:
-                return redirect('index')
-            else:
-                pass
-    except:
-        pass
 
     results = {}
+    querystring = ""
+    context = {}
 
-    if 'q' in request.GET:
-        querystring = request.GET.get('q')
+    if 'query' in request.GET:
+        querystring = request.GET.get('query')
         if querystring is not None:
-            results_ingred = UserModel.objects.filter(
-                Q(ingredient__icontains=querystring)).order_by('pk')# filter returns a list
-            results_meals = UserModel.objects.filter(
-                Q(meal__icontains=querystring)).order_by('pk')
-            results_cats = UserModel.objects.filter(
-                Q(category__icontains=querystring)).order_by('pk')
+            results_ingred = Ingredient.objects.filter(Q(name__icontains=querystring)).order_by('pk')
+            results_meals = Meal.objects.filter(Q(title__icontains=querystring)).order_by('pk')
+            results_cats = Category.objects.filter(Q(name__icontains=querystring)).order_by('pk')
             context = {
+                'query': querystring,
                 'results_ingred': results_ingred,
                 'results_meals': results_meals,
                 'results_cats': results_cats,
             }
-            template = 'foodies/search.html'
-            return render(request, template, context)
-        else:
-            return redirect('index')
-            context = {}
-    else:
-        return render(request, "foodies/search.html")
+
+    return render(request, "foodies/search.html", context)
