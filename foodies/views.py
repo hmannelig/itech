@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from foodies.models import Category, Meal, User, UserProfile, Request, Ingredient
-from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, mealIngredientMultiForm, UserUpdateForm, UserProfileUpdateForm
 from django.urls import reverse
+from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, mealIngredientMultiForm, UserUpdateForm, UserProfileUpdateForm, RequestAMealForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -343,20 +343,17 @@ def user_requests(request):
     requests_array = []
 
     for e in user_requests:
-        requests_array[e] = request_info = {
+        requests_array.append({
             'title': e.title,
-            'date': e.url,
-            'name': e.price,
-            'email': e.views,
-            'content': e.category,
-            'message': e.category,
-            'dinner': e.category,
-            'cooker': e.category
-        }
+            'date': e.date,
+            'name': e.name,
+            'email': e.email
+        })
 
     profile_title = "User Requests"
 
     return render(request, 'foodies/user_requests.html', context={'profile_title': profile_title, 'requests_array': requests_array})
+    #return redirect(reverse('foodies:user_requests'), context={'profile_title': profile_title, 'requests_array': requests_array})
 
 def reviews(request):
     return render(request, 'foodies/reviews.html')
@@ -377,9 +374,29 @@ def search_cookers(request):
 def contact_us(request):
     return render(request, 'foodies/contact_us.html')
 
+def request_meal(request):
+    if request.method == 'POST':
+        request_form = RequestAMealForm(request.POST)
+        print(request_form.is_valid())
+        if request_form.is_valid():
+            form = request_form.save(commit=False)
+            form.dinner = 1
+            form.cooker = 2
+            request_form.save()
+            return redirect(reverse('foodies:request_meal'))
+        else:
+            messages.error(request, request_form.errors)
+            return HttpResponseRedirect('/request')
+    else:
+        meal_form = RequestAMealForm()
 
-def request(request):
-    return render(request, 'foodies/request.html')
+    return render(request, 'foodies/request.html',
+              context={'meal_form': meal_form})
+
+#
+# def request(request):
+#     return render(request, 'foodies/request.html')
+
 
 def search(request):
 
@@ -401,3 +418,12 @@ def search(request):
             }
 
     return render(request, "foodies/search.html", context)
+
+def delete_request(request, request_id):
+    request_id = int(request_id)
+    try:
+        select_request = Request.objects.get(id=request_id)
+    except Request.DoesNotExist:
+        return redirect('foodies/user_requests.html')
+    select_request.delete()
+    return redirect('foodies/user_requests.html')
