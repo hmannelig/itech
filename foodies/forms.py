@@ -80,3 +80,33 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('name', 'isCooker', 'isDinner')
+
+class UserUpdateForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+
+    def clean(self):
+       email = self.cleaned_data.get('email')
+       if User.objects.filter(email=email).exists():
+            raise ValidationError("This email already exists")
+       return self.cleaned_data
+
+    def __init__(self, *args, **kwargs):
+        super(UserUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['email'].required = True
+
+    class Meta:
+        model = User
+        fields = ('username', 'email','password',)
+
+class UserProfileUpdateForm(forms.ModelForm):
+    # name = forms.CharField(initial=False, required=False, label='Are you a cooker?', value=request.user.username)
+    isCooker = forms.BooleanField(initial=False, required=False, label='Are you a cooker?')
+    isDinner = forms.BooleanField(initial=False, required=False, label='Are you a dinner?')
+
+    def __init__(self, *args, **kwargs):
+        super(UserProfileForm, self).__init__(*args, **kwargs)
+        self.fields['name'].required = True
+
+    class Meta:
+        model = UserProfile
+        fields = ('name', 'picture', 'address', 'phone', 'personalDescription', 'isCooker', 'isDinner')

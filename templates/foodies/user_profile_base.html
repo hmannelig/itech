@@ -11,7 +11,7 @@
 <section class="container">
     <section class="row mt-3">
         <div class="col-sm-3">
-            <a class="list-group-item list-group-item-action {% if request.path == '/user-profile/' %} active {% endif %}" href="{% url 'foodies:user_profile' %}" aria-controls="home">User Profile</a>
+            <a class="list-group-item list-group-item-action {% if request.path == '/user-profile/' or request.path == '/user-profile/update/' %} active {% endif %}" href="{% url 'foodies:user_profile' %}" aria-controls="home">User Profile</a>
             <a class="list-group-item list-group-item-action {% if request.path == '/user-profile/meals/' %} active {% endif %}" href="{% url 'foodies:user_meals' %}" aria-controls="profile">Meals</a>
             <a class="list-group-item list-group-item-action {% if request.path == '/user-profile/requests/' %} active {% endif %}" href="{% url 'foodies:user_requests' %}" aria-controls="requests">Requests</a>
         </div>
