@@ -55,3 +55,8 @@ $('#login_form').submit(function(e) {
     // e.preventDefault();
     // sendLoginDetails(e);
 });
+
+$(".profile-edit-btn").on('click', function(e) {
+    e.preventDefault();
+    console.log(e);
+});
