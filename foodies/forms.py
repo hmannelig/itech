@@ -93,7 +93,7 @@ class UserUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserUpdateForm, self).__init__(*args, **kwargs)
         self.fields['email'].required = True
-
+        
     class Meta:
         model = User
         fields = ('username', 'email','password',)
@@ -101,7 +101,7 @@ class UserUpdateForm(forms.ModelForm):
 class UserProfileUpdateForm(forms.ModelForm):
     isCooker = forms.BooleanField(initial=False, required=False, label='Are you a cooker?')
     isDinner = forms.BooleanField(initial=False, required=False, label='Are you a dinner?')
-
+    
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
         self.fields['name'].required = True
