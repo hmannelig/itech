@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from foodies.models import Category, Meal, User, UserProfile, Request
 from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, mealIngredientMultiForm
@@ -10,6 +10,7 @@ from datetime import datetime
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 
+
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
     meal_list = Meal.objects.order_by('-views')[:5]
@@ -19,18 +20,20 @@ def index(request):
     visitor_cookie_handler(request)
     return render(request, 'foodies/index.html', context=context_dict)
 
+
 def about(request):
     context_dict = {}
     visitor_cookie_handler(request)
     context_dict['visits'] = request.session['visits']
     return render(request, 'foodies/about.html', context=context_dict)
 
+
 def show_category(request, category_name_slug):
     context_dict = {}
 
     try:
         category = Category.objects.get(slug=category_name_slug)
-        
+
         meals = Meal.objects.filter(category=category)
 
         context_dict['meals'] = meals
@@ -41,6 +44,7 @@ def show_category(request, category_name_slug):
         context_dict['meals'] = None
 
     return render(request, 'foodies/category.html', context=context_dict)
+
 
 @login_required
 def add_category(request):
@@ -58,9 +62,9 @@ def add_category(request):
 
     return render(request, 'foodies/add_category.html', {'form': form})
 
+
 @login_required
 def add_meal(request):
-
     form = mealIngredientMultiForm
 
     if request.method == 'POST':
@@ -82,9 +86,10 @@ def add_meal(request):
         else:
             return redirect('/foodies/')
     else:
-            print(form.errors)
+        print(form.errors)
 
     return render(request, 'foodies/add_meal.html', {'form': form})
+
 
 def register(request):
     # A boolean value for telling the template
@@ -122,7 +127,7 @@ def register(request):
             profile = profile_form.save(commit=False)
             profile.user = user
             profile.name = data.get('name')
-            
+
             if data.get('isCooker') is not None:
                 profile.isCooker = True
 
@@ -155,7 +160,9 @@ def register(request):
         profile_form = UserProfileForm()
 
     # Render the template depending on the context.
-    return render(request, 'foodies/register.html', context={'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
+    return render(request, 'foodies/register.html',
+                  context={'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
+
 
 def user_login(request):
     if request.method == 'POST':
@@ -164,7 +171,7 @@ def user_login(request):
         password = request.POST.get('password')
 
         user = authenticate(username=username, password=password)
-        
+
         if user:
             if user.is_active:
                 login(request, user)
@@ -175,13 +182,15 @@ def user_login(request):
             print(f"Invalid login details: {username}, {password}")
             messages.error(request, 'Invalid login details.')
             return redirect(reverse('foodies:login'))
-            
+
     else:
         return render(request, 'foodies/login.html')
+
 
 @login_required
 def restricted(request):
     return render(request, 'foodies/restricted.html')
+
 
 # Use the login_required() decorator to ensure only those logged in can
 # access the view.
@@ -192,11 +201,13 @@ def user_logout(request):
     # Take the user back to the homepage.
     return redirect(reverse('foodies:index'))
 
+
 def get_server_side_cookie(request, cookie, default_val=None):
     val = request.session.get(cookie)
     if not val:
         val = default_val
     return val
+
 
 def visitor_cookie_handler(request):
     visits = int(get_server_side_cookie(request, 'visits', '1'))
@@ -214,7 +225,6 @@ def visitor_cookie_handler(request):
 
 @login_required
 def user_profile(request):
-    
     try:
         user = User.objects.get(username=request.user.username)
     except User.DoesNotExist:
@@ -235,44 +245,72 @@ def user_profile(request):
         'isBestCooker': userProfile.isBestCooker,
     }
 
-    user_meals = Meal.objects.filter(user=userProfile)
     user_requests = Request(cooker=userProfile.id)
 
-    return render(request, 'foodies/user_profile.html', context={   'profile_title': profile_title,
-                                                                    'user_info': user_info, 
-                                                                    'user_meals': user_meals, 
-                                                                    'user_requests': user_requests})
+    return render(request, 'foodies/user_profile.html', context={'profile_title': profile_title,
+                                                                 'user_info': user_info,
+                                                                 'user_meals': user_meals,
+                                                                 'user_requests': user_requests, })
 
 @login_required
 def user_meals(request):
+    try:
+        user = User.objects.get(username=request.user.username)
+    except User.DoesNotExist:
+        return None
+
+    user_profile = UserProfile.objects.filter(user=user)[0]
+    user_meals = Meal.objects.filter(user=user_profile)
+
+    #user_meals = get_object_or_404(Meal, user=user_profile)
+
+    meals_array=[]
+
+    for e in user_meals:
+        meals_array[e] = meals_info = {
+                    'title': e.title,
+                    'url': e.url,
+                    'price': e.price,
+                    'views': e.views,
+                    'category': e.category,
+                    }
+
     profile_title = "User Meals"
 
-    return render(request, 'foodies/user_meals.html', context={'profile_title': profile_title,})
+    return render(request, 'foodies/user_meals.html', context={'profile_title': profile_title,
+                                                               'meals_info': meals_array})
+
 
 @login_required
 def user_requests(request):
     profile_title = "User Requests"
 
-    return render(request, 'foodies/user_requests.html', context={'profile_title': profile_title,})
+    return render(request, 'foodies/user_requests.html', context={'profile_title': profile_title, })
+
 
 def reviews(request):
     return render(request, 'foodies/reviews.html')
 
+
 def register_diners(request):
     return render(request, 'foodies/register_diners.html')
+
 
 def register_cookers(request):
     return render(request, 'foodies/register_cookers.html')
 
+
 def search(request):
     return HttpResponse("This is search")
+
 
 def search_cookers(request):
     return HttpResponse("This is search cooker")
 
+
 def contact_us(request):
     return render(request, 'foodies/contact_us.html')
 
+
 def request(request):
     return render(request, 'foodies/request.html')
-
