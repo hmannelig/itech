@@ -263,8 +263,6 @@ def user_meals(request):
     user_profile = UserProfile.objects.filter(user=user)[0]
     user_meals = Meal.objects.filter(user=user_profile)
 
-    #user_meals = get_object_or_404(Meal, user=user_profile)
-
     meals_array=[]
 
     for e in user_meals:
@@ -284,10 +282,31 @@ def user_meals(request):
 
 @login_required
 def user_requests(request):
+    try:
+        user = User.objects.get(username=request.user.username)
+    except User.DoesNotExist:
+        return None
+
+    user_profile = UserProfile.objects.filter(user=user)[0]
+    user_requests = Request.objects.filter(id=user_profile.id)
+
+    requests_array = []
+
+    for e in user_requests:
+        requests_array[e] = request_info = {
+            'title': e.title,
+            'date': e.url,
+            'name': e.price,
+            'email': e.views,
+            'content': e.category,
+            'message': e.category,
+            'dinner': e.category,
+            'cooker': e.category,
+        }
+
     profile_title = "User Requests"
 
-    return render(request, 'foodies/user_requests.html', context={'profile_title': profile_title, })
-
+    return render(request, 'foodies/user_requests.html', context={'profile_title': profile_title, 'requests_array': requests_array})
 
 def reviews(request):
     return render(request, 'foodies/reviews.html')
