@@ -254,6 +254,8 @@ def user_profile(request):
 @login_required
 def user_profile_update(request):
 
+    profile_title = "Update User Profile"
+
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST)
         profile_form = UserProfileUpdateForm(request.POST)
@@ -293,6 +295,7 @@ def user_profile_update(request):
 
     return render(request, 'foodies/user_profile_update.html',
                             context={
+                                        'profile_title': profile_title,
                                         'user_form': user_form, 
                                         'profile_form': profile_form
                                     })
