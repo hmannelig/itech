@@ -24,45 +24,40 @@
 
 						<!-- Links -->
 						<ul class="navbar-nav mr-auto">
-							<li class="nav-item active"><a
-								class="nav-link {% if request.path == '/' %} active {% endif %}"
-								href="{% url 'foodies:index' %}">Home <span class="sr-only">(current)</span></a>
-							</li> {% if user.is_authenticated %}
+							<li class="nav-item active">
+								<a class="nav-link {% if request.path == '/' %} active {% endif %}" href="{% url 'foodies:index' %}">Home <span class="sr-only">(current)</span></a>
+							</li> 
+
+							{% if user.is_authenticated %}
+							
 							<li class="nav-item"><a class="nav-link"
 								href="{% url 'foodies:logout' %}">Logout</a></li>
-							<li class="nav-item"><a
-								class="nav-link {% if request.path == '/user-profile/' %} active {% endif %}"
-								href="{% url 'foodies:user_profile' %}">User Profile</a></li> 
-								{% else%}
-							<li class="nav-item"><a
-								class="nav-link {% if request.path == '/register/' %} active {% endif %}"
-								href="{% url 'foodies:register' %}">Sign Up</a></li>
-							<li class="nav-item"><a
-								class="nav-link {% if request.path == '/login/' %} active {% endif %}"
-								href="{% url 'foodies:login' %}">Login</a></li> 
-								{% endif %}
-							<li class="nav-item"><a
-								class="nav-link {% if request.path == '/about/' %} active {% endif %}"
-								href="{% url 'foodies:about' %}">About Us</a></li>
-							<li class="nav-item"><a
-								class="nav-link {% if request.path == '/contact-us/' %} active {% endif %}"
-								href="{% url 'foodies:contact_us' %}">Contact Us</a></li>
-							<div class="md-form my-0">
-								<li class="nav-item">
-								<form name="exampleform" method="GET" action="{% url 'foodies:search' %}">
-								<a
-								class="nav-link {% if request.path == '/search/' %} active {% endif %}"
-								href="{% url 'foodies:search' %}"></a></li>
-										
-								</div>
-								<button class="btn btn-primary" type="submit" name="submit">Search</button>
-									
-							</div>
+							<li class="nav-item">
+								<a class="nav-link {% if request.path == '/user-profile/' %} active {% endif %}" href="{% url 'foodies:user_profile' %}">User Profile</a>
+							</li> 
 							
-							</div>
-					
+							{% else %}
+							
+							<li class="nav-item">
+								<a class="nav-link {% if request.path == '/register/' %} active {% endif %}" href="{% url 'foodies:register' %}">Sign Up</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link {% if request.path == '/login/' %} active {% endif %}" href="{% url 'foodies:login' %}">Login</a>
+							</li> 
+							{% endif %}
+							<li class="nav-item">
+								<a class="nav-link {% if request.path == '/about/' %} active {% endif %}" href="{% url 'foodies:about' %}">About Us</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link {% if request.path == '/contact-us/' %} active {% endif %}" href="{% url 'foodies:contact_us' %}">Contact Us</a>
+							</li>
+							<li class="nav-item">
+								<a class="btn btn-primary {% if request.path == '/search/' %} active {% endif %}" href="{% url 'foodies:search' %}">Search</a>
+							</li>
+						</ul>
 					</div>
 				</div>
+			</div>
 		</nav>
 		<!--/.Navbar-->
 	</div>
