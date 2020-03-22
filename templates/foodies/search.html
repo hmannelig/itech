@@ -8,8 +8,7 @@
 {% block body_block %}
 
         <h1>Search with Foodies</h1>
-    </div>
-</div>
+
 <div>
     <form class="form-inline" id="user-form" method="post" action="{% url 'foodies:search' %}">
         {% csrf_token %}
@@ -20,23 +19,32 @@
 
         <button class="btn btn-primary" type="submit" name="submit">Search</button>
     </form>
-</div>
-<div>
-    {% if result_list %}
-    <h2>Results</h2>
 
-    <div class="list-group">
-    {% for result in result_list %}
-        <div class="list-group-item">
-            <h3 class="list-group-item-heading">
-                <a href="{{ result.link }}">{{ result.title|safe|escape }}</a>
-            </h3>
-            <p class="list-group-item-text">
-                {{ result.summary|safe|escape }}
-            </p>
-        </div>
-    {% endfor %}
-    </div>
-    {% endif %}
-</div>
+
+	<h2>Ingredients</h2>
+    {% for each_object in results_ingred %} // results is list here so pick each element object using for loop 
+	    <a href="{% url 'user_detail' pk=each_object.pk %}"></a>
+	    <!--Upon successful search object image with hyperlink appears -->
+	    <p>{{each_object.name}}</p>
+	    <p>{{each_object.vegetable }}</p>
+	    <p>{{each_object.typeofmeat}}</p>    
+		{% endfor %}
+		
+	<h2>Meal</h2>
+	{% for each_object in results_meals %} // results is list here so pick each element object using for loop 
+	    <a href="{% url 'user_detail' pk=each_object.pk %}"></a>
+	    <p>{{each_object.title}}</p>
+	    <p>{{each_object.category }}</p>
+	     
+	{% endfor %}
+	
+	<h2>Category</h2>
+	{% for each_object in results_cats %} // results is list here so pick each element object using for loop 
+	    <a href="{% url 'user_detail' pk=each_object.pk %}"></a>
+	    <p>{{each_object.name}}</p>
+	    <p>{{each_object.vegetable }}</p>
+	    <p>{{each_object.typeofmeat}}</p>    
+	{% endfor %}
+</div>	
+
 {% endblock %}
