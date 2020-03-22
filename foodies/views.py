@@ -256,9 +256,10 @@ def user_profile_update(request):
 
     profile_title = "Update User Profile"
 
+
     if request.method == 'POST':
-        user_form = UserUpdateForm(request.POST)
-        profile_form = UserProfileUpdateForm(request.POST)
+     user_form = UserUpdateForm()
+        profile_form = UserUpdateForm()
 
         if user_form.is_valid() and profile_form.is_valid():
             data = request.POST.copy()
@@ -266,8 +267,8 @@ def user_profile_update(request):
                 messages.error(request, 'Invalid: Check at least 1 checkbox for Cooker or Dinner or both.')
                 return HttpResponseRedirect('/foodies/register')
 
+           
             user = user_form.save()
-
             user.set_password(user.password)
             user.save()
 
@@ -290,8 +291,8 @@ def user_profile_update(request):
         else:
             print(user_form.errors, profile_form.errors)
     else:
-        user_form = UserUpdateForm(request.user)
-        profile_form = UserProfileUpdateForm()
+        user_form = UserUpdateForm()
+        profile_form = UserUpdateForm()
 
     return render(request, 'foodies/user_profile_update.html',
                             context={
