@@ -313,13 +313,13 @@ def user_meals(request):
     meals_array=[]
 
     for e in user_meals:
-        meals_array[e] = meals_info = {
+        meals_array.append({
                     'title': e.title,
                     'url': e.url,
                     'price': e.price,
                     'views': e.views,
                     'category': e.category,
-                }
+                })
 
     profile_title = "User Meals"
 
