@@ -9,57 +9,66 @@
 {% block body_block %}
 
 	<div class="row justify-content-center">
-	
-		<div class="col-12 col-md-8 col-lg-6 pb-5">			
-                    <!--Form with header-->
-
-                    <form action="mail.php" method="post">
-                        <div class="card border-dark rounded-0">
-                            <div class="card-header p-0">
-                                <div class="bg-info text-white text-center py-2">
-                                    <h3><i class="fa fa-envelope"></i> Contact Foodies</h3>
-                                </div>
+		<div class="col-sm-12 mb-4">			
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2238.4437388948595!2d-4.290697683790093!3d55.87231698058555!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTXCsDUyJzIwLjMiTiA0wrAxNycxOC42Ilc!5e0!3m2!1sen!2suk!4v1584885669909!5m2!1sen!2suk" width="100%" height="307" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+        </div>
+    </div>
+    <div class="container"> 
+        <div class="row justify-content-center">
+            <div class="col-sm-6">
+                <ul class="list-unstyled">
+                    <li class="mb-2"><h2>Contact Info</h2></li>
+                    <li class="mb-2"><strong>Address:</strong> 123 University Av. Glasgow</li>
+                    <li class="mb-2"><strong>Phone:</strong> <a href="tel:7923782100">79 23 78 21 00</a></li>
+                    <li class="mb-2"><strong>Email:</strong> <a href="mailto:hello@foodies.com">hello@foodies.com</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-6 ">			
+                <form action="#" method="post">
+                    <div class="card border-dark rounded-0">
+                        <div class="card-header p-0">
+                            <div class="bg-info text-white text-center py-2">
+                                <h3><i class="fa fa-envelope"></i> Contact Foodies</h3>
                             </div>
-                            <div class="card-body p-3">
-
-                                <!--Body-->
-                                <div class="form-group">
-                                    <div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text"><i class="fas fa-user"></i></div>
-                                        </div>
-                                        <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text"><i class="fas fa-envelope"></i></div>
-                                        </div>
-                                        <input type="email" class="form-control" id="email" name="email" placeholder="youremail@123.com" required>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text"><i class="fas fa-comment"></i></div>
-                                        </div>
-                                        <textarea class="form-control" placeholder="Type Your Message" required></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="text-center">
-                                    <input type="submit" value="Send Message" class="btn btn-info btn-block rounded-0 py-2">
-                                </div>
-                            </div>
-
                         </div>
-                    </form>
-                    <!--Form with header-->
+                        <div class="card-body p-3">
 
+                            <!--Body-->
+                            <div class="form-group">
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="fas fa-user"></i></div>
+                                    </div>
+                                    <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="fas fa-envelope"></i></div>
+                                    </div>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="youremail@123.com" required>
+                                </div>
+                            </div>
 
-                </div>
+                            <div class="form-group">
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="fas fa-comment"></i></div>
+                                    </div>
+                                    <textarea class="form-control" placeholder="Type Your Message" required></textarea>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <input type="submit" value="Send Message" class="btn btn-info btn-block rounded-0 py-2">
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>  
 	</div>
 
 

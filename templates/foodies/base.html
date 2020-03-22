@@ -29,11 +29,9 @@
 	<body>
 		{% include 'foodies/header.html' %}
 
-		<section>
-			<div class="container"> 
-				{% block body_block %}
-				{% endblock %}
-			</div>
+		<section class="pb-4 mb-4">
+			{% block body_block %}
+			{% endblock %}
 		</section>
 
 		{% include 'foodies/footer.html' %}

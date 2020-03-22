@@ -2,13 +2,21 @@
  * Styles for Foodies webpage
  */
  
-.aboutStyle
-{
-background-image:url('../images/aboutback.jpg');
-background-repeat:no-repeat;
-background-size:cover;
-height:500px;
-width: 100%;
+.aboutStyle {
+  background-image:url('../images/aboutback.jpg');
+  background-repeat:no-repeat;
+  background-size:cover;
+  height:500px;
+  width: 100%;
   -o-background-size: cover;
+}
 
+.about1 {
+  padding-top: 40%;
+  background-image:url('../images/aboutback.jpg');
+}
+
+.about2 {
+  padding-top: 40%;
+  background-image:url('../images/about-2.jpg');
 }

@@ -8,14 +8,16 @@
 {% endblock %}
 
 {% block body_block %}
-<h1>Add a Meal </h1>
-<div class="col-sm-6 offset-sm-3">
-    <form id="add_meal_form" method="post" action="{% url 'foodies:add_meal' %}">
-        {% csrf_token %}
-        {% csrf_token %}
-        {{ form|crispy }}
+<div class="container"> 
+    <h1>Add a Meal </h1>
+    <div class="col-sm-6 offset-sm-3">
+        <form id="add_meal_form" method="post" action="{% url 'foodies:add_meal' %}">
+            {% csrf_token %}
+            {% csrf_token %}
+            {{ form|crispy }}
 
-        <input type="submit" name="submit" value="Add Meal" />
-    </form>
+            <input type="submit" name="submit" value="Add Meal" />
+        </form>
+    </div>
 </div>
 {% endblock %}
