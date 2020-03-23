@@ -47,7 +47,6 @@ def show_category(request, category_name_slug):
 
     return render(request, 'foodies/category.html', context=context_dict)
 
-
 @login_required
 def add_category(request):
     form = CategoryForm()
@@ -58,7 +57,7 @@ def add_category(request):
         if form.is_valid():
             form.save(commit=True)
 
-            return redirect('/foodies/')
+            return redirect('foodies/index')
         else:
             print(form.errors)
 
@@ -82,11 +81,11 @@ def add_meal(request):
 
             cleaned_data = ingredientsMeal['meal'].cleaned_data
             cleaned_data = cleaned_data['category'].name.lower()
-            category = '/foodies/category/' + cleaned_data + '/'
+            category = '/category/' + cleaned_data + '/'
 
-            return HttpResponseRedirect(category)
+            return redirect(category)
         else:
-            return redirect('/foodies/')
+            return HttpResponse("Something went wrong")
     else:
         print(form.errors)
 
@@ -229,7 +228,7 @@ def user_profile(request):
 
     profile_title = "User Profile"
 
-    userProfile = UserProfile.objects.filter(user=user)[0]
+    userProfile = UserProfile.objects.filter(user=user).first()
     user_info = {
         'id': userProfile.id,
         'email': user.email,
