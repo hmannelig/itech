@@ -14,13 +14,17 @@ from django.db.models import Q
 
 
 def index(request):
-    category_list = Category.objects.order_by('-likes')[:5]
-    meal_list = Meal.objects.order_by('-views')[:5]
-    context_dict = {}
-    context_dict['categories'] = category_list
-    context_dict['meals'] = meal_list
+    user_list=UserProfile.objects.order_by('-id')[:6]
+    category_list = Category.objects.order_by('-likes')[:6]
+    meal_list = Meal.objects.order_by('-views')[:6]
+    context_dict = {        
+        'categories': category_list,
+        'meals': meal_list,  
+        'user_info':user_list 
+        }
     visitor_cookie_handler(request)
     return render(request, 'foodies/index.html', context=context_dict)
+
 
 
 def about(request):
@@ -640,3 +644,6 @@ def search(request):
 
 def contact_reply(request):
     return render(request, 'foodies/contact_reply.html')
+
+def contact_reply(request,user_id):
+    return render(request, 'foodies/userid.html')
