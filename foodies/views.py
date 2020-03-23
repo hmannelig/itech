@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from foodies.models import Category, Meal, User, UserProfile, Request, Ingredient
+from foodies.models import Category, Meal, User, UserProfile, Request, Ingredient, Allergy
 from django.urls import reverse
-from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, IngredientsForm, UserUpdateForm, \
-    UserProfileUpdateForm, RequestAMealForm
+from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, IngredientsForm, UserUpdateForm, UserProfileUpdateForm, RequestAMealForm, AllergiesForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -454,9 +453,133 @@ def user_requests(request):
 
 
 @login_required
-def delete_request(request, delete_req):
+def show_allergies(request):
+    profile_title = "User Allergies"
+
     try:
-        select_request = Request.objects.get(id=delete_req)
+        user = User.objects.get(username=request.user.username)
+    except User.DoesNotExist:
+        return None
+
+    user_profile = UserProfile.objects.filter(user=user).first()
+    user_requests = Request.objects.filter(cooker=user_profile.id)
+    user_info = {
+        'id': user_profile.id,
+        'email': user.email,
+        'isCooker': user_profile.isCooker,
+        'isDinner': user_profile.isDinner
+    }
+
+    allergies = Allergy.objects.filter(users=user_profile.id)
+
+    return render(request, 'foodies/user_allergies.html', context={ 'allergies': allergies,
+                                                                    'profile_title': profile_title,
+                                                                    'user_info': user_info})
+
+@login_required
+def add_allergy(request):
+    profile_title = "Add Allergy"
+
+    try:
+        user = User.objects.get(username=request.user.username)
+    except User.DoesNotExist:
+        return None
+
+    user_profile = UserProfile.objects.filter(user=user).first()
+    user_requests = Request.objects.filter(cooker=user_profile.id)
+    user_info = {
+        'id': user_profile.id,
+        'email': user.email,
+        'isCooker': user_profile.isCooker,
+        'isDinner': user_profile.isDinner
+    }
+
+    allergies_form = AllergiesForm(request.POST)
+
+    if request.method == 'POST':
+        if allergies_form.is_valid():
+
+            allergy = allergies_form.save()
+            allergy.save()
+
+            try:
+                userProfile = UserProfile.objects.get(user=user)
+            except User.DoesNotExist:
+                return None
+                
+            allergy.users.add(userProfile)
+
+            return redirect(reverse('foodies:show_allergies'))
+        else:
+            messages.error(request, allergies_form.errors)
+            HttpResponseRedirect(reverse('foodies:add_allergy'))
+
+    return render(request, 'foodies/add_allergy.html', context={    'allergies_form': allergies_form,
+                                                                    'profile_title': profile_title,
+                                                                    'user_info': user_info})
+
+@login_required
+def edit_allergy(request, allergy_id):
+    profile_title = "Edit Allergy"
+
+    try:
+        user = User.objects.get(username=request.user.username)
+    except User.DoesNotExist:
+        return None
+
+    user_profile = UserProfile.objects.filter(user=user).first()
+    user_requests = Request.objects.filter(cooker=user_profile.id)
+    user_info = {
+        'id': user_profile.id,
+        'email': user.email,
+        'isCooker': user_profile.isCooker,
+        'isDinner': user_profile.isDinner
+    }
+
+    try:
+        allergy = Allergy.objects.get(id=allergy_id)
+    except Allergy.DoesNotExist:
+        return None
+
+    allergies_form = AllergiesForm(request.POST or None, instance=allergy)
+
+    if request.method == 'POST':
+        if allergies_form.is_valid():
+
+            allergy = allergies_form.save()
+            allergy.save()
+
+            try:
+                userProfile = UserProfile.objects.get(user=user)
+            except User.DoesNotExist:
+                return None
+                
+            allergy.users.add(userProfile)
+
+            return redirect(reverse('foodies:show_allergies'))
+        else:
+            messages.error(request, allergies_form.errors)
+            HttpResponseRedirect(reverse('foodies:add_allergy'))
+
+    return render(request, 'foodies/edit_allergy.html', context={   'allergy_id':allergy_id,
+                                                                    'allergies_form': allergies_form,
+                                                                    'profile_title': profile_title,
+                                                                    'user_info': user_info})
+
+@login_required
+def delete_allergy(request, allergy_id):
+    try:
+        allergy = Allergy.objects.get(id=allergy_id)
+    except Allergy.DoesNotExist:
+        return redirect('foodies:show_allergies')
+    
+    allergy.delete()
+    return redirect('foodies:show_allergies')
+
+@login_required
+def delete_request(request, request_id):
+    try:
+        select_request = Request.objects.get(id=request_id)
     except Request.DoesNotExist:
         return redirect('foodies:user_requests')
 
@@ -504,13 +627,8 @@ def request_meal(request):
 
 
 def show_meal_details(request, meal_id):
-
     meal_details = Meal.objects.filter(id=meal_id).first()
-
     return render(request, 'foodies/meal_details.html',  {'meal_details':meal_details})
-
-
-
 
 def search(request):
     results = {}
@@ -531,7 +649,6 @@ def search(request):
             }
 
     return render(request, "foodies/search.html", context)
-
 
 def contact_reply(request):
     return render(request, 'foodies/contact_reply.html')
