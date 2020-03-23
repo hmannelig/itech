@@ -1,4 +1,4 @@
-{% extends 'foodies/base.html' %}
+{% extends 'foodies/user_profile_base.html' %}
 {% load staticfiles %}
 
 {% load crispy_forms_tags %}
@@ -7,10 +7,9 @@
     Add a Meal
 {% endblock %}
 
-{% block body_block %}
+{% block profile_block %}
 <div class="container"> 
-    <h1>Add a Meal </h1>
-    <div class="col-sm-6 offset-sm-3">
+    <div class="col-sm-10 offset-sm-1">
         <div>
             {% for message in messages %}
             <div class="alert alert-danger">
@@ -19,7 +18,7 @@
             </div>
             {% endfor %}
         </div>
-        <form id="add_meal_form" method="post" action="{% url 'foodies:add_meal' %}">
+        <form id="add_meal_form" method="post" action="{% url 'foodies:add_meal' %}" enctype="multipart/form-data">
             {% csrf_token %}
             {{ meal_form | crispy }}
             <a class="btn btn-danger" href="{% url 'foodies:user_meals' %}">Cancel</a>

@@ -5,8 +5,10 @@ from django.contrib.auth.models import User
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     picture = models.ImageField(upload_to='profile_images', blank=True)
-    name = models.CharField(max_length=30, blank=True)
+    name = models.CharField(max_length=50)
     address = models.CharField(max_length=100, blank=True)
+    city = models.CharField(max_length=100, blank=True)
+    specialty = models.CharField(max_length=100, blank=True)
     phone = models.CharField(max_length=30, blank=True)
     personalDescription = models.CharField(max_length=200,  blank=True, verbose_name="Personal Description")
     isCooker = models.BooleanField(default=False, verbose_name="Cooker")
@@ -37,6 +39,7 @@ class Meal(models.Model):
     TITLE_MAX_LENGTH = 30
     title = models.CharField(max_length=TITLE_MAX_LENGTH)
     price = models.FloatField(default=0)
+    picture = models.ImageField()
     views = models.IntegerField(default=0)
     category = models.ForeignKey(Category, on_delete=models.SET_DEFAULT, default="Category Not Selected")
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=True, null=True)

@@ -8,43 +8,23 @@ User Meals
 {% block profile_block %}
 
 	<div class="card">
-	<div class="card-header" id="headingOne">
-			<h3 class="mb-0">
-		<i class="fas fa-utensils"> <a href="{% url 'foodies:add_meal' %}">  Add a new meal</a>
-		</i>
-		</h3>
-	</div>
-	
-	
-	
-	<div class="card">
 		<div class="card-header" id="headingOne">
-
- 				{% csrf_token %} 			
-            	{% for row in meals_info %}
-            		<div class="text-right">
-								<small><a href="{% url 'foodies:add_meal' %}"> Edit/Delete Meal</a></small>
-								</div>
-            		<div class="row">
-            			<div class="text-left">
-							<h3>Meal: {{ row.title }} </h3>
-								
-          				  	<h6>Category: {{ row.category }}</h6> 
-          				  	
-           					<h6>URL: {{ row.url }} </h6> 
-            				<h6>Price: {{ row.price }}</h6> 
-            				<h6>Views: {{ row.views }}</h6> 
-            			</div>
-           			 </div>
-      
-            
-            {% endfor %}   
-        	
-		
+			<h3 class="mb-0"><i class="fas fa-utensils"> <a href="{% url 'foodies:add_meal' %}">  Add a new meal</a></i></h3>
 		</div>
 	</div>
-
-
+	
+	<div class="user_meals_list">
+		<ul class="list-group">
+			{% for row in meals_info %}
+			<li class="list-group-item">
+				<div class="d-flex align-items-center">
+					<a href="{% url 'foodies:edit_meal' row.id %}"><div class="meal_picture background-image cover d-inline-block" style="background-image:url({{ MEDIA_URL }}{{ row.picture }});"></div></a>
+					<h3 class="ml-2"><a href="{% url 'foodies:edit_meal' row.id %}">{{ row.title }}</a></h3>
+				</div>
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
 	
 </div>
 

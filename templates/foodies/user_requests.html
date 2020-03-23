@@ -28,7 +28,7 @@
             <div class="card-body">Message: {{ each_request.message }}</div>
             <div class="card-body">Dinner: {{ each_request.dinner }}</div>
             <div class="card-body">Cooker: {{ each_request.cooker }}</div>
-            <a class="btn btn-danger" href="{% url 'foodies:delete_meal' %}">Delete</a>
+            <a class="btn btn-danger" href="{% url 'foodies:delete_meal' each_request.id %}">Delete</a>
         </div>
     </div>
     {% endfor %}

@@ -1,0 +1,29 @@
+{% extends 'foodies/user_profile_base.html' %}
+{% load staticfiles %}
+
+{% load crispy_forms_tags %}
+
+{% block title_block %}
+    Add a Meal
+{% endblock %}
+
+{% block profile_block %}
+<div class="container"> 
+    <div class="col-sm-10 offset-sm-1">
+        <div>
+            {% for message in messages %}
+            <div class="alert alert-danger">
+                <a class="close" href="#" data-dismiss="alert">×</a>
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        <form id="add_meal_form" method="post" action="{% url 'foodies:edit_meal' meal_id %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ meal_form | crispy }}
+            <a class="btn btn-danger" href="{% url 'foodies:user_meals' %}">Cancel</a>
+            <input class="btn btn-primary" type="submit" name="submit" value="Update Meal" />
+        </form>
+    </div>
+</div>
+{% endblock %}

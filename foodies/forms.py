@@ -26,7 +26,7 @@ class MealForm(forms.ModelForm):
 
     class Meta:
         model = Meal
-        fields = ('title', 'price', 'category', 'ingredients', 'recipe',)
+        fields = ('title', 'picture', 'price', 'category', 'ingredients', 'recipe')
 
 class IngredientsForm(forms.ModelForm):
     name = forms.CharField(required=True, help_text="Please enter one ingredient", label="Ingredient Name")
@@ -77,17 +77,9 @@ class UserProfileForm(forms.ModelForm):
 class UserUpdateForm(forms.ModelForm):
     password = None
 
-    # def clean(self):
-    #    email = self.cleaned_data.get('email')
-    #    if User.objects.filter(email=email).exists():
-    #         raise ValidationError("This email already exists")
-    #    return self.cleaned_data
-    
-
     def __init__(self, *args, **kwargs):
         super(UserUpdateForm, self).__init__(*args, **kwargs)
         self.fields['email'].required = True
-
 
     class Meta:
         model = User
@@ -96,10 +88,6 @@ class UserUpdateForm(forms.ModelForm):
 
 
 class UserProfileUpdateForm(forms.ModelForm):
-
-    def __init__(self, *args, **kwargs):
-        super(UserProfileUpdateForm, self).__init__(*args, **kwargs)
-        self.fields['name'].required = True
 
     class Meta:
         model = UserProfile
