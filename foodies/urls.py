@@ -36,5 +36,5 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('contact_reply/', views.contact_reply, name='contact_reply'),
     path('user-profile/meals/<int:meal_id>/meal-details/', views.show_meal_details, name='meal_details'),
-    path('userid/<int:user_id>/', views.userid, name='userid'),  # /add_meal
+    #path('userid/<int:user_id>/', views.userid, name='userid'),  # /add_meal
 ]

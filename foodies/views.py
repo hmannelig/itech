@@ -518,7 +518,7 @@ def add_allergy(request):
             messages.error(request, allergies_form.errors)
             HttpResponseRedirect(reverse('foodies:add_allergy'))
 
-    return render(request, 'foodies/add_allergy.html', context={    'allergies_form': allergies_form,
+    return render(request, 'foodies/add_allergy.html', context={'allergies_form': allergies_form,
                                                                     'profile_title': profile_title,
                                                                     'user_info': user_info})
 
