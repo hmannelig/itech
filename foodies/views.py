@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from foodies.models import Category, Meal, User, UserProfile, Request, Ingredient
 from django.urls import reverse
-from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, IngredientsForm, UserUpdateForm, UserProfileUpdateForm, RequestAMealForm
+from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, IngredientsForm, UserUpdateForm, \
+    UserProfileUpdateForm, RequestAMealForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -47,6 +48,7 @@ def show_category(request, category_name_slug):
 
     return render(request, 'foodies/category.html', context=context_dict)
 
+
 @login_required
 def add_category(request):
     form = CategoryForm()
@@ -66,7 +68,6 @@ def add_category(request):
 
 @login_required
 def add_meal(request):
-
     profile_title = "Add a Meal"
 
     try:
@@ -89,11 +90,11 @@ def add_meal(request):
         meal_form = MealForm(request.POST, request.FILES)
 
         if meal_form.is_valid():
-            
+
             meal = meal_form.save(commit=False)
             user_profile = UserProfile.objects.filter(user=request.user).first()
             meal.user = user_profile
-            
+
             if 'picture' in request.FILES:
                 meal.picture = request.FILES['picture']
 
@@ -106,11 +107,12 @@ def add_meal(request):
     else:
         meal_form = MealForm()
 
-    return render(request, 'foodies/add_meal.html', {'meal_form': meal_form, 'profile_title':profile_title, 'user_info': user_info})
+    return render(request, 'foodies/add_meal.html',
+                  {'meal_form': meal_form, 'profile_title': profile_title, 'user_info': user_info})
+
 
 @login_required
 def edit_meal(request, meal_id):
-
     try:
         user = User.objects.get(username=request.user.username)
     except User.DoesNotExist:
@@ -131,9 +133,9 @@ def edit_meal(request, meal_id):
         meal = Meal.objects.get(id=meal_id)
     except User.DoesNotExist:
         messages.error(request, 'The meal does not exists')
-        return HttpResponseRedirect(reverse('foodies:edit_meal', kwargs={'meal_id':meal_id}))
+        return HttpResponseRedirect(reverse('foodies:edit_meal', kwargs={'meal_id': meal_id}))
 
-    meal_form = MealForm(request.POST or None, instance = meal)
+    meal_form = MealForm(request.POST or None, instance=meal)
 
     if request.method == 'POST':
         if meal_form.is_valid():
@@ -143,25 +145,28 @@ def edit_meal(request, meal_id):
 
             if 'picture' in request.FILES:
                 meal.picture = request.FILES['picture']
-                
+
             meal.save()
             return HttpResponseRedirect(reverse('foodies:user_meals'))
 
         else:
             print(meal_form.errors)
             messages.error(request, meal_form.errors)
-            return HttpResponseRedirect(reverse('foodies:edit_meal', kwargs={'meal_id':meal_id}))
-        
-    return render(request, 'foodies/edit_meal.html', {'meal_form':meal_form, 'meal_id': meal_id, 'user_info': user_info})
+            return HttpResponseRedirect(reverse('foodies:edit_meal', kwargs={'meal_id': meal_id}))
+
+    return render(request, 'foodies/edit_meal.html',
+                  {'meal_form': meal_form, 'meal_id': meal_id, 'user_info': user_info})
+
 
 def delete_meal(request, meal_id):
     try:
         meal = Meal.objects.get(id=meal_id)
     except Request.DoesNotExist:
         return redirect('foodies:user_meals')
-    
+
     meal.delete()
     return redirect('foodies:user_meals')
+
 
 def register(request):
     # A boolean value for telling the template
@@ -272,11 +277,13 @@ def user_logout(request):
     # Take the user back to the homepage.
     return redirect(reverse('foodies:index'))
 
+
 def get_server_side_cookie(request, cookie, default_val=None):
     val = request.session.get(cookie)
     if not val:
         val = default_val
     return val
+
 
 def visitor_cookie_handler(request):
     visits = int(get_server_side_cookie(request, 'visits', '1'))
@@ -290,6 +297,7 @@ def visitor_cookie_handler(request):
         request.session['last_visit'] = last_visit_cookie
 
     request.session['visits'] = visits
+
 
 @login_required
 def user_profile(request):
@@ -321,9 +329,9 @@ def user_profile(request):
                                                                  'user_meals': user_meals,
                                                                  'user_requests': user_requests, })
 
+
 @login_required
 def user_profile_update(request):
-
     profile_title = "Update User Profile"
 
     try:
@@ -344,20 +352,20 @@ def user_profile_update(request):
     except User.DoesNotExist:
         messages.error(request, 'The user does not exists')
         return HttpResponseRedirect('/user-profile')
-    
+
     try:
         userProfile = UserProfile.objects.get(user=user)
     except User.DoesNotExist:
         messages.error(request, 'The user does not exists')
         return HttpResponseRedirect('/user-profile')
-        
 
-    user_form = UserUpdateForm(request.POST or None, instance = user)
-    user_profile_form = UserProfileUpdateForm(request.POST or None, instance = userProfile)
+    user_form = UserUpdateForm(request.POST or None, instance=user)
+    user_profile_form = UserProfileUpdateForm(request.POST or None, instance=userProfile)
 
     if user_form.is_valid() and user_profile_form.is_valid():
 
-        if User.objects.filter(email=request.POST.get('email')).exists() and request.user.email != request.POST.get('email') :
+        if User.objects.filter(email=request.POST.get('email')).exists() and request.user.email != request.POST.get(
+                'email'):
             messages.error(request, 'The email is taken by another user')
             return HttpResponseRedirect('/user-profile/update/')
 
@@ -372,20 +380,18 @@ def user_profile_update(request):
 
     else:
         print(user_form.errors, user_profile_form.errors)
-        
 
     return render(request, 'foodies/user_profile_update.html',
-                            context={
-                                        'user_info': user_info,
-                                        'profile_title': profile_title,
-                                        'user_form': user_form, 
-                                        'user_profile_form': user_profile_form
-                                    })
-    
+                  context={
+                      'user_info': user_info,
+                      'profile_title': profile_title,
+                      'user_form': user_form,
+                      'user_profile_form': user_profile_form
+                  })
+
 
 @login_required
 def user_meals(request):
-
     profile_title = "User Meals"
 
     try:
@@ -407,15 +413,13 @@ def user_meals(request):
     user_profile = UserProfile.objects.filter(user=user)[0]
     user_meals = Meal.objects.filter(user=user_profile)
 
-
-    return render(request, 'foodies/user_meals.html', context={'user_info':user_info,
+    return render(request, 'foodies/user_meals.html', context={'user_info': user_info,
                                                                'profile_title': profile_title,
                                                                'meals_info': user_meals})
 
 
 @login_required
 def user_requests(request):
-
     profile_title = "User Requests"
 
     try:
@@ -443,18 +447,19 @@ def user_requests(request):
             'email': e.email
         })
 
-
     return render(request, 'foodies/user_requests.html', context={
-                                                                    'profile_title': profile_title,
-                                                                    'requests_array': requests_array, 
-                                                                    'user_info': user_info})
+        'profile_title': profile_title,
+        'requests_array': requests_array,
+        'user_info': user_info})
+
+
 @login_required
-def delete_request(request):
+def delete_request(request, delete_req):
     try:
         select_request = Request.objects.get(id=delete_req)
     except Request.DoesNotExist:
         return redirect('foodies:user_requests')
-    
+
     select_request.delete()
     return redirect('foodies:user_requests')
 
@@ -462,22 +467,26 @@ def delete_request(request):
 def reviews(request):
     return render(request, 'foodies/reviews.html')
 
+
 def register_diners(request):
     return render(request, 'foodies/register_diners.html')
+
 
 def register_cookers(request):
     return render(request, 'foodies/register_cookers.html')
 
+
 def search_cookers(request):
     return HttpResponse("This is search cooker")
+
 
 def contact_us(request):
     return render(request, 'foodies/contact_us.html')
 
+
 def request_meal(request):
     if request.method == 'POST':
         request_form = RequestAMealForm(request.POST)
-        print(request_form.is_valid())
         if request_form.is_valid():
             form = request_form.save(commit=False)
             form.cooker = 1
@@ -491,10 +500,19 @@ def request_meal(request):
         meal_form = RequestAMealForm()
 
     return render(request, 'foodies/request.html',
-              context={'meal_form': meal_form})
+                  context={'meal_form': meal_form})
+
+
+def show_meal_details(request, meal_id):
+
+    meal_details = Meal.objects.filter(id=meal_id).first()
+
+    return render(request, 'foodies/meal_details.html',  {'meal_details':meal_details})
+
+
+
 
 def search(request):
-
     results = {}
     querystring = ""
     context = {}
@@ -513,6 +531,7 @@ def search(request):
             }
 
     return render(request, "foodies/search.html", context)
+
 
 def contact_reply(request):
     return render(request, 'foodies/contact_reply.html')
