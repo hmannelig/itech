@@ -323,12 +323,14 @@ def user_requests(request):
         return None
 
     user_profile = UserProfile.objects.filter(user=user)[0]
-    user_requests = Request.objects.filter(id=user_profile.id)
+    print(user_profile.id)
+    user_requests = Request.objects.filter(cooker=user_profile.id)
 
     requests_array = []
 
     for e in user_requests:
         requests_array.append({
+            'id': e.id,
             'title': e.title,
             'date': e.date,
             'name': e.name,
@@ -360,10 +362,10 @@ def request_meal(request):
         print(request_form.is_valid())
         if request_form.is_valid():
             form = request_form.save(commit=False)
-            form.dinner = 1
-            form.cooker = 2
+            form.cooker = 1
+            form.dinner = 2
             request_form.save()
-            return redirect(reverse('foodies:request_meal'))
+            return redirect(reverse('foodies:user_requests'))
         else:
             messages.error(request, request_form.errors)
             return HttpResponseRedirect('/request')
@@ -394,11 +396,11 @@ def search(request):
 
     return render(request, "foodies/search.html", context)
 
-def delete_request(request, request_id):
-    request_id = int(request_id)
+def delete_request(request, meal_id):
     try:
-        select_request = Request.objects.get(id=request_id)
+        select_request = Request.objects.get(id=meal_id)
     except Request.DoesNotExist:
-        return redirect('foodies/user_requests.html')
+        return redirect('foodies:user_requests')
+    
     select_request.delete()
-    return redirect('foodies/user_requests.html')
+    return redirect('foodies:user_requests')

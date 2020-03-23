@@ -26,5 +26,5 @@ urlpatterns = [
     path('contact-us/', views.contact_us, name = 'contact_us'), #/contact-us
     path('request/', views.request_meal, name='request_meal'),  # /request a meal
     path('search/', views.search, name='search'),
-    path('delete_meal/', views.delete_request, name='delete_meal'),
+    path('delete_meal/<int:meal_id>', views.delete_request, name='delete_meal'),
 ]
