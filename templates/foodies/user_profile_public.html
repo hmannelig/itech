@@ -1,0 +1,137 @@
+{% extends 'foodies/base.html' %}
+{% load static %} 
+
+{% block title_block %} 
+    User Profile 
+{% endblock %} 
+
+{% block profile_block %}
+
+<<div class="emp-profile mt-0">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="profile-img">
+                {% if user_info.picture %}
+                <img src="{{ MEDIA_URL }}{{ user_info.picture }}" alt=""/>
+                {% else %}
+                <img src="{% static '/foodies/images/user-default.png' %}" alt=""/>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="profile-head">
+                <h5 id="user-name">{{ user_info.name }}</h5>
+                {% if user_info.isCooker == 1 %}
+                <h6>Cooker</h6>
+                {% endif %}
+                {% if user_info.isDinner == 1 %}
+                <h6>Diner</h6>
+                {% endif %}
+                <p class="proile-rating">RANKINGS : <span>8/10</span></p>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <a class="btn btn-default" href="{% url 'foodies:user_profile_update' %}">Edit Profile</a>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-sm-12 mb-3">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Reviews</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-8">
+            <div class="tab-content profile-tab" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Email</label>
+                        </div>
+                        <div class="col-md-6">
+                            <p>{{ user_info.email }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Phone</label>
+                        </div>
+                        <div class="col-md-6">
+                            <p>{{ user_info.phone }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Address</label>
+                        </div>
+                        <div class="col-md-6">
+                            <p>{{ user_info.address }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Personal Description</label>
+                        </div>
+                        <div class="col-md-6">
+                            <p>{{ user_info.personalDescription }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Experience</label>
+                        </div>
+                        <div class="col-md-6">
+                            <p>Expert</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Hourly Rate</label>
+                        </div>
+                        <div class="col-md-6">
+                            <p>10$/hr</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Total Projects</label>
+                        </div>
+                        <div class="col-md-6">
+                            <p>230</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>English Level</label>
+                        </div>
+                        <div class="col-md-6">
+                            <p>Expert</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Availability</label>
+                        </div>
+                        <div class="col-md-6">
+                            <p>6 months</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Your Bio</label><br/>
+                            <p>Your detail description</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

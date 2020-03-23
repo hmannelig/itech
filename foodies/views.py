@@ -592,6 +592,9 @@ def delete_request(request, request_id):
 
 
 def reviews(request):
+
+
+
     return render(request, 'foodies/reviews.html')
 
 
@@ -658,4 +661,29 @@ def contact_reply(request):
     return render(request, 'foodies/contact_reply.html')
 
 def public_user_profile(request,id):
-    return render(request, 'foodies/public_user_profile.html', {'id': id})
+
+    try:
+        user = User.objects.get(id=id)
+    except User.DoesNotExist:
+        return None
+
+    profile_title = "User Profile"
+
+    userProfile = UserProfile.objects.filter(user=user).first()
+    user_info = {
+        'id': userProfile.id,
+        'email': user.email,
+        'picture': userProfile.picture,
+        'name': userProfile.name,
+        'address': userProfile.address,
+        'personalDescription': userProfile.personalDescription,
+        'isCooker': userProfile.isCooker,
+        'isDinner': userProfile.isDinner,
+        'isBestCooker': userProfile.isBestCooker,
+    }
+
+    return render(request, 'foodies/user_profile_public.html', context={'id': id,
+                                                                 'profile_title': profile_title,
+                                                                 'user_info': user_info,
+                                                                 'user_meals': user_meals,})
+

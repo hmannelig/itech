@@ -2,7 +2,7 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from betterforms.multiform import MultiModelForm
-from foodies.models import Meal, Category, UserProfile, Ingredient, Request, Allergy
+from foodies.models import Meal, Category, UserProfile, Ingredient, Request, Allergy, Review
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
@@ -102,3 +102,8 @@ class AllergiesForm(forms.ModelForm):
     class Meta:
         model = Allergy
         fields = ('name',)
+
+class ReviewsForm(forms.Review):
+    class Meta:
+        model = Review
+        fields = ('title', 'date', 'rating', )
