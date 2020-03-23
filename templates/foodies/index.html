@@ -17,14 +17,28 @@
 	</div>
 	<div class="container"> 
   		<div class="row">
-    		<div class="col-sm-12">
-				<h2>Best Cookers</h2>
-			</div>
+    <div class="col-sm-12">
+      			<h2>Best Cookers</h2>
+				<div class="row">
+				 {% if user_info.isBestCooker == 1 %}
+					{% for user in user_info %}    						 
+						<div class="col-sm-4">
+							<div class="text-center">
+							<a href="{{ reviews.url }}">{{ user_info.id }}</a>
+								<p class="viewed_meals"></p>
+							</div>
+						</div>
+						{% endfor %}
+					{% else %}
+					<h6>No Best Cooks to display</h6>
+					{% endif %}	
+				</div>
+		</div>
+		
     		<div class="col-sm-12">
       			<h2>Most Viewed Meals</h2>
 				{% if meals %}
 				<div class="row">
-					
 					{% for meal in meals %}    						 
 						<div class="col-sm-4">
 							<div class="text-center">
@@ -52,6 +66,6 @@
     		</div>
   		</div>
   	</div>
-</div>
+																																														
  
 {% endblock %}
