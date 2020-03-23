@@ -79,11 +79,11 @@ def add_meal(request):
             ingredient.save()
             meal.save()
 
-            cleaned_data = ingredientsMeal['meal'].cleaned_data
-            cleaned_data = cleaned_data['category'].name.lower()
-            category = '/category/' + cleaned_data + '/'
+            # cleaned_data = ingredientsMeal['meal'].cleaned_data
+            # cleaned_data = cleaned_data['category'].name.lower()
+            # category = '/category/' + cleaned_data + '/'
 
-            return redirect(category)
+            return redirect('foodies/add_meal.html')
         else:
             return HttpResponse("Something went wrong")
     else:
