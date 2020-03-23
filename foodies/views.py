@@ -403,3 +403,6 @@ def delete_request(request, request_id):
         return redirect('foodies/user_requests.html')
     select_request.delete()
     return redirect('foodies/user_requests.html')
+
+def contact_reply(request):
+    return render(request, 'foodies/contact_reply.html')
