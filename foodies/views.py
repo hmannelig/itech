@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from foodies.models import Category, Meal, User, UserProfile, Request, Ingredient
 from django.urls import reverse
-from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, mealIngredientMultiForm, UserUpdateForm, UserProfileUpdateForm, RequestAMealForm
+from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, IngredientsForm, UserUpdateForm, UserProfileUpdateForm, RequestAMealForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -66,30 +66,25 @@ def add_category(request):
 
 @login_required
 def add_meal(request):
-    form = mealIngredientMultiForm
 
     if request.method == 'POST':
-        ingredientsMeal = mealIngredientMultiForm(request.POST)
+        meal_form = MealForm(request.POST)
 
-        if ingredientsMeal.is_valid():
-
-            ingredient = ingredientsMeal['ingredients'].save(commit=False)
-            meal = ingredientsMeal['meal'].save(commit=False)
-
-            ingredient.save()
+        if meal_form.is_valid():
+            
+            meal = meal_form.save(commit=False)
+            user_profile = UserProfile.objects.filter(user=request.user).first()
+            meal.user = user_profile
             meal.save()
 
-            cleaned_data = ingredientsMeal['meal'].cleaned_data
-            cleaned_data = cleaned_data['category'].name.lower()
-            category = '/category/' + cleaned_data + '/'
-
-            return redirect(category)
+            return redirect('/user-profile/meals/')
         else:
-            return HttpResponse("Something went wrong")
+            messages.error(request, meal_form.errors)
+            return HttpResponseRedirect('/add_meal/')
     else:
-        print(form.errors)
+        meal_form = MealForm()
 
-    return render(request, 'foodies/add_meal.html', {'form': form})
+    return render(request, 'foodies/add_meal.html', {'meal_form': meal_form})
 
 
 def register(request):
@@ -148,6 +143,7 @@ def register(request):
             # registration was successful.
             registered = True
             login(request, user)
+            return redirect('foodies:index')
         else:
             # Invalid form or forms - mistakes or something else?
             # Print problems to the terminal.
@@ -308,7 +304,6 @@ def user_meals(request):
     for e in user_meals:
         meals_array.append({
                     'title': e.title,
-                    'url': e.url,
                     'price': e.price,
                     'views': e.views,
                     'category': e.category,

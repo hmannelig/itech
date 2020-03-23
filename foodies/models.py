@@ -35,13 +35,13 @@ class Category(models.Model):
 
 class Meal(models.Model):
     TITLE_MAX_LENGTH = 30
-    URL_MAX_LENGTH = 200
     title = models.CharField(max_length=TITLE_MAX_LENGTH)
-    url = models.URLField(max_length=URL_MAX_LENGTH)
     price = models.FloatField(default=0)
     views = models.IntegerField(default=0)
     category = models.ForeignKey(Category, on_delete=models.SET_DEFAULT, default="Category Not Selected")
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=True, null=True)
+    ingredients = models.CharField(max_length=250, default="")
+    recipe = models.TextField(max_length=250, default="")
 
     def __str__(self):
         return self.title
@@ -49,7 +49,7 @@ class Meal(models.Model):
 class Ingredient(models.Model):
     name = models.CharField(max_length=128, unique=True)
     vegetable = models.CharField(max_length=128, blank=True)
-    typeofmeat = models.CharField(max_length=128, blank=True, verbose_name="Tye of Meat")
+    typeofmeat = models.CharField(max_length=128, blank=True, verbose_name="Type of Meat")
     meal = models.ManyToManyField(Meal)
 
     def __str__(self):
