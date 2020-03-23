@@ -20,25 +20,18 @@ class CategoryForm(forms.ModelForm):
         fields = ('name',)
 
 class MealForm(forms.ModelForm):
-    title = forms.CharField(max_length=Meal.TITLE_MAX_LENGTH,
-                            help_text="Please enter the title of the meal.")
+    title = forms.CharField(max_length=Meal.TITLE_MAX_LENGTH, help_text="Please enter the title of the meal.", label="Meal Name")
     price = forms.FloatField(help_text="Please enter the price for this meal")
-    url = forms.URLField(max_length=Meal.URL_MAX_LENGTH, help_text="Please enter the URL of the meal page.")
     category = forms.ModelChoiceField(queryset=Category.objects.all().order_by('name'), help_text="Please select the category for this meal")
-    views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
-
-    def label_from_instance(self, obj):
-        return "%s" %(obj)
 
     class Meta:
         model = Meal
-        #exclude = ('category',)
-        fields = ('title', 'url', 'price', 'category')
+        fields = ('title', 'price', 'category', 'ingredients', 'recipe',)
 
 class IngredientsForm(forms.ModelForm):
-    name = forms.CharField(required=True, help_text="Please enter one ingredient")
+    name = forms.CharField(required=True, help_text="Please enter one ingredient", label="Ingredient Name")
     vegetable = forms.CharField(required=False, help_text="Please enter the vegetables")
-    typeofmeat = forms.CharField(required=False, help_text="Please enter the type of meat")
+    typeofmeat = forms.CharField(required=False, help_text="Please enter the type of meat", label="Type of Meat")
     meal = MealForm
 
     class Meta:

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from foodies.models import Category, Meal, User, UserProfile, Request, Ingredient
 from django.urls import reverse
-from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, mealIngredientMultiForm, UserUpdateForm, UserProfileUpdateForm, RequestAMealForm
+from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, IngredientsForm, UserUpdateForm, UserProfileUpdateForm, RequestAMealForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -66,26 +66,25 @@ def add_category(request):
 
 @login_required
 def add_meal(request):
-    form = mealIngredientMultiForm
 
     if request.method == 'POST':
-        ingredientsMeal = mealIngredientMultiForm(request.POST)
+        meal_form = MealForm(request.POST)
 
-        if ingredientsMeal.is_valid():
-
-            ingredient = ingredientsMeal['ingredients'].save(commit=False)
-            meal = ingredientsMeal['meal'].save(commit=False)
-
-            ingredient.save()
+        if meal_form.is_valid():
+            
+            meal = meal_form.save(commit=False)
+            user_profile = UserProfile.objects.filter(user=request.user).first()
+            meal.user = user_profile
             meal.save()
 
             return redirect('/user-profile/meals/')
         else:
-            return HttpResponse("Something went wrong")
+            messages.error(request, meal_form.errors)
+            return HttpResponseRedirect('/add_meal/')
     else:
-        print(form.errors)
+        meal_form = MealForm()
 
-    return render(request, 'foodies/add_meal.html', {'form': form})
+    return render(request, 'foodies/add_meal.html', {'meal_form': meal_form})
 
 
 def register(request):
@@ -144,6 +143,7 @@ def register(request):
             # registration was successful.
             registered = True
             login(request, user)
+            return redirect('foodies:index')
         else:
             # Invalid form or forms - mistakes or something else?
             # Print problems to the terminal.
@@ -304,7 +304,6 @@ def user_meals(request):
     for e in user_meals:
         meals_array.append({
                     'title': e.title,
-                    'url': e.url,
                     'price': e.price,
                     'views': e.views,
                     'category': e.category,
@@ -324,12 +323,14 @@ def user_requests(request):
         return None
 
     user_profile = UserProfile.objects.filter(user=user)[0]
-    user_requests = Request.objects.filter(id=user_profile.id)
+    print(user_profile.id)
+    user_requests = Request.objects.filter(cooker=user_profile.id)
 
     requests_array = []
 
     for e in user_requests:
         requests_array.append({
+            'id': e.id,
             'title': e.title,
             'date': e.date,
             'name': e.name,
@@ -361,10 +362,10 @@ def request_meal(request):
         print(request_form.is_valid())
         if request_form.is_valid():
             form = request_form.save(commit=False)
-            form.dinner = 1
-            form.cooker = 2
+            form.cooker = 1
+            form.dinner = 2
             request_form.save()
-            return redirect(reverse('foodies:request_meal'))
+            return redirect(reverse('foodies:user_requests'))
         else:
             messages.error(request, request_form.errors)
             return HttpResponseRedirect('/request')
@@ -395,14 +396,15 @@ def search(request):
 
     return render(request, "foodies/search.html", context)
 
-def delete_request(request, request_id):
-    request_id = int(request_id)
+def delete_request(request, meal_id):
     try:
-        select_request = Request.objects.get(id=request_id)
+        select_request = Request.objects.get(id=meal_id)
     except Request.DoesNotExist:
-        return redirect('foodies/user_requests.html')
+        return redirect('foodies:user_requests')
+    
     select_request.delete()
-    return redirect('foodies/user_requests.html')
+
+    return redirect('foodies:user_requests')
 
 def contact_reply(request):
     return render(request, 'foodies/contact_reply.html')
