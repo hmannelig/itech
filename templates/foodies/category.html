@@ -14,7 +14,7 @@
     {% if category %}
     <h1>{{ category.name }}</h1>
     
-     <strong>Select a meal to add in the basket</strong>
+     <strong>View the below meals and make a meal request</strong>
     {% if meals %}
     <ul>
         {% for meal in meals %}
@@ -28,5 +28,13 @@
     {% else %}
     The specified meal category does not exist.
     {% endif %}
+    
+    <i class="fas fa-utensils">
+        <a href="{% url 'foodies:request_meal' %}">Request a meal</a>
+        </i>
+        
 </div>
+
+
+   
 {% endblock %} 

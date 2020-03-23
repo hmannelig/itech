@@ -1,5 +1,6 @@
-{% extends 'foodies/user_profile_base.html' %} 
-{% load static %} 
+{% extends 'foodies/user_profile_base.html' %}
+{% load static %}
+{% load foodies_template_tags %}
 
 {% block title_block %} 
     User Meals 
@@ -10,8 +11,7 @@
 <div class="accordion" id="accordionExample">
     <!-- header -->
     <div class="card">
-    	<i class="fas fa-utensils">
-        <a href="{% url 'foodies:request' %}">Request a meal</a></i>
+    	<i class="fas fa-utensils"><a href="{% url 'foodies:request_meal' %}">Request a meal</a></i>
     </div>
     <!-- / header -->
 
@@ -28,6 +28,7 @@
             <div class="card-body">Message: {{ each_request.message }}</div>
             <div class="card-body">Dinner: {{ each_request.dinner }}</div>
             <div class="card-body">Cooker: {{ each_request.cooker }}</div>
+            <a class="btn btn-danger" href="{% url 'foodies:delete_meal' %}">Delete</a>
         </div>
     </div>
     {% endfor %}
