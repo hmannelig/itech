@@ -711,7 +711,6 @@ def public_user_profile(request,id):
         'isBestCooker': userProfile.isBestCooker,
     }
 
-
     user_meals = Meal.objects.filter(user=userProfile)
 
     return render(request, 'foodies/user_profile_public.html', context={'id': id,
