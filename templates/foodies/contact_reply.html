@@ -1,0 +1,20 @@
+{% extends 'foodies/base.html' %}
+{% load staticfiles %}
+
+{% load crispy_forms_tags %}
+
+{% block title_block %}
+    Reply on contact us
+{% endblock %}
+
+{% block body_block %}
+<div class="container"> 
+<div class="col-sm-6 ">
+
+ <strong>Thank you for contacting Foodies!</strong>
+ <strong>We will get back to you as soon as possible</strong>
+  <a href="{% url 'foodies:index' %}">Return to Home.</a><br />
+ </div> 
+
+ </div>
+    {% endblock %}

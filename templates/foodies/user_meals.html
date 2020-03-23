@@ -8,43 +8,37 @@ User Meals
 {% block profile_block %}
 
 	<div class="card">
-	<div class="card-header" id="headingOne">
-			<h3 class="mb-0">
-		<i class="fas fa-utensils"> <a href="{% url 'foodies:add_meal' %}">  Add a new meal</a>
-		</i>
-		</h3>
-	</div>
-	
-	
-	
-	<div class="card">
 		<div class="card-header" id="headingOne">
-
- 				{% csrf_token %} 			
-            	{% for row in meals_info %}
-            		<div class="text-right">
-								<small><a href="{% url 'foodies:add_meal' %}"> Edit/Delete Meal</a></small>
-								</div>
-            		<div class="row">
-            			<div class="text-left">
-							<h3>Meal: {{ row.title }} </h3>
-								
-          				  	<h6>Category: {{ row.category }}</h6> 
-          				  	
-           					<h6>URL: {{ row.url }} </h6> 
-            				<h6>Price: {{ row.price }}</h6> 
-            				<h6>Views: {{ row.views }}</h6> 
-            			</div>
-           			 </div>
-      
-            
-            {% endfor %}   
-        	
-		
+			<button class="btn btn-primary mb-0">
+				<i class="fas fa-utensils"> <a href="{% url 'foodies:add_meal' %}">  Add a new meal</a></i>
+			</button>
 		</div>
 	</div>
-
-
+	
+	<div class="user_meals_list">
+		<ul class="list-group">
+			{% for row in meals_info %}
+			<li class="list-group-item">
+				<div class="row w-100 d-flex align-items-center">
+					<div class="col-sm-3">
+						<div class="meal_picture background-image cover d-inline-block w-100" style="background-image:url({{ MEDIA_URL }}{{ row.picture }});"></div>
+					</div>
+					<div class="col-sm-6">
+						<h3 class="mb-1"><strong>Title: </strong>{{ row.title }}</h3>
+						<p class="mb-1"><strong>Price: </strong>{{ row.price }}</p>
+						<p class="mb-1"><strong>Category: </strong>{{ row.category }}</p>
+						<p class="mb-1"><strong>Ingredients: </strong>{{ row.ingredients }}</p>
+						<p class="mb-1"><strong>recipe: </strong>{{ row.recipe }}</p>
+					</div>
+					<div class="col-sm-3">
+						<a class="btn btn-success" href="{% url 'foodies:edit_meal' row.id %}">Edit</a>
+						<a class="btn btn-danger" href="{% url 'foodies:delete_meal' row.id %}">Detele</a>
+					</div>
+				</div>
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
 	
 </div>
 

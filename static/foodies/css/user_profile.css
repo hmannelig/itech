@@ -91,3 +91,7 @@
     font-weight: 600;
     color: #0062cc;
 }
+.user_meals_list .meal_picture {
+    height: 150px;
+    width: 150px;
+}

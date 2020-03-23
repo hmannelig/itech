@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from foodies.models import Category, Meal, User, UserProfile, Request, Ingredient
 from django.urls import reverse
-from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, mealIngredientMultiForm, UserUpdateForm, UserProfileUpdateForm, RequestAMealForm
+from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, IngredientsForm, UserUpdateForm, UserProfileUpdateForm, RequestAMealForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -66,31 +66,102 @@ def add_category(request):
 
 @login_required
 def add_meal(request):
-    form = mealIngredientMultiForm
+
+    profile_title = "Add a Meal"
+
+    try:
+        user = User.objects.get(username=request.user.username)
+    except User.DoesNotExist:
+        return None
+
+    userProfile = UserProfile.objects.filter(user=user).first()
+    user_info = {
+        'id': userProfile.id,
+        'email': user.email,
+        'isCooker': userProfile.isCooker,
+        'isDinner': userProfile.isDinner
+    }
+
+    if user_info.get('isCooker') is False:
+        return HttpResponseRedirect(reverse('foodies:user_profile'))
 
     if request.method == 'POST':
-        ingredientsMeal = mealIngredientMultiForm(request.POST)
+        meal_form = MealForm(request.POST, request.FILES)
 
-        if ingredientsMeal.is_valid():
+        if meal_form.is_valid():
+            
+            meal = meal_form.save(commit=False)
+            user_profile = UserProfile.objects.filter(user=request.user).first()
+            meal.user = user_profile
+            
+            if 'picture' in request.FILES:
+                meal.picture = request.FILES['picture']
 
-            ingredient = ingredientsMeal['ingredients'].save(commit=False)
-            meal = ingredientsMeal['meal'].save(commit=False)
-
-            ingredient.save()
             meal.save()
 
-            # cleaned_data = ingredientsMeal['meal'].cleaned_data
-            # cleaned_data = cleaned_data['category'].name.lower()
-            # category = '/category/' + cleaned_data + '/'
-
-            return redirect('foodies/add_meal.html')
+            return redirect('foodies:user_meals')
         else:
-            return HttpResponse("Something went wrong")
+            messages.error(request, meal_form.errors)
+            return HttpResponseRedirect(reverse('foodies:add_meal'))
     else:
-        print(form.errors)
+        meal_form = MealForm()
 
-    return render(request, 'foodies/add_meal.html', {'form': form})
+    return render(request, 'foodies/add_meal.html', {'meal_form': meal_form, 'profile_title':profile_title, 'user_info': user_info})
 
+@login_required
+def edit_meal(request, meal_id):
+
+    try:
+        user = User.objects.get(username=request.user.username)
+    except User.DoesNotExist:
+        return None
+
+    userProfile = UserProfile.objects.filter(user=user).first()
+    user_info = {
+        'id': userProfile.id,
+        'email': user.email,
+        'isCooker': userProfile.isCooker,
+        'isDinner': userProfile.isDinner
+    }
+
+    if user_info.get('isCooker') is False:
+        return HttpResponseRedirect(reverse('foodies:user_profile'))
+
+    try:
+        meal = Meal.objects.get(id=meal_id)
+    except User.DoesNotExist:
+        messages.error(request, 'The meal does not exists')
+        return HttpResponseRedirect(reverse('foodies:edit_meal', kwargs={'meal_id':meal_id}))
+
+    meal_form = MealForm(request.POST or None, instance = meal)
+
+    if request.method == 'POST':
+        if meal_form.is_valid():
+
+            meal_form.save()
+            meal = meal_form.save(commit=False)
+
+            if 'picture' in request.FILES:
+                meal.picture = request.FILES['picture']
+                
+            meal.save()
+            return HttpResponseRedirect(reverse('foodies:user_meals'))
+
+        else:
+            print(meal_form.errors)
+            messages.error(request, meal_form.errors)
+            return HttpResponseRedirect(reverse('foodies:edit_meal', kwargs={'meal_id':meal_id}))
+        
+    return render(request, 'foodies/edit_meal.html', {'meal_form':meal_form, 'meal_id': meal_id, 'user_info': user_info})
+
+def delete_meal(request, meal_id):
+    try:
+        meal = Meal.objects.get(id=meal_id)
+    except Request.DoesNotExist:
+        return redirect('foodies:user_meals')
+    
+    meal.delete()
+    return redirect('foodies:user_meals')
 
 def register(request):
     # A boolean value for telling the template
@@ -148,6 +219,7 @@ def register(request):
             # registration was successful.
             registered = True
             login(request, user)
+            return redirect('foodies:index')
         else:
             # Invalid form or forms - mistakes or something else?
             # Print problems to the terminal.
@@ -257,6 +329,19 @@ def user_profile_update(request):
     try:
         user = User.objects.get(username=request.user.username)
     except User.DoesNotExist:
+        return None
+
+    userProfile = UserProfile.objects.filter(user=user).first()
+    user_info = {
+        'id': userProfile.id,
+        'email': user.email,
+        'isCooker': userProfile.isCooker,
+        'isDinner': userProfile.isDinner
+    }
+
+    try:
+        user = User.objects.get(username=request.user.username)
+    except User.DoesNotExist:
         messages.error(request, 'The user does not exists')
         return HttpResponseRedirect('/user-profile')
     
@@ -281,12 +366,17 @@ def user_profile_update(request):
 
         if 'picture' in request.FILES:
             profile.picture = request.FILES['picture']
+
         profile.save()
         return redirect('/user-profile')
 
+    else:
+        print(user_form.errors, user_profile_form.errors)
+        
+
     return render(request, 'foodies/user_profile_update.html',
                             context={
-                                        'user_info': request.user,
+                                        'user_info': user_info,
                                         'profile_title': profile_title,
                                         'user_form': user_form, 
                                         'user_profile_form': user_profile_form
@@ -295,54 +385,79 @@ def user_profile_update(request):
 
 @login_required
 def user_meals(request):
+
+    profile_title = "User Meals"
+
     try:
         user = User.objects.get(username=request.user.username)
     except User.DoesNotExist:
         return None
+
+    userProfile = UserProfile.objects.filter(user=user).first()
+    user_info = {
+        'id': userProfile.id,
+        'email': user.email,
+        'isCooker': userProfile.isCooker,
+        'isDinner': userProfile.isDinner
+    }
+
+    if user_info.get('isCooker') is False:
+        return HttpResponseRedirect(reverse('foodies:user_profile'))
 
     user_profile = UserProfile.objects.filter(user=user)[0]
     user_meals = Meal.objects.filter(user=user_profile)
 
-    meals_array=[]
 
-    for e in user_meals:
-        meals_array.append({
-                    'title': e.title,
-                    'url': e.url,
-                    'price': e.price,
-                    'views': e.views,
-                    'category': e.category,
-                })
-
-    profile_title = "User Meals"
-
-    return render(request, 'foodies/user_meals.html', context={'profile_title': profile_title,
-                                                               'meals_info': meals_array})
+    return render(request, 'foodies/user_meals.html', context={'user_info':user_info,
+                                                               'profile_title': profile_title,
+                                                               'meals_info': user_meals})
 
 
 @login_required
 def user_requests(request):
+
+    profile_title = "User Requests"
+
     try:
         user = User.objects.get(username=request.user.username)
     except User.DoesNotExist:
         return None
 
-    user_profile = UserProfile.objects.filter(user=user)[0]
-    user_requests = Request.objects.filter(id=user_profile.id)
+    user_profile = UserProfile.objects.filter(user=user).first()
+    user_requests = Request.objects.filter(cooker=user_profile.id)
+    user_info = {
+        'id': user_profile.id,
+        'email': user.email,
+        'isCooker': user_profile.isCooker,
+        'isDinner': user_profile.isDinner
+    }
 
     requests_array = []
 
     for e in user_requests:
         requests_array.append({
+            'id': e.id,
             'title': e.title,
             'date': e.date,
             'name': e.name,
             'email': e.email
         })
 
-    profile_title = "User Requests"
 
-    return render(request, 'foodies/user_requests.html', context={'profile_title': profile_title, 'requests_array': requests_array})
+    return render(request, 'foodies/user_requests.html', context={
+                                                                    'profile_title': profile_title,
+                                                                    'requests_array': requests_array, 
+                                                                    'user_info': user_info})
+@login_required
+def delete_request(request):
+    try:
+        select_request = Request.objects.get(id=delete_req)
+    except Request.DoesNotExist:
+        return redirect('foodies:user_requests')
+    
+    select_request.delete()
+    return redirect('foodies:user_requests')
+
 
 def reviews(request):
     return render(request, 'foodies/reviews.html')
@@ -365,10 +480,10 @@ def request_meal(request):
         print(request_form.is_valid())
         if request_form.is_valid():
             form = request_form.save(commit=False)
-            form.dinner = 1
-            form.cooker = 2
+            form.cooker = 1
+            form.dinner = 2
             request_form.save()
-            return redirect(reverse('foodies:request_meal'))
+            return redirect(reverse('foodies:user_requests'))
         else:
             messages.error(request, request_form.errors)
             return HttpResponseRedirect('/request')
@@ -399,11 +514,5 @@ def search(request):
 
     return render(request, "foodies/search.html", context)
 
-def delete_request(request, request_id):
-    request_id = int(request_id)
-    try:
-        select_request = Request.objects.get(id=request_id)
-    except Request.DoesNotExist:
-        return redirect('foodies/user_requests.html')
-    select_request.delete()
-    return redirect('foodies/user_requests.html')
+def contact_reply(request):
+    return render(request, 'foodies/contact_reply.html')
