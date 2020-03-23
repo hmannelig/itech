@@ -412,7 +412,6 @@ def user_requests(request):
         return None
 
     user_profile = UserProfile.objects.filter(user=user).first()
-    user_requests = Request.objects.filter(cooker=user_profile.id)
     user_info = {
         'id': user_profile.id,
         'email': user.email,
@@ -501,6 +500,3 @@ def delete_request(request, meal_id):
     
     select_request.delete()
     return redirect('foodies:user_requests')
-
-def contact_reply(request):
-    return render(request, 'foodies/contact_reply.html')
