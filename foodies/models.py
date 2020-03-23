@@ -10,7 +10,7 @@ class UserProfile(models.Model):
     city = models.CharField(max_length=100, blank=True)
     specialty = models.CharField(max_length=100, blank=True)
     phone = models.CharField(max_length=30, blank=True)
-    personalDescription = models.CharField(max_length=200,  blank=True, verbose_name="Personal Description")
+    personalDescription = models.TextField(max_length=200, blank=True, verbose_name="Personal Description")
     isCooker = models.BooleanField(default=False, verbose_name="Cooker")
     isDinner = models.BooleanField(default=False, verbose_name="Diner")
     isBestCooker = models.BooleanField(default=False, verbose_name="Best Cooker")
