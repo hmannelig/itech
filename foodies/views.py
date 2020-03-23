@@ -597,10 +597,10 @@ def add_review(request):
             form = review.save(commit=False)
             form.user = request.user.username
             review.save()
-            return redirect(reverse('foodies:user_requests'))
+            return redirect(reverse('foodies:user_reviews'))
         else:
             messages.error(request, review.errors)
-            return HttpResponseRedirect('/request')
+            return HttpResponseRedirect('/user_reviews')
     else:
         review = ReviewsForm()
 
@@ -611,8 +611,8 @@ def add_review(request):
 def register_diners(request):
     return render(request, 'foodies/register_diners.html')
 
-def reviews(request):
-    return render(request, 'foodies/reviews.html')
+def user_reviews(request):
+    return render(request, 'foodies/user_reviews.html')
 
 
 def register_cookers(request):
@@ -695,8 +695,8 @@ def public_user_profile(request,id):
         'isBestCooker': userProfile.isBestCooker,
     }
 
-    if userProfile.get('isCooker') is False:
-        user_meals = Meal.objects.filter(user=userProfile)
+
+    user_meals = Meal.objects.filter(user=userProfile)
 
     return render(request, 'foodies/user_profile_public.html', context={'id': id,
                                                                  'profile_title': profile_title,
