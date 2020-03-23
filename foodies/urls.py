@@ -37,4 +37,5 @@ urlpatterns = [
     path('contact_reply/', views.contact_reply, name='contact_reply'),
     path('user-profile/meals/<int:meal_id>/meal-details/', views.show_meal_details, name='meal_details'),
     path('public-user-profile/<int:id>/', views.public_user_profile, name='public_user_profile'),  # /public profile url
+    path('user-profile/add-review/', views.add_review, name='add_review'),  #/add_review/
 ]

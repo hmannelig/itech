@@ -88,7 +88,6 @@ class UserUpdateForm(forms.ModelForm):
 
 
 class UserProfileUpdateForm(forms.ModelForm):
-
     class Meta:
         model = UserProfile
         fields = ('name', 'picture', 'address', 'phone', 'personalDescription', 'isCooker', 'isDinner',)
@@ -103,7 +102,11 @@ class AllergiesForm(forms.ModelForm):
         model = Allergy
         fields = ('name',)
 
-class ReviewsForm(forms.Review):
+class ReviewsForm(forms.ModelForm):
+    title = forms.CharField(required=True, help_text="Reviews title.", label="Title")
+    rating = forms.IntegerField(required=True, help_text="Rate the cooker", label="Rating")
+    content = forms.CharField(required=True, help_text="Rating description", label="Description")
+
     class Meta:
         model = Review
-        fields = ('title', 'date', 'rating', )
+        fields = ('title', 'date', 'rating','content','user')
