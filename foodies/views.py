@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from foodies.models import Category, Meal, User, UserProfile, Request, Ingredient, Allergy
+from foodies.models import Category, Meal, User, UserProfile, Request, Ingredient, Allergy, Review
 from django.urls import reverse
 from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, IngredientsForm, UserUpdateForm, UserProfileUpdateForm, RequestAMealForm, AllergiesForm, ReviewsForm
 from django.contrib.auth import authenticate, login, logout
@@ -612,7 +612,23 @@ def register_diners(request):
     return render(request, 'foodies/register_diners.html')
 
 def user_reviews(request):
-    return render(request, 'foodies/user_reviews.html')
+    profile_title = "User reviews"
+
+    try:
+        user = User.objects.get(username=request.user.username)
+    except User.DoesNotExist:
+        return None
+
+    user_reviews = Review.objects.filter(user=user)
+
+    all_reviews = []
+    for review in user_reviews:
+        all_reviews.append({ 'title': review.title,
+                            'date': review.date,
+                            'rating': review.rating,
+                            'content': review.content})
+
+    return render(request, 'foodies/user_reviews.html', all_reviews)
 
 
 def register_cookers(request):
