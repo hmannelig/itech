@@ -1,13 +1,13 @@
 {% extends 'foodies/base.html' %}
-{% load static %} 
 
-{% block title_block %} 
-    User Profile 
-{% endblock %} 
+{% load static %}
 
-{% block profile_block %}
+{% block title_block %}
+    About Foodies   
+{% endblock %}
 
-<<div class="emp-profile mt-0">
+{% block body_block %}
+<div class="emp-profile mt-0">
     <div class="row">
         <div class="col-md-4">
             <div class="profile-img">
@@ -30,9 +30,6 @@
                 <p class="proile-rating">RANKINGS : <span>8/10</span></p>
             </div>
         </div>
-        <div class="col-md-2">
-            <a class="btn btn-default" href="{% url 'foodies:user_profile_update' %}">Edit Profile</a>
-        </div>
     </div>
     <div class="row mt-4">
         <div class="col-sm-12 mb-3">
@@ -42,6 +39,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Reviews</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="meal-tab" data-toggle="tab" href="#meal" role="tab" aria-controls="meal" aria-selected="false">Meals</a>
                 </li>
             </ul>
         </div>
@@ -54,14 +54,6 @@
                         </div>
                         <div class="col-md-6">
                             <p>{{ user_info.email }}</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label>Phone</label>
-                        </div>
-                        <div class="col-md-6">
-                            <p>{{ user_info.phone }}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -84,54 +76,41 @@
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="row">
                         <div class="col-md-6">
-                            <label>Experience</label>
-                        </div>
-                        <div class="col-md-6">
-                            <p>Expert</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label>Hourly Rate</label>
-                        </div>
-                        <div class="col-md-6">
-                            <p>10$/hr</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label>Total Projects</label>
-                        </div>
-                        <div class="col-md-6">
-                            <p>230</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label>English Level</label>
-                        </div>
-                        <div class="col-md-6">
-                            <p>Expert</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label>Availability</label>
-                        </div>
-                        <div class="col-md-6">
-                            <p>6 months</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label>Your Bio</label><br/>
-                            <p>Your detail description</p>
-                        </div>
+                            <label>User Reviews</label>
                     </div>
                 </div>
             </div>
+              <div class="tab-pane fade" id="meal" role="tabpanel" aria-labelledby="meal-tab">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>User Meals</label>
+                         		<div class="user_meals_list">
+									<ul class="list-group">
+									{% for row in user_meals %}
+										<li class="list-group-item">
+											<div class="row w-100 d-flex align-items-center">
+												<div class="col-sm-3">
+													<div class="meal_picture background-image cover d-inline-block w-100" style="background-image:url({{ MEDIA_URL }}{{ row.picture }});"></div>
+												</div>
+											<div class="col-sm-6">
+												<h3 class="mb-1"><strong>Title: </strong>{{ row.title }}</h3>
+												<p class="mb-1"><strong>Price: </strong>{{ row.price }}</p>
+												<p class="mb-1"><strong>Category: </strong>{{ row.category }}</p>
+												<p class="mb-1"><strong>Ingredients: </strong>{{ row.ingredients }}</p>
+												<p class="mb-1"><strong>recipe: </strong>{{ row.recipe }}</p>
+											</div>
+											</div>
+										</li>
+									{% endfor %}
+									</ul>
+								</div>
+                   	 </div>
+                </div>
+            </div>
+            
+            
         </div>
     </div>
 </div>
-
+</div>
 {% endblock %}
