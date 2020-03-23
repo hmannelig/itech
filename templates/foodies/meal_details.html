@@ -7,9 +7,10 @@
 
 {% block body_block %}
 <div class="container">
-<div class="emp-profile mt-0">
+<div class="emp-profile mt-6">
     <div class="row">
         <div class="col-md-4">
+        
             <div class="profile-img">
                 {% if meal_details.picture %}
                 <img src="{{ MEDIA_URL }}{{ meal_details.picture }}" alt=""/>
@@ -19,10 +20,13 @@
             </div>
         </div>
         <div class="col-md-6">
+        
             <div class="profile-head">
-                <h5 id="user-name">{{ meal_details.title }}</h5>
-                <p class="proile-rating">RANKINGS : <span>10/10</span></p>
+                <h1 id="user-name">{{ meal_details.title }}</h1>
             </div>
+            
+            <div class="bottomright">RANKINGS : <span>10/10</span> </div>
+             
         </div>
         <div class="col-md-2">
             <a class="btn btn-success" href="{% url 'foodies:request_meal' %}">Request Meal</a>
@@ -77,49 +81,10 @@
                 </div>
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="row">
-                        <div class="col-md-6">
-                            <label>Experience</label>
-                        </div>
-                        <div class="col-md-6">
-                            <p>Expert</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label>Hourly Rate</label>
-                        </div>
-                        <div class="col-md-6">
-                            <p>10$/hr</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label>Total Projects</label>
-                        </div>
-                        <div class="col-md-6">
-                            <p>230</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label>English Level</label>
-                        </div>
-                        <div class="col-md-6">
-                            <p>Expert</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label>Availability</label>
-                        </div>
-                        <div class="col-md-6">
-                            <p>6 months</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label>Your Bio</label><br/>
-                            <p>Your detail description</p>
+                      
+                            <h5>{{ meal_details.recipe }}</h5>
+                   
+
                         </div>
                     </div>
                 </div>
@@ -127,6 +92,6 @@
         </div>
     </div>
 </div>
-</div>
+
 
 {% endblock %}
