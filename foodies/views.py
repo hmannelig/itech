@@ -513,3 +513,6 @@ def search(request):
             }
 
     return render(request, "foodies/search.html", context)
+
+def contact_reply(request):
+    return render(request, 'foodies/contact_reply.html')
