@@ -49,10 +49,3 @@ header .navbar-dark .navbar-brand {
 .cover {
 	background-size: cover;
 }
-
-
-.btn-primary {
-    color: #fff;
-    background-color: #cc0000;
-    border-color:#cc0000;
-}
