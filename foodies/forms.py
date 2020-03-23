@@ -91,7 +91,7 @@ class UserProfileUpdateForm(forms.ModelForm):
 
     class Meta:
         model = UserProfile
-        fields = ('name', 'picture', 'address', 'phone', 'personalDescription', 'isCooker', 'isDinner',)
+        fields = ('name', 'picture', 'address', 'city', 'specialty', 'phone', 'personalDescription', 'isCooker', 'isDinner',)
 
 class RequestAMealForm(forms.ModelForm):
     class Meta:
@@ -103,7 +103,7 @@ class AllergiesForm(forms.ModelForm):
         model = Allergy
         fields = ('name',)
 
-class ReviewsForm(forms.Review):
-    class Meta:
-        model = Review
-        fields = ('title', 'date', 'rating', )
+# class ReviewsForm(forms.Review):
+#     class Meta:
+#         model = Review
+#         fields = ('title', 'date', 'rating',)
