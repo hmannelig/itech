@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block body_block %}
+<section class="container">
 <div class="col-sm-8">
 <div class="emp-profile mt-9">
     <div class="row">
@@ -82,15 +83,12 @@
                 </div>
             </div>
               <div class="tab-pane fade" id="meal" role="tabpanel" aria-labelledby="meal-tab">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label>User Meals</label>
+                        <div class="row w-1000 d-flex align-items-center">
                          		<div class="user_meals_list">
 									<ul class="list-group">
 									{% for row in user_meals %}
 										<li class="list-group-item">
-											<div class="row w-100 d-flex align-items-center">
-												<div class="col-sm-3">
+												<div class="col-sm-6	">
 													<div class="meal_picture background-image cover d-inline-block w-100" style="background-image:url({{ MEDIA_URL }}{{ row.picture }});"></div>
 												</div>
 											<div class="col-sm-6">
@@ -99,18 +97,22 @@
 												<p class="mb-1"><strong>Category: </strong>{{ row.category }}</p>
 												<p class="mb-1"><strong>Ingredients: </strong>{{ row.ingredients }}</p>
 												<p class="mb-1"><strong>recipe: </strong>{{ row.recipe }}</p>
-											</div>
+												{% if user.is_authenticated %}   
+    												<i class="fas fa-utensils">
+        												<a href="{% url 'foodies:request_meal' %}">Request a meal</a>
+        											</i>
+ 												{% endif %} 
 											</div>
 										</li>
 									{% endfor %}
 									</ul>
 								</div>
                    			</div>
-                		</div>
             		</div>
           		</div>
     		</div>
 		</div>
 	</div>
 </div>
+</section>
 {% endblock %}
