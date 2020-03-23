@@ -501,3 +501,6 @@ def delete_request(request, meal_id):
     
     select_request.delete()
     return redirect('foodies:user_requests')
+
+def contact_reply(request):
+    return render(request, 'foodies/contact_reply.html')

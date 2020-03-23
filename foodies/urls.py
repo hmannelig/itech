@@ -28,4 +28,6 @@ urlpatterns = [
     path('contact-us/', views.contact_us, name = 'contact_us'), #/contact-us
     path('request/', views.request_meal, name='request_meal'),  # /request a meal
     path('search/', views.search, name='search'),
+    # path('delete_meal/', views.delete_request, name='delete_meal'),
+    path('contact_reply/', views.contact_reply, name='contact_reply'),
 ]

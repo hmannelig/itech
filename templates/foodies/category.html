@@ -28,11 +28,12 @@
     {% else %}
     The specified meal category does not exist.
     {% endif %}
-    
+ 
+ {% if user.is_authenticated %}   
     <i class="fas fa-utensils">
         <a href="{% url 'foodies:request_meal' %}">Request a meal</a>
         </i>
-        
+  {% endif %}      
 </div>
 
 
