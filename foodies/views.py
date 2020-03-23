@@ -239,6 +239,7 @@ def user_profile(request):
         'picture': userProfile.picture,
         'name': userProfile.name,
         'address': userProfile.address,
+        'phone': userProfile.phone,
         'personalDescription': userProfile.personalDescription,
         'isCooker': userProfile.isCooker,
         'isDinner': userProfile.isDinner,
@@ -257,49 +258,42 @@ def user_profile_update(request):
 
     profile_title = "Update User Profile"
 
-    if request.method == 'POST':
-        user_form = UserUpdateForm(request.POST)
-        profile_form = UserProfileUpdateForm(request.POST)
+    try:
+        user = User.objects.get(username=request.user.username)
+    except User.DoesNotExist:
+        messages.error(request, 'The user does not exists')
+        return HttpResponseRedirect('/user-profile')
+    
+    try:
+        userProfile = UserProfile.objects.get(user=user)
+    except User.DoesNotExist:
+        messages.error(request, 'The user does not exists')
+        return HttpResponseRedirect('/user-profile')
+        
 
-        if user_form.is_valid() and profile_form.is_valid():
-            data = request.POST.copy()
-            if data.get('isCooker') == None and data.get('isDinner') == None:
-                messages.error(request, 'Invalid: Check at least 1 checkbox for Cooker or Dinner or both.')
-                return HttpResponseRedirect('/register')
+    user_form = UserUpdateForm(request.POST or None, instance = user)
+    user_profile_form = UserProfileUpdateForm(request.POST or None, instance = userProfile)
 
-            user = user_form.save()
+    if user_form.is_valid() and user_profile_form.is_valid():
 
-            user.set_password(user.password)
-            user.save()
+        if User.objects.filter(email=request.POST.get('email')).exists() and request.user.email != request.POST.get('email') :
+            messages.error(request, 'The email is taken by another user')
+            return HttpResponseRedirect('/user-profile/update/')
 
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            profile.name = data.get('name')
+        user_form.save()
+        profile = user_profile_form.save(commit=False)
 
-            if data.get('isCooker') is not None:
-                profile.isCooker = True
-
-            if data.get('isDiner') is not None:
-                profile.isDinner = True
-
-            if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']
-
-            profile.save()
-
-            login(request, user)
-        else:
-            print(user_form.errors, profile_form.errors)
-    else:
-        user_form = UserUpdateForm(request.user)
-        profile_form = UserProfileUpdateForm()
+        if 'picture' in request.FILES:
+            profile.picture = request.FILES['picture']
+        profile.save()
+        return redirect('/user-profile')
 
     return render(request, 'foodies/user_profile_update.html',
                             context={
                                         'user_info': request.user,
                                         'profile_title': profile_title,
                                         'user_form': user_form, 
-                                        'profile_form': profile_form
+                                        'user_profile_form': user_profile_form
                                     })
     
 
