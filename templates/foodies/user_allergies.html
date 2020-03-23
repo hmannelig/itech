@@ -1,0 +1,38 @@
+{% extends 'foodies/user_profile_base.html' %} 
+{% load static %} 
+
+{%block title_block %} 
+User Meals 
+{% endblock %} 
+
+{% block profile_block %}
+
+	<div class="card">
+		<div class="card-header" id="headingOne">
+			<button class="btn btn-primary mb-0">
+				<i class="fas fa-utensils"> <a href="{% url 'foodies:add_allergy' %}"> Add Allergy</a></i>
+			</button>
+		</div>
+	</div>
+	
+	<div class="user_meals_list">
+		<ul class="list-group">
+            {% for allergy in allergies %}
+			<li class="list-group-item">
+				<div class="row w-100 d-flex align-items-center">
+					<div class="col-sm-9">
+						<h3 class="mb-1">{{ allergy.name }}</h3>
+					</div>
+					<div class="col-sm-3">
+						<a class="btn btn-success" href="{% url 'foodies:edit_allergy' allergy.id %}">Edit</a>
+						<a class="btn btn-danger" href="{% url 'foodies:delete_allergy' allergy.id %}">Detele</a>
+					</div>
+				</div>
+			</li>
+            {% endfor %}
+		</ul>
+	</div>
+	
+</div>
+
+{% endblock %}

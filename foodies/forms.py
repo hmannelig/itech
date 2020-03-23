@@ -2,7 +2,7 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from betterforms.multiform import MultiModelForm
-from foodies.models import Meal, Category, UserProfile, Ingredient, Request
+from foodies.models import Meal, Category, UserProfile, Ingredient, Request, Allergy
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
@@ -91,9 +91,14 @@ class UserProfileUpdateForm(forms.ModelForm):
 
     class Meta:
         model = UserProfile
-        fields = ('name', 'picture', 'address', 'phone', 'personalDescription', 'isCooker', 'isDinner')
+        fields = ('name', 'picture', 'address', 'phone', 'personalDescription', 'isCooker', 'isDinner',)
 
 class RequestAMealForm(forms.ModelForm):
     class Meta:
         model = Request
-        fields = ('title', 'date', 'name', 'email', 'content', 'message')
+        fields = ('title', 'date', 'name', 'email', 'content', 'message',)
+
+class AllergiesForm(forms.ModelForm):
+    class Meta:
+        model = Allergy
+        fields = ('name',)
