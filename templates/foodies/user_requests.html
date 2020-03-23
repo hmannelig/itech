@@ -16,24 +16,24 @@
     	</h3>
     </div>
     <!-- / header -->
-
-    {% for each_request in requests_array %}
-    <div class="card">
-        <div class="card-header" id="headingOne">
-            <h2 class="mb-0"><button class="btn btn-link" type="button" data-toggle="collapse" data-target="#each_request.title" aria-expanded="true" aria-controls="collapseOne">Previous meal #1</button></h2>
-        </div>
-        <div id="each_request.title" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-            <div class="card-body">Date: {{ each_request.date }}</div>
-            <div class="card-body">Name: {{ each_request.name }}</div>
-            <div class="card-body">Email: {{ each_request.email }}</div>
-            <div class="card-body">Content: {{ each_request.content }}</div>
-            <div class="card-body">Message: {{ each_request.message }}</div>
-            <div class="card-body">Dinner: {{ each_request.dinner }}</div>
-            <div class="card-body">Cooker: {{ each_request.cooker }}</div>
-            <a class="btn btn-danger" href="{% url 'foodies:delete_meal' each_request.id %}">Delete</a>
-        </div>
-    </div>
-    {% endfor %}
+    <ul class="list-group">
+        {% for row in requests_array %}
+        <li class="list-group-item">
+            <div class="row w-100 d-flex align-items-center">
+                <div class="col-sm-6">
+                    <h3 class="mb-1"><strong>Client: </strong>{{ row.name }}</h3>
+                    <p class="mb-1"><strong>email: </strong>{{ row.email }}</p>
+                    <p class="mb-1"><strong>Content: </strong>{{ row.content }}</p>
+                    <p class="mb-1"><strong>Message: </strong>{{ row.message }}</p>
+                    <p class="mb-1"><strong>recipe: </strong>{{ row.recipe }}</p>
+                </div>
+                <div class="col-sm-3">
+                    
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
 </div>
 
 {% endblock %}

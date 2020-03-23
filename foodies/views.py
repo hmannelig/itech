@@ -154,6 +154,15 @@ def edit_meal(request, meal_id):
         
     return render(request, 'foodies/edit_meal.html', {'meal_form':meal_form, 'meal_id': meal_id, 'user_info': user_info})
 
+def delete_meal(request, meal_id):
+    try:
+        meal = Meal.objects.get(id=meal_id)
+    except Request.DoesNotExist:
+        return redirect('foodies:user_meals')
+    
+    meal.delete()
+    return redirect('foodies:user_meals')
+
 def register(request):
     # A boolean value for telling the template
     # whether the registration was successful.
@@ -406,12 +415,16 @@ def user_meals(request):
 
 @login_required
 def user_requests(request):
+
+    profile_title = "User Requests"
+
     try:
         user = User.objects.get(username=request.user.username)
     except User.DoesNotExist:
         return None
 
     user_profile = UserProfile.objects.filter(user=user).first()
+    user_requests = Request.objects.filter(cooker=user_profile.id)
     user_info = {
         'id': user_profile.id,
         'email': user.email,
@@ -430,12 +443,21 @@ def user_requests(request):
             'email': e.email
         })
 
-    profile_title = "User Requests"
 
     return render(request, 'foodies/user_requests.html', context={
                                                                     'profile_title': profile_title,
                                                                     'requests_array': requests_array, 
                                                                     'user_info': user_info})
+@login_required
+def delete_request(request):
+    try:
+        select_request = Request.objects.get(id=delete_req)
+    except Request.DoesNotExist:
+        return redirect('foodies:user_requests')
+    
+    select_request.delete()
+    return redirect('foodies:user_requests')
+
 
 def reviews(request):
     return render(request, 'foodies/reviews.html')
@@ -491,12 +513,3 @@ def search(request):
             }
 
     return render(request, "foodies/search.html", context)
-
-def delete_request(request, meal_id):
-    try:
-        select_request = Request.objects.get(id=meal_id)
-    except Request.DoesNotExist:
-        return redirect('foodies:user_requests')
-    
-    select_request.delete()
-    return redirect('foodies:user_requests')
