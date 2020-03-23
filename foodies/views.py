@@ -657,5 +657,5 @@ def search(request):
 def contact_reply(request):
     return render(request, 'foodies/contact_reply.html')
 
-def contact_reply(request,user_id):
-    return render(request, 'foodies/userid.html')
+def public_user_profile(request,id):
+    return render(request, 'foodies/public_user_profile.html', {'id': id})
