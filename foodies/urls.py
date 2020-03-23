@@ -26,4 +26,5 @@ urlpatterns = [
     path('add_meal/', views.add_meal, name='add_meal'),  # /add_meal
     path('request/', views.request_meal, name='request_meal'),  # /request a meal
     path('search/', views.search, name='search'),
+    path('delete_meal/<int:request_id>', views.delete_request, name='delete_meal'),
 ]
