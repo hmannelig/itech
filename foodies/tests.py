@@ -37,30 +37,6 @@ FAILURE_FOOTER = f"{os.linesep}"
 #manage.py 78% -> 2 out of 9 - lines 9 and 10: except ImportERror as exc: raise ImportError(
 #populate_foodies 0% -> 33 out of 33
 
-#for manage.py 2 lines //doesn't work
-# class managePYTest(TestCase):
-#     def test_importerror(self):
-#         sys.path.insert(0,'.')
-#         from django.core.management import execute_from_command_line
-#         raise ImportError()
-#     self.assertEqual(response, 'available on your PYTHONPATH environment variable')
-# class SlugLineTest(TestCase):
-#     #works    
-#     def managepy_creation(self):
-#         self.assertRaisesMessage(ImportError, 'available on your PYTHONPATH environment variable')
-    
-
-
-# #Missing adaption in Models & View
-# class CategoryMethodTests(TestCase):
-#     def test_ensure_views_are_positive(self):
-#         """
-#         Ensures the number of views received for a Category are positive or zero.
-#         """
-#         category = Category(name='test', views=-1, likes=0)
-#         category.save()
-#         self.assertEqual((category.views >= 0), True)
-
     #Helper Method for test_index_view_with_categories   
 def add_category(name, views=0, likes=0):
     category = Category.objects.get_or_create(name=name)[0]
@@ -74,7 +50,6 @@ class SlugLineTest(TestCase):
     def test_slug_line_creation(self):
         """
         Checks to make sure that when a category is created, an appropriate slug is created. 
-        Example: "Random Category String" should be "random-category-string".
         """
         category = Category(name='Random Category String')
         category.save()
@@ -126,7 +101,7 @@ class DatabaseConfigurationTests(TestCase):
     #Helper Class
     def gitignore_includes_database(self, path):
         """
-        Checks .gitignore file whether db.sqlite3 database is included
+        Checks if .gitignore file whether db.sqlite3 database is included
         """
         f = open(path, 'r')
         for line in f:
@@ -322,75 +297,6 @@ class RegistrationTests(TestCase):
         #self.assertTrue(re.search(full_title_pattern, content), f"{FAILURE_HEADER}The <title> of the response for 'foodies:register' is not correct. Check your register.html template, and try again.{FAILURE_FOOTER}")
         self.assertTrue(re.search(block_title_pattern, template_str), f"{FAILURE_HEADER}Is register.html using template inheritance? Is your <title> block correct?{FAILURE_FOOTER}")
         
-    # def test_registration_get_response(self):
-    #     """
-    #     Checks the GET response of the registration view. There should be a form with the correct markup.
-    #     """
-    #     request = self.client.get(reverse('foodies:register'))
-    #     content = request.content.decode('utf-8')
-
-    #     self.assertTrue('<h1>Register for Foodies</h1>' in content, f"{FAILURE_HEADER}Can't find the '<h1>Register for Foodies</h1>' header tag in the register template.{FAILURE_FOOTER}")
-    #     #self.assertTrue('Foodies says: <strong>thank you for registering!</strong>' in content, f"{FAILURE_HEADER}When loading the register view with a GET request, we didn't see the required 'Foodies says: <strong>thank you for registering!</strong>'. Check register.html template and try again.{FAILURE_FOOTER}")
-    #     self.assertTrue('enctype="multipart/form-data"' in content, f"{FAILURE_HEADER}In the register.html template: Use 'multipart/form-data' for the <form>'s 'enctype'{FAILURE_FOOTER}")
-    #     self.assertTrue('action="/register/"' in content, f"{FAILURE_HEADER}<form> in register.html doesn't point to the correct URL for registering a user{FAILURE_FOOTER}")
-    #     self.assertTrue('<input type="submit" name="submit" value="Register" />' in content, f"{FAILURE_HEADER}Can't find the markup for the form submission button in register.html. Try again.{FAILURE_FOOTER}")
-    #     #self.assertTrue('<p><label for="id_password">Password:</label> <input type="password" name="password" required id="id_password"></p>' in content, f"{FAILURE_HEADER}Checking a random form field in register.html (password), the markup didn't match what we expected. Is your password form field configured correctly?{FAILURE_FOOTER}")
-    
-    #creates ERROR: <ul class="errorlist"><li>username<ul class="errorlist"
-    # def test_bad_registration_post_response(self):
-    #     """
-    #     Checks the POST response of the registration view. What if we submit a blank form?
-    #     """
-    #     request = self.client.post(reverse('foodies:register'))
-    #     content = request.content.decode('utf-8')
-
-    #     #insert Stuff for assertTrue
-    #     self.assertTrue('' in content)
-    
-    # def test_good_form_creation(self):
-    #     """
-    #     Tests the functionality of the forms.
-    #     Creates a UserProfileForm and UserForm, and attempts to save them.
-    #     Upon completion, we should be able to login with the details supplied.
-    #     """
-    #     user_data = {'username': '111', 'password': '111', 'email': '111@test.com', 'name': '111', 'isDinner': 'True'}
-    #     user_form = forms.UserForm(data=user_data)
-
-    #     #'website': 'http://www.bing.com', 'picture': tempfile.NamedTemporaryFile(suffix=".jpg").name
-    #     user_profile_data = {}
-    #     user_profile_form = forms.UserProfileForm(data=user_profile_data)
-
-    #     self.assertTrue(user_form.is_valid(), f"{FAILURE_HEADER}The UserForm was not valid after entering the required data. Check your implementation of UserForm, and try again.{FAILURE_FOOTER}")
-    #     self.assertTrue(user_profile_form.is_valid(), f"{FAILURE_HEADER}The UserProfileForm was not valid after entering the required data. Check your implementation of UserProfileForm, and try again.{FAILURE_FOOTER}")
-
-    #     user_object = user_form.save()
-    #     user_object.set_password(user_data['password'])
-    #     user_object.save()
-        
-    #     user_profile_object = user_profile_form.save(commit=False)
-    #     user_profile_object.user = user_object
-    #     user_profile_object.save()
-        
-    #     self.assertEqual(len(User.objects.all()), 1, f"{FAILURE_HEADER}We were expecting to see a User object created, but it didn't appear. Check your UserForm implementation, and try again.{FAILURE_FOOTER}")
-    #     self.assertEqual(len(foodies.models.UserProfile.objects.all()), 1, f"{FAILURE_HEADER}We were expecting to see a UserProfile object created, but it didn't appear. Check your UserProfileForm implementation, and try again.{FAILURE_FOOTER}")
-    #     self.assertTrue(self.client.login(username='111', password='111'), f"{FAILURE_HEADER}We couldn't log our sample user in during the tests. Please check your implementation of UserForm and UserProfileForm.{FAILURE_FOOTER}")
-
-#    #Creates ERROR MESSAGE:<ul class="errorlist"><li>name<ul class="errorlist"><li>This field is required.</li></ul></li></ul>
-#     def test_good_registration_post_response(self):
-#         """
-#         Checks the POST response of the registration view.
-#         We should be able to log a user in with new details after this!
-#         """
-#         post_data = {'username': 'webformuser', 'password': 'test123', 'email': 'test@test.com', 'website': 'http://www.bing.com', 'picture': tempfile.NamedTemporaryFile(suffix=".jpg").name}
-#         request = self.client.post(reverse('foodies:register'), post_data)
-#         content = request.content.decode('utf-8')
-
-#         self.assertTrue('<h1>Register for Foodies</h1>' in content, f"{FAILURE_HEADER}We were missing the '<h1>Register for Foodies</h1>' header in the registration response.{FAILURE_FOOTER}")
-#         #self.assertTrue('Foodies says: <strong>thank you for registering!</strong>' in content, f"{FAILURE_HEADER}Upon successful registration, we couldn't find the expected success message. Check your implementation of register.html, and try again.{FAILURE_FOOTER}")
-#         self.assertTrue('<a href="/foodies/">Return to the homepage.</a>' in content, f"{FAILURE_HEADER}After successfully registering, we couldn't find the expected link back to the Foodies homepage.{FAILURE_FOOTER}")
-
-#         self.assertTrue(self.client.login(username='webformuser', password='test123'), f"{FAILURE_HEADER}We couldn't log in the user we created using your registration form. Please check your implementation of the register() view. Are you missing a .save() call?{FAILURE_FOOTER}")
-
     #works
     def test_base_for_register_link(self):
         """
@@ -483,47 +389,6 @@ class LoginTests(TestCase):
         # content = self.client.get(reverse('foodies:index')).content.decode()
         # self.assertTrue('howdy testuser!' in content, f"{FAILURE_HEADER}After user login, we didn't see the expected message welcoming them on the homepage. Check your index.html template.{FAILURE_FOOTER}")
 
-
-# class RestrictedAccessTests(TestCase):
-#     """
-#     Some tests to test the restricted access view. Can users who are not logged in see it?
-#     """
-#     def test_restricted_url_exists(self):
-#         """
-#         Checks to see if the new restricted view exists in the correct place, with the correct name.
-#         """
-#         url = ''
-
-#         try:
-#             url = reverse('foodies:restricted')
-#         except:
-#             pass
-        
-#         self.assertEqual(url, 'foodies:restricted', f"{FAILURE_HEADER}Have you created the foodies:restricted URL mapping correctly? It should point to the new restricted() view, and have a URL of '/foodies/restricted/' Remember the first part of the URL (/foodies/) is handled by the project's urls.py module, and the second part (restricted/) is handled by the Foodies app's urls.py module.{FAILURE_FOOTER}")
-    
-    
-#     def test_bad_request(self):
-#         """
-#         Tries to access the restricted view when not logged in.
-#         This should redirect the user to the login page.
-#         """
-#         response = self.client.get(reverse('foodies:restricted'))
-        
-#         self.assertEqual(response.status_code, 302, f"{FAILURE_HEADER}We tried to access the restricted view when not logged in. We expected to be redirected, but were not. Check your restricted() view.{FAILURE_FOOTER}")
-#         self.assertTrue(response.url.startswith(reverse('foodies:login')), f"{FAILURE_HEADER}We tried to access the restricted view when not logged in, and were expecting to be redirected to the login view. But we were not! Please check your restricted() view.{FAILURE_FOOTER}")
-    
-#     def test_good_request(self):
-#         """
-#         Attempts to access the restricted view when logged in.
-#         This should not redirect. We cannot test the content here. Only links in base.html can be checked -- we do this in the exercise tests.
-#         """
-#         create_user_object()
-#         self.client.login(username='testuser', password='testabc123')
-
-#         response = self.client.get(reverse('foodies:restricted'))
-#         self.assertTrue(response.status_code, 200)
-
-
 class LogoutTests(TestCase):
     """
     A few tests to check the functionality of logging out. D
@@ -579,36 +444,6 @@ class LinkTidyingTests(TestCase):
         content = self.client.get(reverse('foodies:index')).content.decode()
         self.assertTrue('href="/about/"' in content, f"{FAILURE_HEADER}Please check the links in your base.html have been updated correctly to change when users log in and out.{FAILURE_FOOTER}")
         self.assertTrue('href="/"' in content, f"{FAILURE_HEADER}Please check the links in your base.html have been updated correctly to change when users log in and out.{FAILURE_FOOTER}")
-    
-    # def test_logged_in_links(self):
-    #     """
-    #     Checks for links that should only be displayed when the user is logged in.
-    #     """
-    #     user_object = create_user_object()
-    #     self.client.login(username='testuser', password='testabc123')
-    #     content = self.client.get(reverse('foodies:index')).content.decode()
-
-    #     # These should be present.
-    #     self.assertTrue('href="/logout/"' in content, f"{FAILURE_HEADER}Check the links in your base.html have been updated correctly to change when users log in and out.{FAILURE_FOOTER}")
-
-    #     # These should not be present.
-    #     self.assertTrue('href="/login/"' not in content, f"{FAILURE_HEADER}Please check the links in your base.html have been updated correctly to change when users log in and out.{FAILURE_FOOTER}")
-    #     self.assertTrue('href="/register/"' not in content, f"{FAILURE_HEADER}Please check the links in your base.html have been updated correctly to change when users log in and out.{FAILURE_FOOTER}")
-    
-    # def test_logged_out_links(self):
-    #     """
-    #     Checks for links that should only be displayed when the user is not logged in.
-    #     """
-    #     content = self.client.get(reverse('foodies:index')).content.decode()
-
-    #     # These should be present.
-    #     self.assertTrue('href="/foodies/login/"' in content, f"{FAILURE_HEADER}Please check the links in your base.html have been updated correctly to change when users log in and out.{FAILURE_FOOTER}")
-    #     self.assertTrue('href="/foodies/register/"' in content, f"{FAILURE_HEADER}Please check the links in your base.html have been updated correctly to change when users log in and out.{FAILURE_FOOTER}")
-        
-    #     # These should not be present.
-    #     self.assertTrue('href="/foodies/restricted/"' not in content, f"{FAILURE_HEADER}Please check the links in your base.html have been updated correctly to change when users log in and out.{FAILURE_FOOTER}")
-    #     self.assertTrue('href="/foodies/logout/"' not in content, f"{FAILURE_HEADER}Please check the links in your base.html have been updated correctly to change when users log in and out.{FAILURE_FOOTER}")
-
 
 
 if __name__ == '__main__':
