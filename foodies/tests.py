@@ -24,17 +24,6 @@ from django.forms import fields as django_fields
 FAIL_HEADER = f"{os.linesep}{os.linesep}{os.linesep}==============={os.linesep}Foodies: Test failure message{os.linesep}==============={os.linesep}"
 FAIL_FOOTER = f"{os.linesep}"
 
-#admin.py, appy.py, urls.py 100%
-#bing_search.py 16% -> 32 miss out of 38
-#forms.py 92% -> 6 miss out of 75
-#models.py 90% -> 8 out of 84
-#templatetags\foodies_template_tags.py 83% -> 1 out of 6
-#tests.py 93%
-#views.py 21% -> 274 miss out of 348 
-#wsgi.py 0% -> 4 out of 4
-#manage.py 78% -> 2 out of 9 - lines 9 and 10: except ImportERror as exc: raise ImportError(
-#populate_foodies 0% -> 33 out of 33
-
 #Helper Method for test_index_view_with_categories   
 def add_category(name, views=0, likes=0):
     category = Category.objects.get_or_create(name=name)[0]
@@ -65,23 +54,30 @@ def obtain_template_file(path_for_template):
     f.close()
     return template_str
 
+
 #Check apps.py #works
 class AppFoodiesConfigTest(TestCase):
+
     def test_config_apps_py_file(self):
         self.assertEqual(FoodiesConfig.name, 'foodies', f"{FAIL_HEADER}App config for foodies is not named correctly. Check apps.py.{FAIL_FOOTER}")
         self.assertEqual(apps.get_app_config('foodies').name, 'foodies', f"{FAIL_HEADER}App config for foodies is not named correctly. Check apps.py{FAIL_FOOTER}")    
 
+
 #Check: Appropriate slug for, for example, meal category creation. #works
 class SlugLineTest(TestCase):
+
     def test_slug_line_creation(self):
         category = Category(name='Food Category Random')
         category.save()
         self.assertEquals(category.slug, 'food-category-random', f"{FAIL_HEADER}Slug line creation for meal categories failed. Check Slug.{FAIL_FOOTER}")
 
+
 class IndexViewTests(TestCase):
+
     def test_index_page_with_no_categories(self):
         #If no meal categories exist in view, display an error message.
         response = self.client.get(reverse('foodies:index'))
+
         self.assertQuerysetEqual(response.context['categories'], [])
         self.assertContains(response, 'There are no meal categories present.')
         self.assertEqual(response.status_code, 200)
@@ -91,37 +87,47 @@ class IndexViewTests(TestCase):
         add_category('Vegetarian Meal Category', 200, 200)
         add_category('Seafood Meal Category', 100, 100)
         add_category('Vegan Meal Category', 21,21)
+
         response = self.client.get(reverse('foodies:index'))
+
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Vegetarian Meal Category")
         self.assertContains(response, "Seafood Meal Category")
         self.assertContains(response, "Vegan Meal Category")
+
         num_categories = len(response.context['categories'])
         self.assertEquals(num_categories, 3)
 
     def test_index_page_with_no_meals(self):
         #If no meals exists in view, an error message should be displayed. #works
         response = self.client.get(reverse('foodies:index'))
+
         self.assertQuerysetEqual(response.context['meals'], [])
         self.assertContains(response, 'There are no meals present.')
         self.assertEqual(response.status_code, 200)
 
-#Source: https://github.com/maxwelld90/tango_with_django_2_code/blob/master/progress_tests/tests_chapter4.py        
+
+# Tests derived from source: https://github.com/maxwelld90/tango_with_django_2_code/blob/master/progress_tests/tests_chapter4.py        
 class DatabaseConfigTests(TestCase):
+
     def test_variable_for_databases_exists(self):
         #Checks, default config & setting for DATABASES     #works
         self.assertTrue(settings.DATABASES, f"{FAIL_HEADER} Settings module of Foodies does not contain DATABASES variables.{FAIL_FOOTER}")
         self.assertTrue('default' in settings.DATABASES, f"{FAIL_HEADER}'Default' database configuration is not existent in Foodies' DATABASES configuration variable.{FAIL_FOOTER}")
 
-#Test User Authentication; Source: https://github.com/maxwelld90/tango_with_django_2_code/blob/master/progress_tests/tests_chapter9.py
+
+#Tests for User Authentication derived from source: https://github.com/maxwelld90/tango_with_django_2_code/blob/master/progress_tests/tests_chapter9.py
 class SetupTest(TestCase):
-    #Authentication system 'django.contrib.auth' check: In settings.py under installed apps is specified. #works
-    def test_installed_apps(self):
+
+    def test_auth_system_in_django(self):
+        #Authentication system 'django.contrib.auth' check: In settings.py under installed apps is specified. #works
         self.assertTrue('django.contrib.auth' in settings.INSTALLED_APPS, f"{FAIL_HEADER}django.contrib.auth is not installed! Install it in settings.py for INSTALLED_APPS{FAIL_FOOTER}")
 
+
 class ModelTests(TestCase):
-    #Creation check: For UserProfile model in foodies.model;attributes for picture & user; value assertion for fields required   #works
+    
     def test_userprofile(self):
+        #Creation check: For UserProfile model in foodies.model;attributes for picture & user; value assertion for fields required   #works
         self.assertTrue('UserProfile' in dir(foodies.models))
 
         user_profile = foodies.models.UserProfile()
@@ -137,27 +143,27 @@ class ModelTests(TestCase):
         }
         
         #Expectation check
-        found_count = 0
+        check_expectation_counter = 0
 
         for attr in user_profile._meta.fields:
             attr_name = attr.name
 
             for expctd_attr_name in expected_attributes.keys():
                 if expctd_attr_name == attr_name:
-                    found_count = found_count+1
+                    check_expectation_counter = check_expectation_counter+1
 
                     self.assertEqual(type(attr), expected_types[attr_name], f"{FAIL_HEADER}Attribute type for '{attr_name}' was '{type(attr)}'. However, it should be '{expected_types[attr_name]}'.{FAIL_FOOTER}")
                     setattr(user_profile, attr_name, expected_attributes[attr_name])
         
-        self.assertEqual(found_count, len(expected_attributes.keys()), f"{FAIL_HEADER}In UserProfile model, {found_count} attributes were found. However, it should be {len(expected_attributes.keys())}.{FAIL_FOOTER}")
+        self.assertEqual(check_expectation_counter, len(expected_attributes.keys()), f"{FAIL_HEADER}In UserProfile model, {check_expectation_counter} attributes were found. However, it should be {len(expected_attributes.keys())}.{FAIL_FOOTER}")
         user_profile.save()
     
 
 class RegisterFormClassTests(TestCase):
     #Checks creation of UserForm and UserProfileForm  #works
+
     def test_userform(self):
         self.assertTrue('UserForm' in dir(forms), f"{FAIL_HEADER}No UserForm class in Foodies's forms.py module.{FAIL_FOOTER}")
-        
         user_form = forms.UserForm()
         self.assertEqual(type(user_form.__dict__['instance']), User, f"{FAIL_HEADER}UserForm does not match User model. In UserForm, check Meta definition.{FAIL_FOOTER}")
 
@@ -196,22 +202,35 @@ class RegisterFormClassTests(TestCase):
             self.assertEqual(expected_field, type(fields[expected_field_name]), f"{FAIL_HEADER}The field {expected_field_name} in UserProfileForm was not of the correct type. Expected {expected_field}; got {type(fields[expected_field_name])}.{FAIL_FOOTER}")
             self.assertTrue(expected_field_name in fields.keys(), f"{FAIL_HEADER}The field {expected_field_name} was not found in the UserProfile form.{FAIL_FOOTER}")
 
+
 class RegistrationTests(TestCase):
     #Tests: Examine the registration of a user.  #works
+
     def test_registration_page(self):
         #Checks: Registration view with correct naming
         url = ''
+        
         try:
             url = reverse('foodies:register')
         except:
             pass
+
         self.assertEqual(url, '/register/', f"{FAIL_HEADER}No correct mapping for foodies:register URL. It should point to register() view, and have a '/register/' URL.{FAIL_FOOTER}")
     
+    def test_base_path_for_registration_link(self):
+        #Checks, if  registration link has been added to footer.html and header.html template.    #works
+        template_base_path = os.path.join(settings.TEMPLATE_DIR, 'foodies')
+        base_path = os.path.join(template_base_path, 'footer.html')
+        template_str = obtain_template_file(base_path)
+
+        self.assertTrue('>Sign Up<' in template_str)
+
     def test_registration_template(self):
         #Checks: If register.html template exists in the correct place, and if it uses template inheritance     #works
         #Check register.html in foodies template & therefore, template heritance
         template_base_path = os.path.join(settings.TEMPLATE_DIR, 'foodies')
         template_path = os.path.join(template_base_path, 'register.html')
+
         self.assertTrue(os.path.exists(template_path), f"{FAIL_HEADER}No 'register.html' template in 'templates/foodies/' directory.{FAIL_FOOTER}")
 
         template_str = obtain_template_file(template_path)
@@ -219,20 +238,12 @@ class RegistrationTests(TestCase):
 
         request = self.client.get(reverse('foodies:register'))
         content = request.content.decode('utf-8')
-        self.assertTrue(re.search(check_block_title, template_str), f"{FAIL_HEADER}<title> block in html-file may not be correct: register.html may not use template inheritance. {FAIL_FOOTER}")
-        
-    #works
-    def test_base_path_for_registration_link(self):
-        #Checks, if  registration link has been added to footer.html and header.html template.
-        template_base_path = os.path.join(settings.TEMPLATE_DIR, 'foodies')
-        base_path = os.path.join(template_base_path, 'footer.html')
-        template_str = obtain_template_file(base_path)
-        self.assertTrue('>Sign Up<' in template_str)
-    
+        self.assertTrue(re.search(check_block_title, template_str), f"{FAIL_HEADER}<title> block in html-file is not be correct: register.html may not use template inheritance. {FAIL_FOOTER}")
+     
 class LoginTests(TestCase):
     #Login tests for Foodies. #works
     def test_login_url(self):
-        #Checks to see if the new login view exists in the correct place, with the correct name.
+        #Checks, if new login view exists in correct place, with correct name.
         url = ''
 
         try:
@@ -240,27 +251,28 @@ class LoginTests(TestCase):
         except:
             pass
         
-        self.assertEqual(url, '/login/', f"{FAIL_HEADER}Mapping of foodies:login URL not correct? It should point to the new login() view, and have a URL of '/foodies/login/'.{FAIL_FOOTER}")
+        self.assertEqual(url, '/login/', f"{FAIL_HEADER}Mapping of foodies:login URL not correct. It should point to the new login() view, and have a URL of '/foodies/login/'.{FAIL_FOOTER}")
 
-    #works
+
     def test_login_functionality(self):
-        #Tests the login functionality. A user should be able to log in, and should be redirected to the Foodies homepage.
+        #Tests the login functionality. A user should be able to log in, and should be redirected to the Foodies homepage.     #works
         user_object = create_user_object()
         response = self.client.post(reverse('foodies:login'), {'username': '111', 'password': '111'})
         
         try:
-            self.assertEqual(user_object.id, int(self.client.session['_auth_user_id']), f"{FAIL_HEADER}We attempted to log a user in with an ID of {user_object.id}, but instead logged a user in with an ID of {self.client.session['_auth_user_id']}. Please check your login() view.{FAIL_FOOTER}")
+            self.assertEqual(user_object.id, int(self.client.session['_auth_user_id']), f"{FAIL_HEADER}We attempted to log a user in with an ID of {user_object.id}, but instead logged a user in with an ID of {self.client.session['_auth_user_id']}.{FAIL_FOOTER}")
         except KeyError:
-            self.assertTrue(False, f"{FAIL_HEADER}When attempting to log in with login() view, it doesn't log the user in. Check login() view implementation, and try again.{FAIL_FOOTER}")
+            self.assertTrue(False, f"{FAIL_HEADER}Login attempt with login() view failed: User not logged in.{FAIL_FOOTER}")
 
-        self.assertEqual(response.status_code, 302, f"{FAIL_HEADER}Testing login functionality: logging in was successful. However, a redirect was expected; Instead, received a status code of {response.status_code}. Check login() view implementation.{FAIL_FOOTER}")
-        self.assertEqual(response.url, reverse('foodies:index'), f"{FAIL_HEADER} No redirection to Foodies homepage after logging in. Please check login() view implementation, and try again.{FAIL_FOOTER}")
+        self.assertEqual(response.status_code, 302, f"{FAIL_HEADER}Testing login functionality: logging in was successful. However, a redirect was expected; Instead, received a status code of {response.status_code}.{FAIL_FOOTER}")
+        self.assertEqual(response.url, reverse('foodies:index'), f"{FAIL_HEADER} No redirection to Foodies homepage after logging in.{FAIL_FOOTER}")
 
     def test_login_template(self):
         #Checks existence of login.html template in correct place and uses template inheritance        #works
         template_base_path = os.path.join(settings.TEMPLATE_DIR, 'foodies')
         template_path = os.path.join(template_base_path, 'login.html')
-        self.assertTrue(os.path.exists(template_path), f"{FAIL_HEADER}Can't find the 'login.html' template in the 'templates/foodies/' directory. Did you put it in the right place?{FAIL_FOOTER}")
+
+        self.assertTrue(os.path.exists(template_path), f"{FAIL_HEADER}No 'login.html' template in 'templates/foodies/' directory.{FAIL_FOOTER}")
 
         template_str = obtain_template_file(template_path)
         block_title_pattern = r'{% block title_block %}(\s*|\n*)Login(\s*|\n*){% (endblock|endblock title_block) %}'
@@ -268,23 +280,23 @@ class LoginTests(TestCase):
         request = self.client.get(reverse('foodies:login'))
         content = request.content.decode('utf-8')
 
-        self.assertTrue(re.search(block_title_pattern, template_str), f"{FAIL_HEADER}Is login.html using template inheritance? Is your <title> block correct?{FAIL_FOOTER}")
+        self.assertTrue(re.search(block_title_pattern, template_str), f"{FAIL_HEADER}Login.html does not use template inheritance?{FAIL_FOOTER}")
     
     def test_login_template_content(self):
         #Simple checks for the login.html template.        #works
         template_base_path = os.path.join(settings.TEMPLATE_DIR, 'foodies')
         template_path = os.path.join(template_base_path, 'login.html')
+
         self.assertTrue(os.path.exists(template_path), f"{FAIL_HEADER}No 'login.html' template in the 'templates/foodies/' directory.{FAIL_FOOTER}")
         
         template_str = obtain_template_file(template_path)
-        self.assertTrue('action="{% url \'foodies:login\' %}"' in template_str, f"{FAIL_HEADER}We couldn't find the url lookup for 'foodies:login' in your login.html <form>.{FAIL_FOOTER}")
-        self.assertTrue('<input type="submit" value="submit" class="btn btn-success py-2">' in template_str, f"{FAIL_HEADER} Submit button not in login.html template.{FAIL_FOOTER}")
+        self.assertTrue('action="{% url \'foodies:login\' %}"' in template_str, f"{FAIL_HEADER}No URL lookup for 'foodies:login' in your login.html <form>.{FAIL_FOOTER}")
+        self.assertTrue('<input type="submit" value="submit" class="btn btn-success py-2">' in template_str, f"{FAIL_HEADER} 'Submit'-button not in login.html template.{FAIL_FOOTER}")
     
-
-    def test_labe_homepage(self):
+    def test_label_homepage(self):
         #Checks to see if the homepage greeting changes when a user logs in.     #no welcome message
         content = self.client.get(reverse('foodies:index')).content.decode()
-        self.assertTrue('Homepage' in content, f"{FAIL_HEADER}We didn't see the generic greeting for a user not logged in on the Foodies homepage. Please check your index.html template.{FAIL_FOOTER}")
+        self.assertTrue('Homepage' in content, f"{FAIL_HEADER}We didn't see the generic greeting for a user not logged in on the Foodies homepage.{FAIL_FOOTER}")
 
         #not applicable
         # create_user_object()
@@ -292,8 +304,10 @@ class LoginTests(TestCase):
         # content = self.client.get(reverse('foodies:index')).content.decode()
         # self.assertTrue('howdy testuser!' in content, f"{FAIL_HEADER}After user login, we didn't see the expected message welcoming them on the homepage. Check your index.html template.{FAIL_FOOTER}")
 
+
 class LogoutTests(TestCase):
     #Check: Logout functionality #works
+    
     def test_nonvalid_request(self):
         #Log out user who is not logged in & redirect user to login page.
         response = self.client.get(reverse('foodies:logout'))
@@ -308,13 +322,13 @@ class LogoutTests(TestCase):
         try:
             self.assertEqual(user_object.id, int(self.client.session['_auth_user_id']), f"{FAIL_HEADER}Attempt to log in user ID {user_object.id}. However, user with ID {self.client.session['_auth_user_id']} was logged. Please check login() view.{FAIL_FOOTER}")
         except KeyError:
-            self.assertTrue(False, f"{FAIL_HEADER}Failure to login as user. Please check login() view.{FAIL_FOOTER}")
+            self.assertTrue(False, f"{FAIL_HEADER}Failure to login as user.{FAIL_FOOTER}")
         
         # User logout & redirection to index
         response = self.client.get(reverse('foodies:logout'))
-        self.assertEqual(response.status_code, 302, f"{FAIL_HEADER}Failure to redirect logged out user. Check logout() view.{FAIL_FOOTER}")
-        self.assertEqual(response.url, reverse('foodies:index'), f"{FAIL_HEADER}Failure to redirect logged out user to index view (homepage). Check logout() view.{FAIL_FOOTER}")
-        self.assertTrue('_auth_user_id' not in self.client.session, f"{FAIL_HEADER}Failure of logout! Please check yout logout() view.{FAIL_FOOTER}")
+        self.assertEqual(response.status_code, 302, f"{FAIL_HEADER}Failure to redirect logged out user. {FAIL_FOOTER}")
+        self.assertEqual(response.url, reverse('foodies:index'), f"{FAIL_HEADER}Failure to redirect logged out user to index view (homepage).{FAIL_FOOTER}")
+        self.assertTrue('_auth_user_id' not in self.client.session, f"{FAIL_HEADER}Failure of logout!{FAIL_FOOTER}")
 
 
 class LinkTidyingTests(TestCase):
@@ -325,8 +339,9 @@ class LinkTidyingTests(TestCase):
         self.assertTrue('href="/"' in content)
 
         user_object = create_user_object()
-        self.client.login(username='testuser', password='testabc123')
+        self.client.login(username='111', password='111')
 
+        #Update of links correct?
         content = self.client.get(reverse('foodies:index')).content.decode()
         self.assertTrue('href="/about/"' in content, f"{FAIL_HEADER}Check links in base.html have been updated correctly to change when users log in and out.{FAIL_FOOTER}")
         self.assertTrue('href="/"' in content, f"{FAIL_HEADER}Check links in base.html have been updated correctly to change when users log in and out.{FAIL_FOOTER}")
