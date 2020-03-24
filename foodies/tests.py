@@ -294,15 +294,9 @@ class LoginTests(TestCase):
         self.assertTrue('<input type="submit" value="submit" class="btn btn-success py-2">' in template_str, f"{FAIL_HEADER} 'Submit'-button not in login.html template.{FAIL_FOOTER}")
     
     def test_label_homepage(self):
-        #Checks to see if the homepage greeting changes when a user logs in.     #no welcome message
+        #Checks to see if the homepage is labelled as such
         content = self.client.get(reverse('foodies:index')).content.decode()
-        self.assertTrue('Homepage' in content, f"{FAIL_HEADER}We didn't see the generic greeting for a user not logged in on the Foodies homepage.{FAIL_FOOTER}")
-
-        #not applicable
-        # create_user_object()
-        # self.client.login(username='testuser', password='testabc123')
-        # content = self.client.get(reverse('foodies:index')).content.decode()
-        # self.assertTrue('howdy testuser!' in content, f"{FAIL_HEADER}After user login, we didn't see the expected message welcoming them on the homepage. Check your index.html template.{FAIL_FOOTER}")
+        self.assertTrue('Homepage' in content, f"{FAIL_HEADER}We didn't see the homepage labelled as 'homepage' for a user not logged in on the Foodies homepage.{FAIL_FOOTER}")
 
 
 class LogoutTests(TestCase):
