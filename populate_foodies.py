@@ -46,8 +46,8 @@ def populate():
             'isBestCooker': False
         },
         {
-            'username': 'efra',
-            'name'          : 'Pablo Berjon',
+            'username'      : 'efra',
+            'name'          : 'Efraín Villanueva',
             'address'       : 'LOL Steet 3',
             'city'          : 'Cancún',
             'specialty'     : 'Mexican',
