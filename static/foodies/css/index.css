@@ -109,3 +109,11 @@
 .random-color a {
   z-index: 2;
 }
+
+#best-cookers .picture {
+  min-height: 200px;
+  min-width: 200px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+}

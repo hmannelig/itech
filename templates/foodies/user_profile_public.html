@@ -157,7 +157,7 @@
 												<p class="mb-1"><strong>recipe: </strong>{{ row.recipe }}</p>
 												{% if user.is_authenticated %}   
     												<i class="fas fa-utensils">
-        												<a href="{% url 'foodies:request_meal' %}">Request a meal</a>
+        												<a href="{% url 'foodies:request_meal' row.id %}">Request a meal</a>
         											</i>
  												{% endif %} 
 											</div>
