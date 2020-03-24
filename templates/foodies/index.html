@@ -22,7 +22,7 @@
 	<div class="container"> 
   		<div class="row">
 		  	<div class="col-sm-12">
-      			<h2 class="text-center my-3 pt-5 kaushan">The Most Delicous</h2>
+      			<h2 class="text-center my-3 pt-5 kaushan">The Most Delicious </h2>
 				{% if meals %}
 				<div class="row">
 					{% for meal in meals %}    						 
@@ -46,7 +46,7 @@
 				 	{% if user.isBestCooker == 1 %}					   						 
 					<div class="col-sm-4">
 						<div class="text-center">
-							<a href="{{ reviews.url }}">{{ user.name }}</a>	
+							<a href="/public-user-profile/{{ user.id }}">{{ user.name }}</a>	
 						</div>
 					</div>
 					{% endif %}	
