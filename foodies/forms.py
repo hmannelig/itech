@@ -94,9 +94,12 @@ class UserProfileUpdateForm(forms.ModelForm):
         fields = ('name', 'picture', 'address', 'city', 'specialty', 'phone', 'personalDescription', 'isCooker', 'isDinner',)
 
 class RequestAMealForm(forms.ModelForm):
+
+    message = forms.CharField(widget=forms.Textarea, help_text="Write any specifications and the number of orders you want")
+
     class Meta:
         model = Request
-        fields = ('title', 'date', 'name', 'email', 'content', 'message',)
+        fields = ('content', 'message',)
 
 class AllergiesForm(forms.ModelForm):
     class Meta:

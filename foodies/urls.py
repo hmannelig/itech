@@ -35,4 +35,5 @@ urlpatterns = [
     path('meal/<int:meal_id>/', views.show_meal_details, name='meal_details'),
     path('meal/<int:meal_id>/request/', views.request_meal, name='request_meal'),  # /request a meal
     path('public-user-profile/<int:id>/', views.public_user_profile, name='public_user_profile'),  # /public profile url
+    path('is_user_login/', views.is_user_login, name='is_user_login'),
 ]

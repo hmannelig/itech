@@ -1,5 +1,7 @@
 'use strict';
 
+var site_url = window.location.origin;
+
 var colors = [
     '#F44336',
     '#E91E63',
@@ -34,3 +36,28 @@ function setRandomColor() {
 
 
 setRandomColor();
+
+$(".check-if-login").on("click", function(e) {
+    e.preventDefault();
+    var element = $(e.target);
+    $.ajax({
+        url: site_url + "/is_user_login/",
+        statusCode: {
+            500: function(data) {
+                console.log(data);
+                $("#info-modal-title").text("Foodies Error");
+                $("#info-modal-message").text("An error occurred, open the JavaScript console to read it.");
+                $('#infoModal').modal('show');
+            },
+            200: function(data) {
+                if(!data.is_loggedin) {
+                    $("#info-modal-title").text("Foodies Info");
+                    $("#info-modal-message").text("Please login/sign up to request a meal.");
+                    $('#infoModal').modal('show');
+                } else {
+                    window.location.href = element[0].href;
+                }
+            }
+        }
+    });
+});

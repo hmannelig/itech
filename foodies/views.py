@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from foodies.models import Category, Meal, User, UserProfile, Request, Ingredient, Allergy
 from django.urls import reverse
 from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, IngredientsForm, UserUpdateForm, UserProfileUpdateForm, RequestAMealForm, AllergiesForm
@@ -446,18 +446,9 @@ def user_requests(request):
 
     requests_array = []
 
-    for e in user_requests:
-        requests_array.append({
-            'id': e.id,
-            'title': e.title,
-            'date': e.date,
-            'name': e.name,
-            'email': e.email
-        })
-
     return render(request, 'foodies/user_requests.html', context={
         'profile_title': profile_title,
-        'requests_array': requests_array,
+        'requests_array': user_requests,
         'user_info': user_info})
 
 
@@ -623,23 +614,15 @@ def request_meal(request, meal_id):
 
     meal = Meal.objects.filter(id=meal_id).first()
 
-    try:
-        user = User.objects.get(id=meal.user.id)
-    except Meal.DoesNotExist:
-        return None
-
-    try:
-        cookerProfile = UserProfile.objects.get(user=user)
-    except Meal.DoesNotExist:
-        return None
-
     if request.method == 'POST':
 
         request_form = RequestAMealForm(request.POST)
         if request_form.is_valid():
             form = request_form.save(commit=False)
-            form.cooker = cookerProfile.id
+            form.cooker = meal.user.id
             form.dinner = request.user.id
+            form.date = datetime.now()
+            form.email = request.user.email
             request_form.save()
             return HttpResponseRedirect(reverse('foodies:meal_details', kwargs={'meal_id':meal_id}))
         else:
@@ -649,11 +632,12 @@ def request_meal(request, meal_id):
         meal_form = RequestAMealForm()
 
     return render(request, 'foodies/request.html', context={
-                                                              'meal_id':meal_id, 
+                                                              'meal': meal, 
                                                               'meal_form': meal_form })
 
 
 def show_meal_details(request, meal_id):
+    
     meal_details = Meal.objects.filter(id=meal_id).first()
     return render(request, 'foodies/meal_details.html',  {'meal_id':meal_id,'meal_details':meal_details})
 
@@ -695,15 +679,29 @@ def public_user_profile(request,id):
         'email': user.email,
         'picture': userProfile.picture,
         'name': userProfile.name,
+        'phone': userProfile.phone,
         'address': userProfile.address,
         'personalDescription': userProfile.personalDescription,
         'isCooker': userProfile.isCooker,
         'isDinner': userProfile.isDinner,
         'isBestCooker': userProfile.isBestCooker,
     }
+    
+    cooker_meals = Meal.objects.filter(user=userProfile)
 
     return render(request, 'foodies/user_profile_public.html', context={'id': id,
                                                                  'profile_title': profile_title,
                                                                  'user_info': user_info,
-                                                                 'user_meals': user_meals,})
+                                                                 'user_meals': user_meals,
+                                                                 'cooker_meals':cooker_meals})
 
+
+def is_user_login(request):
+    if request.user.id: 
+        loggedin = True
+    else:
+        loggedin = False
+
+    return JsonResponse({
+        'is_loggedin': loggedin
+    })
