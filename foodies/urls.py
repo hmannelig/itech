@@ -36,5 +36,6 @@ urlpatterns = [
     path('meal/<int:meal_id>/request/', views.request_meal, name='request_meal'),  # /request a meal
     path('public-user-profile/<int:id>/', views.public_user_profile, name='public_user_profile'),  # /public profile url
     path('is_user_login/', views.is_user_login, name='is_user_login'),
-    path('user-profile/add-review/', views.add_review, name='add_review'),  #/add_review/
+    path('user-profile/add-review-diner/<int:request_id>', views.add_review_to_diner, name='add_review_to_diner'),  #/add_review/
+    path('user-profile/add-review-cooker/<int:request_id>', views.add_review_to_cooker, name='add_review_to_cooker'),  #/add_review/
 ]

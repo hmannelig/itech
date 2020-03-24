@@ -9,12 +9,10 @@
 
 {% block body_block %}
 <div class="container"> 
-<div class="col-sm-6 ">
-
- <strong>Thank you for contacting Foodies!</strong>
- <strong>We will get back to you as soon as possible</strong>
-  <a href="{% url 'foodies:index' %}">Return to Home.</a><br />
- </div> 
-
- </div>
-    {% endblock %}
+    <div class="col-sm-12">
+        <h2><strong>Thank you for contacting Foodies!</strong></h2>
+        <h4><strong>We will get back to you as soon as possible</strong></h4>
+        <a href="{% url 'foodies:index' %}">Return to Home.</a>
+    </div> 
+</div>
+{% endblock %}

@@ -9,9 +9,11 @@
 {% block profile_block %}
 
 <div class="accordion" id="accordionExample">
+    {% if requests_as_cooker|length > 0 %}
     <div>
+        <h3 class="text-center">Requests as cooker</h3>
         <ul class="list-group">
-            {% for row in requests_array %}
+            {% for row in requests_as_cooker %}
             <li class="list-group-item">
                 <div class="row w-100 d-flex align-items-center">
                     <div class="col-sm-8">
@@ -22,14 +24,39 @@
                         <p class="mb-1"><strong>Date of order: </strong>{{ row.date }}</p>
                     </div>
                     <div class="col-sm-4">
-                        <a class="btn btn-primary" href="#writeReview">Write Review</a>
-                        <a class="btn btn-danger" href="{% url 'foodies:delete_request' row.id %}">Detele</a>
+                        <a class="btn btn-primary" href="{% url 'foodies:add_review_to_diner' row.id %}">Write Review</a>
+                        <a class="btn btn-danger" href="{% url 'foodies:delete_request' row.id %}">Delete</a>
                     </div>
                 </div>
             </li>
             {% endfor %}
         </ul>
     </div>
+    {% endif %}
+    {% if requests_as_diner|length > 0 %}
+    <div>
+        <h3 class="text-center">Requests as diner</h3>
+        <ul class="list-group">
+            {% for row in requests_as_diner %}
+            <li class="list-group-item">
+                <div class="row w-100 d-flex align-items-center">
+                    <div class="col-sm-8">
+                        <h3 class="mb-1"><strong>Client: </strong>{{ row.name }}</h3>
+                        <p class="mb-1"><strong>email: </strong>{{ row.email }}</p>
+                        <p class="mb-1"><strong>Content: </strong>{{ row.content }}</p>
+                        <p class="mb-1"><strong>Message: </strong>{{ row.message }}</p>
+                        <p class="mb-1"><strong>Date of order: </strong>{{ row.date }}</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <a class="btn btn-primary" href="{% url 'foodies:add_review_to_cooker' row.id %}">Write Review</a>
+                        <a class="btn btn-danger" href="{% url 'foodies:delete_request' row.id %}">Delete</a>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
 </div>
 
 {% endblock %}

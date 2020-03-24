@@ -38,6 +38,9 @@
                         <li class="nav-item">
                             <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Reviews</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#meal" role="tab" aria-controls="meal" aria-selected="false">Meals</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="col-md-12">
@@ -75,100 +78,49 @@
                                     <p class="text-dark">{{ user_info.personalDescription }}</p>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-12 mb-4">
-                                    <h2 class="text-center">Meals</h2>
-                                </div>
-                                {% for meal in cooker_meals %}
-                                <div class="col-sm-4 mb-4">
-                                    <a class="d-block text-decoration-none" href="/meal/{{ meal.id }}">
-                                        <div class="viewed_meals" style="background-image:url({{ MEDIA_URL }}{{ meal.picture }});"></div>
-                                        <p class="text-center">{{ meal.title }}</p>
-                                    </a>
-                                </div>
-                                {% endfor %}
-                            </div>
                         </div>
                         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <label>Experience</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>Expert</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Hourly Rate</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>10$/hr</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Total Projects</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>230</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>English Level</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>Expert</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Availability</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>6 months</p>
-                                </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-md-12">
-                                    <label>Your Bio</label><br/>
-                                    <p>Your detail description</p>
+                                    <ul class="list-group">
+                                        {% for review in user_reviews %}
+                                        <li class="list-group-item">
+                                            <p class="mb-1"><strong>Title: </strong>{{ review.title }}</p>
+                                            <p class="mb-1"><strong>Rating: </strong>{{ review.rating }}</p>
+                                            <p class="mb-1"><strong>Content: </strong>{{ review.content }}</p>
+                                            <p class="mb-1"><strong>Date: </strong>{{ review.date }}</p>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="meal" role="tabpanel" aria-labelledby="meal-tab">
+                            <div class="row user_meals_list">
+                                {% for row in user_meals %}
+                                <div class="col-sm-6 mb-3">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="meal_picture background-image cover d-inline-block w-100" style="background-image:url({{ MEDIA_URL }}{{ row.picture }});"></div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <h3 class="mb-1"><strong class="text-danger kaushan">{{ row.title }}</strong></h3>
+                                            <p class="mb-1"><strong>Price: </strong>{{ row.price }}</p>
+                                            <p class="mb-1"><strong>Category: </strong>{{ row.category }}</p>
+                                            <p class="mb-1"><strong>Ingredients: </strong>{{ row.ingredients }}</p>
+                                            <p class="mb-1"><strong>recipe: </strong>{{ row.recipe }}</p>
+                                            {% if user.is_authenticated %}   
+                                                <a class="btn btn-primary" href="{% url 'foodies:request_meal' row.id %}"><i class="fas fa-utensils"></i> Request a meal</a>
+                                            {% endif %} 
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-              <div class="tab-pane fade" id="meal" role="tabpanel" aria-labelledby="meal-tab">
-                        <div class="row w-1000 d-flex align-items-center">
-                         		<div class="user_meals_list">
-									<ul class="list-group">
-									{% for row in user_meals %}
-										<li class="list-group-item">
-												<div class="col-sm-6	">
-													<div class="meal_picture background-image cover d-inline-block w-100" style="background-image:url({{ MEDIA_URL }}{{ row.picture }});"></div>
-												</div>
-											<div class="col-sm-6">
-												<h3 class="mb-1"><strong>Title: </strong>{{ row.title }}</h3>
-												<p class="mb-1"><strong>Price: </strong>{{ row.price }}</p>
-												<p class="mb-1"><strong>Category: </strong>{{ row.category }}</p>
-												<p class="mb-1"><strong>Ingredients: </strong>{{ row.ingredients }}</p>
-												<p class="mb-1"><strong>recipe: </strong>{{ row.recipe }}</p>
-												{% if user.is_authenticated %}   
-    												<i class="fas fa-utensils">
-        												<a href="{% url 'foodies:request_meal' row.id %}">Request a meal</a>
-        											</i>
- 												{% endif %} 
-											</div>
-										</li>
-									{% endfor %}
-									</ul>
-								</div>
-                   			</div>
-            		</div>
-          		</div>
-    		</div>
 		</div>
 	</div>
 

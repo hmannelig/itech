@@ -42,3 +42,7 @@ header .navbar-dark .navbar-brand {
 .cover {
 	background-size: cover;
 }
+
+#search {
+	max-width: 250px;
+}

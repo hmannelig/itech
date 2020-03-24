@@ -32,14 +32,12 @@ User Meals
 					</div>
 					<div class="col-sm-3">
 						<a class="btn btn-success" href="{% url 'foodies:edit_meal' row.id %}">Edit</a>
-						<a class="btn btn-danger" href="{% url 'foodies:delete_meal' row.id %}">Detele</a>
+						<a class="btn btn-danger" href="{% url 'foodies:delete_meal' row.id %}">Delete</a>
 					</div>
 				</div>
 			</li>
 			{% endfor %}
 		</ul>
 	</div>
-	
-</div>
 
 {% endblock %}
