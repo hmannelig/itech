@@ -1,0 +1,27 @@
+{% extends 'foodies/base.html' %}
+
+{% load static %}
+
+{% block title_block %}
+    Page 404
+{% endblock %}
+
+
+{% block body_block %}
+
+<div class="container">
+    <div class="col-sm-12">
+        <h1 class="text-center text-danger kaushan">Error 404</h1>
+        <h3 class="text-center text-danger kaushan">Page not found</h3>
+    </div>
+    <div class="col-sm-12 ">
+        <form id="search" method="GET" action="{% url 'foodies:search' %}" class="w-100 form-inline">
+            {% csrf_token %}
+            <input class="form-control" name="query" id="query" type="search" placeholder="What do you want to eat?" />
+            <input class="btn btn-primary" type="submit" value="Search" />
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}

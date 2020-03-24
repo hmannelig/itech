@@ -748,14 +748,18 @@ def search(request):
     if 'query' in request.GET:
         querystring = request.GET.get('query')
         if querystring is not None:
-            results_ingred = Ingredient.objects.filter(Q(name__icontains=querystring)).order_by('pk')
             results_meals = Meal.objects.filter(Q(title__icontains=querystring)).order_by('pk')
             results_cats = Category.objects.filter(Q(name__icontains=querystring)).order_by('pk')
+            results_cookers = UserProfile.objects.filter(
+                    Q(city__icontains=querystring) |
+                    Q(specialty__icontains=querystring) &
+                    Q(isCooker=1)
+                ).order_by('pk')
             context = {
                 'query': querystring,
-                'results_ingred': results_ingred,
                 'results_meals': results_meals,
                 'results_cats': results_cats,
+                'results_cookers': results_cookers
             }
 
     return render(request, "foodies/search.html", context)
@@ -805,3 +809,4 @@ def is_user_login(request):
     return JsonResponse({
         'is_loggedin': loggedin
     })
+
