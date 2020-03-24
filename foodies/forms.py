@@ -107,11 +107,10 @@ class AllergiesForm(forms.ModelForm):
 
 
 class ReviewsForm(forms.ModelForm):
-    title = forms.CharField(required=True, help_text="Reviews title.", label="Title")
     rating = forms.IntegerField(required=True, help_text="Rate the cooker", label="Rating")
     content = forms.CharField(required=True, help_text="Rating description", label="Description")
 
     class Meta:
         model = Review
-        fields = ('title', 'date', 'rating','content','user')
+        fields = ('title', 'rating','content',)
 

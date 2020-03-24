@@ -431,10 +431,8 @@ def user_requests(request):
 
     user_profile = UserProfile.objects.filter(user=user).first()
 
-    if user_profile.isCooker is True:
-        user_requests = Request.objects.filter(cooker=user_profile.id)
-    else:
-        user_requests = Request.objects.filter(dinner=user_profile.id)
+    requests_as_cooker = Request.objects.filter(cooker=user_profile.id)
+    requests_as_diner = Request.objects.filter(dinner=user_profile.id)
 
     user_info = {
         'id': user_profile.id,
@@ -443,11 +441,10 @@ def user_requests(request):
         'isDinner': user_profile.isDinner
     }
 
-    requests_array = []
-
     return render(request, 'foodies/user_requests.html', context={
         'profile_title': profile_title,
-        'requests_array': user_requests,
+        'requests_as_cooker': requests_as_cooker,
+        'requests_as_diner': requests_as_diner,
         'user_info': user_info})
 
 
@@ -586,45 +583,118 @@ def delete_request(request, request_id):
     return redirect('foodies:user_requests')
 
 
-def add_review(request):
-    if request.method == 'POST':
-        review = ReviewsForm(request.POST)
-        if review.is_valid():
-            form = review.save(commit=False)
-            form.user = request.user.username
-            review.save()
-            return redirect(reverse('foodies:user_reviews'))
-        else:
-            messages.error(request, review.errors)
-            return HttpResponseRedirect('/user_reviews')
-    else:
-        review = ReviewsForm()
+def add_review_to_diner(request, request_id):
 
-    return render(request, 'foodies/add_review.html',
-                  context={'review': review})
-
-
-def register_diners(request):
-    return render(request, 'foodies/register_diners.html')
-
-def user_reviews(request):
-    profile_title = "User reviews"
+    profile_title = "Add a Review to Diner"
+    action_url = "foodies:add_review_to_diner"
 
     try:
         user = User.objects.get(username=request.user.username)
     except User.DoesNotExist:
         return None
 
-    user_reviews = Review.objects.filter(user=user)
+    userProfile = UserProfile.objects.filter(user=user).first()
+    user_info = {
+        'id': userProfile.id,
+        'email': user.email,
+        'isCooker': userProfile.isCooker,
+        'isDinner': userProfile.isDinner
+    }
 
-    all_reviews = []
-    for review in user_reviews:
-        all_reviews.append({ 'title': review.title,
-                            'date': review.date,
-                            'rating': review.rating,
-                            'content': review.content})
+    if request.method == 'POST':
+        request_info = Request.objects.filter(id=request_id).first()
 
-    return render(request, 'foodies/user_reviews.html', all_reviews)
+        try:
+            user_to_save = UserProfile.objects.get(id=request_info.dinner)
+        except UserProfile.DoesNotExist:
+            return None
+
+        review_form = ReviewsForm(request.POST)
+        if review_form.is_valid():
+            form = review_form.save(commit=False)
+            form.user = user_to_save
+            form.date = datetime.now()
+            review_form.save()
+            return redirect(reverse('foodies:user_requests'))
+        else:
+            messages.error(request, review.errors)
+            return HttpResponseRedirect('foodies:user_requests')
+    else:
+        review_form = ReviewsForm()
+
+    return render(request, 'foodies/add_review.html',
+                                                        context={'action_url':action_url,
+                                                                'request_id': request_id,
+                                                                'profile_title': profile_title,
+                                                                'user_info': user_info,
+                                                                'review_form': review_form})
+
+def add_review_to_cooker(request, request_id):
+
+    profile_title = "Add a Review to Cooker"
+    action_url = "foodies:add_review_to_cooker"
+
+    try:
+        user = User.objects.get(username=request.user.username)
+    except User.DoesNotExist:
+        return None
+
+    userProfile = UserProfile.objects.filter(user=user).first()
+    user_info = {
+        'id': userProfile.id,
+        'email': user.email,
+        'isCooker': userProfile.isCooker,
+        'isDinner': userProfile.isDinner
+    }
+
+    if request.method == 'POST':
+        request_info = Request.objects.filter(id=request_id).first()
+
+        try:
+            user_to_save = UserProfile.objects.get(id=request_info.cooker)
+        except UserProfile.DoesNotExist:
+            return None
+
+        review_form = ReviewsForm(request.POST)
+        if review_form.is_valid():
+            form = review_form.save(commit=False)
+            form.user = user_to_save
+            form.date = datetime.now()
+            review_form.save()
+            return redirect(reverse('foodies:user_requests'))
+        else:
+            messages.error(request, review.errors)
+            return HttpResponseRedirect(reverse('foodies:user_requests'))
+    else:
+        review_form = ReviewsForm()
+
+    return render(request, 'foodies/add_review.html',
+                                                        context={'action_url':action_url,
+                                                                'request_id': request_id,
+                                                                'profile_title': profile_title,
+                                                                'user_info': user_info,
+                                                                'review_form': review_form})
+
+
+def register_diners(request):
+    return render(request, 'foodies/register_diners.html')
+
+def user_reviews(request):
+    profile_title = "User Reviews"
+
+    try:
+        user = User.objects.get(username=request.user.username)
+    except User.DoesNotExist:
+        return None
+    
+    try:
+        userProfile = UserProfile.objects.get(user=user)
+    except User.DoesNotExist:
+        return None
+
+    user_reviews = Review.objects.filter(user=userProfile)
+
+    return render(request, 'foodies/user_reviews.html', {'all_reviews':user_reviews})
 
 
 def register_cookers(request):
@@ -715,16 +785,15 @@ def public_user_profile(request,id):
         'isDinner': userProfile.isDinner,
         'isBestCooker': userProfile.isBestCooker,
     }
-    
-    cooker_meals = Meal.objects.filter(user=userProfile)
 
     user_meals = Meal.objects.filter(user=userProfile)
+    user_reviews = Review.objects.filter(user=userProfile)
 
     return render(request, 'foodies/user_profile_public.html', context={'id': id,
                                                                  'profile_title': profile_title,
                                                                  'user_info': user_info,
-                                                                 'user_meals': user_meals,
-                                                                 'cooker_meals':cooker_meals})
+                                                                 'user_reviews': user_reviews,
+                                                                 'user_meals': user_meals})
 
 
 def is_user_login(request):

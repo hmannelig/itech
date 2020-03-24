@@ -84,7 +84,7 @@ class Allergy(models.Model):
         return self.name
 
 class Request(models.Model):
-    title = models.CharField(max_length=30, unique=True)
+    title = models.CharField(max_length=30)
     date = models.DateField()
     name = models.CharField(max_length=30)
     email = models.EmailField()

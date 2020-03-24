@@ -16,6 +16,7 @@
             <a class="list-group-item list-group-item-action {% if request.path == '/user-profile/meals/' %} active {% endif %}" href="{% url 'foodies:user_meals' %}" aria-controls="profile">Meals</a>
             {% endif %}
             <a class="list-group-item list-group-item-action {% if request.path == '/user-profile/requests/' %} active {% endif %}" href="{% url 'foodies:user_requests' %}" aria-controls="requests">Requests</a>
+            <a class="list-group-item list-group-item-action {% if request.path == '/user-profile/reviews/' %} active {% endif %}" href="{% url 'foodies:user_reviews' %}" aria-controls="requests">Reviews</a>
             {% if user_info.isDinner == 1 %}
             <a class="list-group-item list-group-item-action {% if request.path == '/user-profile/allergies/' %} active {% endif %}" href="{% url 'foodies:show_allergies' %}" aria-controls="allergies">Allergies</a>
             {% endif %}

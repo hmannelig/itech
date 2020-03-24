@@ -1,18 +1,30 @@
-{% extends 'foodies/base.html' %}
+{% extends 'foodies/user_profile_base.html' %}
 {% load static %}
-
-
+{% load crispy_forms_tags %}
 
 {% block title_block %}
-   add review
-   
+   Add review
 {% endblock %}
 
-
-{% block body_block %}
+{% block profile_block %}
 
 <div class="container"> 
-   <h1>Add Review</h1>
+	<div class="col-sm-10 offset-sm-1">
+		<div>
+			{% for message in messages %}
+			<div class="alert alert-danger">
+				<a class="close" href="#" data-dismiss="alert">×</a>
+				{{ message }}
+			</div>
+			{% endfor %}
+		</div>
+		<form id="add_meal_form" method="post" action="{% url action_url request_id %}" enctype="multipart/form-data">
+			{% csrf_token %}
+			{{ review_form | crispy }}
+			<a class="btn btn-danger" href="{% url 'foodies:user_requests' %}">Cancel</a>
+			<input class="btn btn-primary" type="submit" name="submit" value="Add Review" />
+		</form>
+	</div>
 </div>
 
 {% endblock %}
