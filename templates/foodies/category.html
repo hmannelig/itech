@@ -14,13 +14,21 @@
     {% if category %}
     <h1>{{ category.name }}</h1>
     
-     <strong>View the below meals and make a meal request</strong>
     {% if meals %}
-    <ul>
-        {% for meal in meals %}
-        <li><a href="{{ meal.url }}">{{ meal.title }}</a></li>
-        {% endfor %}
-    </ul>
+    <div class="row">
+        <div class="col-sm-12 mt-5">
+            <div class="row">
+                {% for meal in meals %}
+                <div class="col-sm-4 mb-4">
+					<a class="d-block text-decoration-none" href="/meal/{{ meal.id }}">
+						<div class="viewed_meals" style="background-image:url({{ MEDIA_URL }}{{ meal.picture }});"></div>
+						<p class="text-center">{{ meal.title }}</p>
+					</a>
+				</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
     {% else %}
     <strong>No meals currently in meal category.</strong>
     {% endif %}
@@ -29,11 +37,6 @@
     The specified meal category does not exist.
     {% endif %}
  
- {% if user.is_authenticated %}   
-    <i class="fas fa-utensils">
-        <a href="{% url 'foodies:request_meal' %}">Request a meal</a>
-        </i>
-  {% endif %}      
 </div>
 
 

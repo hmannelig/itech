@@ -21,7 +21,7 @@ def index(request):
         'categories': category_list,
         'meals': meal_list,  
         'user_info':user_list 
-        }
+    }
     visitor_cookie_handler(request)
     return render(request, 'foodies/index.html', context=context_dict)
 
@@ -430,7 +430,12 @@ def user_requests(request):
         return None
 
     user_profile = UserProfile.objects.filter(user=user).first()
-    user_requests = Request.objects.filter(cooker=user_profile.id)
+
+    if user_profile.isCooker is True:
+        user_requests = Request.objects.filter(cooker=user_profile.id)
+    else:
+        user_requests = Request.objects.filter(dinner=user_profile.id)
+
     user_info = {
         'id': user_profile.id,
         'email': user.email,
@@ -642,29 +647,44 @@ def search_cookers(request):
 def contact_us(request):
     return render(request, 'foodies/contact_us.html')
 
+@login_required
+def request_meal(request, meal_id):
 
-def request_meal(request):
+    meal = Meal.objects.filter(id=meal_id).first()
+
+    try:
+        user = User.objects.get(id=meal.user.id)
+    except Meal.DoesNotExist:
+        return None
+
+    try:
+        cookerProfile = UserProfile.objects.get(user=user)
+    except Meal.DoesNotExist:
+        return None
+
     if request.method == 'POST':
+
         request_form = RequestAMealForm(request.POST)
         if request_form.is_valid():
             form = request_form.save(commit=False)
-            form.cooker = 1
-            form.dinner = 2
+            form.cooker = cookerProfile.id
+            form.dinner = request.user.id
             request_form.save()
-            return redirect(reverse('foodies:user_requests'))
+            return HttpResponseRedirect(reverse('foodies:meal_details', kwargs={'meal_id':meal_id}))
         else:
             messages.error(request, request_form.errors)
-            return HttpResponseRedirect('/request')
+            return HttpResponseRedirect(reverse('foodies:request_meal', kwargs={'meal_id':meal_id}))
     else:
         meal_form = RequestAMealForm()
 
-    return render(request, 'foodies/request.html',
-                  context={'meal_form': meal_form})
+    return render(request, 'foodies/request.html', context={
+                                                              'meal_id':meal_id, 
+                                                              'meal_form': meal_form })
 
 
 def show_meal_details(request, meal_id):
     meal_details = Meal.objects.filter(id=meal_id).first()
-    return render(request, 'foodies/meal_details.html',  {'meal_details':meal_details})
+    return render(request, 'foodies/meal_details.html',  {'meal_id':meal_id,'meal_details':meal_details})
 
 def search(request):
     results = {}
