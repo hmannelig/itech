@@ -57,7 +57,7 @@
 					{% comment %} <a class="btn btn-danger {% if request.path == '/search/' %} active {% endif %}" href="{% url 'foodies:search' %}">Search</a> {% endcomment %}
 					<form id="search" method="GET" action="{% url 'foodies:search' %}" class="w-100 form-inline">
 						{% csrf_token %}
-						<input class="form-control" name="query" id="query" type="search" placeholder="Whay do you want to eat?" />
+						<input class="form-control" name="query" id="query" type="search" placeholder="What do you want to eat?" />
 						<input class="btn btn-primary" type="submit" value="Search" />
 					</form>
 				</div>

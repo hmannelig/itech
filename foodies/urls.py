@@ -20,7 +20,7 @@ urlpatterns = [
     path('user-profile/meals/', views.user_meals, name='user_meals'),  #/user-profile/meals
     path('user-profile/requests/<int:request_id>/delete/', views.delete_request, name='delete_request'),  #/user-profile/requests
     path('user-profile/requests/', views.user_requests, name='user_requests'),  #/user-profile/requests
-    path('user-profile/reviews/', views.reviews, name='reviews'),  #/user-profile/reviews
+    path('user-profile/reviews/', views.user_reviews, name='user_reviews'),  #/user-profile/reviews
     path('register-diners/', views.register_diners, name ='register_diners'), #/register-diners
     path('user-profile/allergies/', views.show_allergies, name='show_allergies'),  #/user-profile/reviews
     path('user-profile/allergies/add', views.add_allergy, name='add_allergy'),  #/user-profile/reviews
@@ -36,4 +36,5 @@ urlpatterns = [
     path('meal/<int:meal_id>/request/', views.request_meal, name='request_meal'),  # /request a meal
     path('public-user-profile/<int:id>/', views.public_user_profile, name='public_user_profile'),  # /public profile url
     path('is_user_login/', views.is_user_login, name='is_user_login'),
+    path('user-profile/add-review/', views.add_review, name='add_review'),  #/add_review/
 ]

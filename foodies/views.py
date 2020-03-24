@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from foodies.models import Category, Meal, User, UserProfile, Request, Ingredient, Allergy
+from foodies.models import Category, Meal, User, UserProfile, Request, Ingredient, Allergy, Review
 from django.urls import reverse
-from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, IngredientsForm, UserUpdateForm, UserProfileUpdateForm, RequestAMealForm, AllergiesForm
+from foodies.forms import CategoryForm, MealForm, UserForm, UserProfileForm, IngredientsForm, UserUpdateForm, UserProfileUpdateForm, RequestAMealForm, AllergiesForm, ReviewsForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -329,7 +329,6 @@ def user_profile(request):
 
     return render(request, 'foodies/user_profile.html', context={'profile_title': profile_title,
                                                                  'user_info': user_info,
-                                                                 'user_meals': user_meals,
                                                                  'user_requests': user_requests, })
 
 
@@ -587,15 +586,45 @@ def delete_request(request, request_id):
     return redirect('foodies:user_requests')
 
 
-def reviews(request):
+def add_review(request):
+    if request.method == 'POST':
+        review = ReviewsForm(request.POST)
+        if review.is_valid():
+            form = review.save(commit=False)
+            form.user = request.user.username
+            review.save()
+            return redirect(reverse('foodies:user_reviews'))
+        else:
+            messages.error(request, review.errors)
+            return HttpResponseRedirect('/user_reviews')
+    else:
+        review = ReviewsForm()
 
-
-
-    return render(request, 'foodies/reviews.html')
+    return render(request, 'foodies/add_review.html',
+                  context={'review': review})
 
 
 def register_diners(request):
     return render(request, 'foodies/register_diners.html')
+
+def user_reviews(request):
+    profile_title = "User reviews"
+
+    try:
+        user = User.objects.get(username=request.user.username)
+    except User.DoesNotExist:
+        return None
+
+    user_reviews = Review.objects.filter(user=user)
+
+    all_reviews = []
+    for review in user_reviews:
+        all_reviews.append({ 'title': review.title,
+                            'date': review.date,
+                            'rating': review.rating,
+                            'content': review.content})
+
+    return render(request, 'foodies/user_reviews.html', all_reviews)
 
 
 def register_cookers(request):
@@ -688,6 +717,8 @@ def public_user_profile(request,id):
     }
     
     cooker_meals = Meal.objects.filter(user=userProfile)
+
+    user_meals = Meal.objects.filter(user=userProfile)
 
     return render(request, 'foodies/user_profile_public.html', context={'id': id,
                                                                  'profile_title': profile_title,
