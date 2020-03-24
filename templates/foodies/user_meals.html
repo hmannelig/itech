@@ -34,9 +34,6 @@ User Meals
 						<a class="btn btn-success" href="{% url 'foodies:edit_meal' row.id %}">Edit</a>
 						<a class="btn btn-danger" href="{% url 'foodies:delete_meal' row.id %}">Detele</a>
 					</div>
-					<div class="col-sm-2">
-						<a class="btn btn-warning" href="{% url 'foodies:meal_details' row.id %}">Details</a>
-					</div>
 				</div>
 			</li>
 			{% endfor %}
