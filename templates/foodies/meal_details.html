@@ -1,0 +1,103 @@
+{% extends 'foodies/base.html' %}
+{% load static %}
+
+{% block title_block %}
+   Meal details
+{% endblock %}
+
+{% block body_block %}
+<div class="container">
+    <div class="emp-profile mt-6">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-img">
+                    {% if meal_details.picture %}
+                    <img class="w-100" src="{{ MEDIA_URL }}{{ meal_details.picture }}" alt=""/>
+                    {% else %}
+                    <img class="w-100" src="{% static '/foodies/images/user-default.png' %}" alt=""/>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="profile-head">
+                    <h1 id="user-name" class="kaushan">{{ meal_details.title }}</h1>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <a class="btn btn-success check-if-login" href="{% url 'foodies:request_meal' meal_id %}">Request Meal</a>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-sm-12 mb-3">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Information</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Recipe</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-8">
+                <div class="tab-content profile-tab" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Price</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{ meal_details.price }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Category</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{ meal_details.category }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Ingredients</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{ meal_details.ingredients }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Cooker</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{ meal_details.user }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="row">
+                                <h5>{{ meal_details.recipe }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-sm-12 mb-3">
+                <h2 class="text-center">Cooker</h2>
+            </div>
+            <div class="col-sm-4">
+                <img class="w-100" src="{{ MEDIA_URL }}{{ meal_details.user.picture }}" />
+            </div>
+            <div class="col-sm-4">
+                <h3>{{ meal_details.user.name }}</h3>
+                <h3>Specialty: {{ meal_details.user.specialty }}</h3>
+                <h3>City: {{ meal_details.user.city }}</h3>
+                <a href="{% url 'foodies:public_user_profile' meal_details.user.id %}" class="btn btn-primary">See cooker details</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

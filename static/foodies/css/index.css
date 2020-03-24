@@ -8,6 +8,10 @@
   
 }
 
+.kaushan {
+  font-family: 'Kaushan Script', cursive
+}
+
 /* The grid container */
 .grid-container {
   display: grid;
@@ -56,16 +60,60 @@
 }
 
 /* Style of the most viewed meals  */
-.viewed_meals 
-{	
-	background-image:url('../images/spring_rolls.jpg');
-	background-repeat:no-repeat;
-	background-size:50%;
-	background-position: center center;
-	height:100px;
+.viewed_meals {	
+	background-repeat: no-repeat;
+	background-size: cover;
+  background-position: center;
+  padding: 60px 0 60px 0;
+}
+
+.viewed_meals p {
+  background-color: rgba(0,0,0, 0.5);
+  height: 100%;
+  left: 0;
+  position: absolute;
+  width: 100%;
 }
 
 .hero {
-  min-height: 250px;
-  background-image: url('../images/back.jpg');
+  min-height: 450px;
+  background-attachment: fixed;
+  background-image: url('../images/hero-photo.jpg');
+}
+
+.black-screen {
+  background-color: rgba(0,0,0, 0.5);
+}
+
+.random-color {
+  padding: 50px;
+}
+
+.random-color:hover {
+  -webkit-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  transform: scale(1.2);
+  -webkit-transition: all 150ms ease-in;
+  -moz-transition: all 150ms ease-in;
+  transition: all 150ms ease-in;
+}
+
+.random-color .bg {
+  top: 0;
+  left: 0;
+  background-color: #000;
+  opacity: 0.6;
+  z-index: 1;
+}
+
+.random-color a {
+  z-index: 2;
+}
+
+#best-cookers .picture {
+  min-height: 200px;
+  min-width: 200px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
 }

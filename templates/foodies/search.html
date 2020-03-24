@@ -11,51 +11,29 @@
 	<h1>Search with Foodies</h1>
 
 	<div class="row">
-		<div class="col-sm-12">
+		<div class="col-sm-6 offset-sm-3">
 			<form class="form-inline w-100" id="user-form" method="get" action="{% url 'foodies:search' %}">
 				{% csrf_token %}
-
 				<div class="form-group">
 					<input class="form-control" type="text" size="50" name="query" id="query" value="{{ query }}" />
 				</div>
 				<button class="btn btn-primary" type="submit" name="submit">Search</button>
 			</form>
 		</div>
-		{% if results_ingred|length > 0 %}
-		<div class="col-sm-12">
-			<h2>Ingredients</h2>
-			{% for each_object in results_ingred %} // results is list here so pick each element object using for loop 
-				
-				<!--Upon successful search object image with hyperlink appears -->
-				<p>{{each_object.name}}</p>
-				<p>{{each_object.vegetable }}</p>
-				<p>{{each_object.typeofmeat}}</p>    
-			{% endfor %}
-		</div>
-		{% endif %}
 		{% if results_meals|length > 0 %}
-		<div class="col-sm-12">
-			<h2>Meal</h2>
-			{% for each_object in results_meals %} // results is list here so pick each element object using for loop 
-				
-				<p>{{each_object.title}}</p>
-				<p>{{each_object.category }}</p>
-				
-			{% endfor %}
-		</div>
-		{% endif %}
-		{% if results_cats|length > 0 %}
-		<div class="col-sm-12">
-			<h2>Category</h2>
-			{% for each_object in results_cats %} // results is list here so pick each element object using for loop 
-				
-				<p>{{each_object.name}}</p>
-				<p>{{each_object.vegetable }}</p>
-				<p>{{each_object.typeofmeat}}</p>    
+		<div class="col-sm-12 mt-5">
+			<div class="row">
+			{% for meal in results_meals %}
+				<div class="col-sm-4 mb-4">
+					<a class="d-block text-decoration-none" href="/meal/{{ meal.id }}">
+						<div class="viewed_meals" style="background-image:url({{ MEDIA_URL }}{{ meal.picture }});"></div>
+						<p class="text-center">{{ meal.title }}</p>
+					</a>
+				</div>
 			{% endfor %}
 			</div>
-		{% endif %}
-		{% if results_cats|length <= 0 and results_meals|length <= 0 and results_ingred|length <= 0 %}
+		</div>
+		{% else %}
 		<div class="col-sm-12">
 			<h3 class="mt-3 text-center">Nothing found for the search <strong>{{ query }}</strong></h3>
 		</div>

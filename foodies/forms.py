@@ -2,7 +2,7 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from betterforms.multiform import MultiModelForm
-from foodies.models import Meal, Category, UserProfile, Ingredient, Request, Allergy
+from foodies.models import Meal, Category, UserProfile, Ingredient, Request, Allergy, Review
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
@@ -87,17 +87,30 @@ class UserUpdateForm(forms.ModelForm):
         fields = ('email',)
 
 class UserProfileUpdateForm(forms.ModelForm):
-
     class Meta:
         model = UserProfile
-        fields = ('name', 'picture', 'address', 'phone', 'personalDescription', 'isCooker', 'isDinner',)
+        fields = ('name', 'picture', 'address', 'city', 'specialty', 'phone', 'personalDescription', 'isCooker', 'isDinner',)
 
 class RequestAMealForm(forms.ModelForm):
+
+    message = forms.CharField(widget=forms.Textarea, help_text="Write any specifications and the number of orders you want")
+
     class Meta:
         model = Request
-        fields = ('title', 'date', 'name', 'email', 'content', 'message',)
+        fields = ('content', 'message',)
 
 class AllergiesForm(forms.ModelForm):
     class Meta:
         model = Allergy
         fields = ('name',)
+
+
+class ReviewsForm(forms.ModelForm):
+    title = forms.CharField(required=True, help_text="Reviews title.", label="Title")
+    rating = forms.IntegerField(required=True, help_text="Rate the cooker", label="Rating")
+    content = forms.CharField(required=True, help_text="Rating description", label="Description")
+
+    class Meta:
+        model = Review
+        fields = ('title', 'date', 'rating','content','user')
+

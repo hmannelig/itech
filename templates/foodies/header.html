@@ -6,10 +6,10 @@
 		<nav class="mb-1 navbar navbar-expand-lg navbar-dark orange lighten-1">
 
 			<div class="row">
-				<div class="col-4">
+				<div class="col-3">
 					<!-- Navbar brand -->
 					<a class="navbar-brand" href="{% url 'foodies:index' %}"><img
-						class="w-50" src="{% static 'foodies/images/logo2.png' %}" /></a>
+						class="w-100" src="{% static 'foodies/images/logo2.png' %}" /></a>
 
 					<!-- Collapse button -->
 					<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -18,10 +18,9 @@
 						<span class="navbar-toggler-icon"></span>
 					</button>
 				</div>
-				<div class="col-8">
+				<div class="col-5 d-flex align-items-center">
 					<!-- Collapsible content -->
 					<div class="collapse navbar-collapse" id="basicExampleNav">
-
 						<!-- Links -->
 						<ul class="navbar-nav mr-auto">
 							<li class="nav-item active">
@@ -51,11 +50,16 @@
 							<li class="nav-item">
 								<a class="nav-link {% if request.path == '/contact-us/' %} active {% endif %}" href="{% url 'foodies:contact_us' %}">Contact Us</a>
 							</li>
-							<li class="nav-item">
-								<a class="btn btn-danger {% if request.path == '/search/' %} active {% endif %}" href="{% url 'foodies:search' %}">Search</a>
-							</li>
 						</ul>
 					</div>
+				</div>
+				<div class="col-4 d-flex align-items-center">
+					{% comment %} <a class="btn btn-danger {% if request.path == '/search/' %} active {% endif %}" href="{% url 'foodies:search' %}">Search</a> {% endcomment %}
+					<form id="search" method="GET" action="{% url 'foodies:search' %}" class="w-100 form-inline">
+						{% csrf_token %}
+						<input class="form-control" name="query" id="query" type="search" placeholder="What do you want to eat?" />
+						<input class="btn btn-primary" type="submit" value="Search" />
+					</form>
 				</div>
 			</div>
 		</nav>

@@ -12,39 +12,25 @@
   
   	<div class="row">
 		<div class="col-sm-12">
-			<div class="background-image cover hero"></div>
+			<div class="background-image cover hero position-relative">
+				<div class="black-screen position-absolute w-100 h-100 d-flex align-items-center">
+					<h1 class="text-center m-0 text-white w-100 kaushan">All you need if food!</h1>
+				</div>
+			</div>
     	</div>
 	</div>
 	<div class="container"> 
   		<div class="row">
-    <div class="col-sm-12">
-      			<h2>Best Cookers</h2>
-				<div class="row">
-				 {% if user_info.isBestCooker == 1 %}
-					{% for user in user_info %}    						 
-						<div class="col-sm-4">
-							<div class="text-center">
-							<a href="{{ reviews.url }}">{{ user_info.id }}</a>
-								<p class="viewed_meals"></p>
-							</div>
-						</div>
-						{% endfor %}
-					{% else %}
-					<h6>No Best Cooks to display</h6>
-					{% endif %}	
-				</div>
-		</div>
-		
-    		<div class="col-sm-12">
-      			<h2>Most Viewed Meals</h2>
+		  	<div class="col-sm-12">
+      			<h2 class="text-center my-3 pt-5 kaushan">The Most Delicious </h2>
 				{% if meals %}
 				<div class="row">
 					{% for meal in meals %}    						 
-						<div class="col-sm-4">
-							<div class="text-center">
-							<a href="{{ meal.url }}">{{ meal.title }}</a>
-								<p class="viewed_meals"></p>
-						</div>
+					<div class="col-sm-4 mb-4">
+						<a class="d-block text-decoration-none" href="/meal/{{ meal.id }}">
+							<div class="viewed_meals" style="background-image:url({{ MEDIA_URL }}{{ meal.picture }});"></div>
+							<p class="text-center">{{ meal.title }}</p>
+						</a>
 					</div>
 					{% endfor %}
 				</div>
@@ -52,14 +38,38 @@
 				<strong>There are no meals present.</strong>
 				{% endif %}
 			</div>
-    		<div class="col-sm-12">
-				<h2> Meal Categories</h2>
-				{% if categories %}
-				<ul>
-					{% for category in categories %}
-					<li><a href="{% url 'foodies:show_category' category.slug %}">{{ category.name }}</a></li>
+    		<div id="best-cookers" class="col-sm-12">
+      			<h2 class="text-center my-3 kaushan">Best Cookers</h2>
+      			{% if user_info|length > 0 %}
+				<div class="row">				
+					{% for user in user_info %} 
+				 	{% if user.isBestCooker == 1 %}					   						 
+					<div class="col-sm-4">
+						<div class="text-center">
+							<div class="mx-auto picture background-image cover round" style="background-image:url({{ MEDIA_URL }}{{ user.picture }}); width: 200px; height: 200px;"></div>
+							<a href="/public-user-profile/{{ user.id }}">{{ user.name }}</a>	
+						</div>
+					</div>
+					{% endif %}	
 					{% endfor %}
-				</ul>
+				</div>
+				{% else %}
+				<strong>There are no best cooks present.</strong>
+				{% endif %}
+			</div>	
+    		<div class="col-sm-12">
+				<h2 class="text-center my-3 pt-3 kaushan">Meal Categories</h2>
+				{% if categories %}
+				<div id="categories" class="row">
+					{% for category in categories %}
+					<div class="col-sm-3">
+						<div class="position-relative random-color">
+							<div class="position-absolute w-100 h-100 bg"></div>
+							<a class="m-0 position-relative h4 d-block text-white text-center text-decoration-none" href="{% url 'foodies:show_category' category.slug %}">{{ category.name }}</a>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
 				{% else %}
 				<strong>There are no meal categories present.</strong>
 				{% endif %}
