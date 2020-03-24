@@ -5,7 +5,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'foodies_project.settings')
 import django
 
 django.setup()
-from foodies.models import Category, Meal, User, UserProfile
+from foodies.models import Category, Meal, User, UserProfile, Allergy, Review
 import random
 
 
@@ -28,7 +28,28 @@ def populate():
             'password'      : 'user',
             'isCooker'      : True,
             'isDinner'      : True,
-            'isBestCooker'  : True
+            'isBestCooker'  : True,
+            'allergies'       : [
+                {
+                    'name': 'Explosions',
+                    'name': 'Bad food',
+                    'name': 'Rotten tomatoes'
+                }
+            ],
+            'reviews'       : [
+                {
+                    'title'     : 'Best cooker in the world',
+                    'date'      : '2020-02-01',
+                    'rating'    : '5',
+                    'content'   : 'I hired her for a bussines dinner and it was the best thing I could have ever done, everything was delicious.'
+                }, 
+                {
+                    'title'     :'I kinda liked it',
+                    'date'      :'2019-11-12',
+                    'rating'    :'3',
+                    'content'   :'I have to say I am not a big fan of Greek food, it was... nice'
+                }
+            ]
         },
         {
             'username'      : 'pablo',
@@ -43,7 +64,21 @@ def populate():
             'password': 'user',
             'isCooker': False,
             'isDinner': True,
-            'isBestCooker': False
+            'isBestCooker': False,
+            'allergies'       : [
+                {
+                    'name': 'People',
+                    'name': 'Bullets'
+                }
+            ],
+            'reviews'       : [
+                {
+                    'title'     : 'Totally recommended as a diner',
+                    'date'      : '2019-07-23',
+                    'rating'    : '5',
+                    'content'   : 'He hired me for his weekly meals. He is an honest and good client'
+                }
+            ]
         },
         {
             'username'      : 'efra',
@@ -58,7 +93,22 @@ def populate():
             'password': 'user',
             'isCooker': True,
             'isDinner': False,
-            'isBestCooker': True
+            'isBestCooker': True,
+            'allergies'       : [],
+            'reviews'       : [
+                {
+                    'title'     : 'Never hire this guy',
+                    'date'      : '2019-07-23',
+                    'rating'    : '1',
+                    'content'   : 'His mix of tacos with lots of things is really disgusting, NEVER HIRE THIS GUYS PLEASE'
+                },
+                {
+                    'title'     : 'Poisonous food',
+                    'date'      : '2019-07-29',
+                    'rating'    : '2',
+                    'content'   : 'I am giving him 2 stars ONLY because I didn\'t die'
+                }
+            ]
         },
         {
             'username'      : 'linh',
@@ -73,12 +123,27 @@ def populate():
             'password': 'user',
             'isCooker': False,
             'isDinner': True,
-            'isBestCooker': False
+            'isBestCooker': False,
+            'allergies'       : [
+                {
+                    'name': 'Jump from buildings',
+                    'name': 'Swim with sharks',
+                    'name': 'Drink Gasoline'
+                }
+            ],
+            'reviews'       : [
+                {
+                    'title'     : 'Did you read her description? IS TRUE',
+                    'date'      : '2020-03-01',
+                    'rating'    : '5',
+                    'content'   : 'OMG she is amazing! if you haven\'t tried her style PLEASE DO!!! I WILL BUY IT FOR YOU!'
+                }
+            ]
         }
     ]
 
     users_instances = []
-
+    
     african_meals = [
         {
             'title': 'Egusi Soup from Nigeria',
@@ -169,9 +234,16 @@ def populate():
     }
 
     for user in users:
-        user = add_users(user['username'], user['email'], user['password'], user['isCooker'], user['isDinner'], user['isBestCooker'], user['name'], user['address'], user['city'], user['specialty'], user['phone'], user['personalDescription'], user['picture'])
-        if user.isCooker:
-            users_instances.append(user)
+        instanced_user = add_users(user['username'], user['email'], user['password'], user['isCooker'], user['isDinner'], user['isBestCooker'], user['name'], user['address'], user['city'], user['specialty'], user['phone'], user['personalDescription'], user['picture'])
+        if user['isCooker']:
+            users_instances.append(instanced_user)
+
+        for allergy in user['allergies']:
+            add_allergy(instanced_user, allergy['name'])
+        
+        for review in user['reviews']:
+            add_review(instanced_user, review['title'], review['date'], review['rating'], review['content'])
+        
         print(f'- user {user} created')
 
     for cat, cat_data in cats.items():
@@ -207,6 +279,15 @@ def add_cat(name, views=0, likes=0):
     c.likes = likes
     c.save()
     return c
+
+def add_review(user, title, date, rating, content):
+    r = Review.objects.get_or_create(user=user, title=title, date=date, rating=rating, content=content)[0]
+    return r
+
+def add_allergy(user, name):
+    a = Allergy.objects.get_or_create(name=name)[0]
+    a.users.add(user)
+    return a
 
 def add_users(username, email, password, isCooker, isDiner, isBestCooker, name, address, city, specialty, phone, personalDescription, picture):
     user = User.objects.get_or_create(username=username, email=email)[0]
