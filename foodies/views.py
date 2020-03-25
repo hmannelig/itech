@@ -45,7 +45,6 @@ def index(request):
 
 def about(request):
     context_dict = {}
-    context_dict['visits'] = request.session['visits']
     return render(request, 'foodies/about.html', context=context_dict)
 
 
