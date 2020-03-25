@@ -65,7 +65,7 @@
 				{% for cooker in results_cookers %}
 				<div class="col-sm-4">
 					<div class="text-center">
-						<div class="mx-auto picture background-image cover round" style="background-image:url({{ MEDIA_URL }}{{ cooker.picture }}); width: 200px; height: 200px;"></div>
+						<div class="mx-auto picture background-image cover round" style="background-image:url({{ MEDIA_URL }}{{ cooker.picture }});"></div>
 						<a href="/public-user-profile/{{ cooker.id }}">{{ cooker.name }}</a>	
 					</div>
 				</div>

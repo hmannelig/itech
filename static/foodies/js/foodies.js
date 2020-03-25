@@ -61,3 +61,40 @@ $(".check-if-login").on("click", function(e) {
         }
     });
 });
+
+$(window).on('scroll', function(e) {
+    if($(e.target).width() > 767) {
+        var heroImgBottomPos = $('.hero-image').offset().top + $('.hero-image').height();
+        var footerTopPos = $('footer').offset().top;
+        var windowScroll = $(e.target).scrollTop();
+        var windowHeight = $(window).height();
+
+        if(windowScroll >= heroImgBottomPos) {
+
+            var sidebarWidth = $(".sidebar").width();
+            $(".sidebar > .row").addClass("position-fixed");
+            $(".sidebar > .row").width(sidebarWidth + "px");
+            $(".sidebar > .row").css({
+                "top":"20px"
+            });
+        }
+        if((windowScroll + windowHeight) >= footerTopPos) {
+            $(".sidebar > .row").css({
+                "top":"initial",
+                "bottom": windowScroll + windowHeight - footerTopPos + 20 + "px"
+            });
+        }
+        if (windowScroll < heroImgBottomPos) {
+            $(".sidebar > .row").removeClass("position-fixed");
+            $(".sidebar > .row").width("auto");
+        }
+
+    } else {
+        $(".sidebar > .row").removeClass("position-fixed");
+        $(".sidebar > .row").width("auto");
+        $(".sidebar > .row").css({
+            "top": "initial",
+            "bottom": "initial"
+        });
+    }
+});

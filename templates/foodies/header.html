@@ -18,7 +18,11 @@
 						<span class="navbar-toggler-icon"></span>
 					</button>
 				</div>
-				<div class="col-5 d-flex align-items-center">
+				{% if request.path != '/' %}
+				<div class="col-sm-5 d-flex align-items-center">
+				{% else %}
+				<div class="col-sm-5 offset-sm-1 d-flex align-items-center">
+				{% endif %}
 					<!-- Collapsible content -->
 					<div class="collapse navbar-collapse" id="basicExampleNav">
 						<!-- Links -->
@@ -53,14 +57,11 @@
 						</ul>
 					</div>
 				</div>
+				{% if request.path != '/' %}
 				<div class="col-4 d-flex align-items-center">
-					{% comment %} <a class="btn btn-danger {% if request.path == '/search/' %} active {% endif %}" href="{% url 'foodies:search' %}">Search</a> {% endcomment %}
-					<form id="search" method="GET" action="{% url 'foodies:search' %}" class="w-100 form-inline">
-						{% csrf_token %}
-						<input class="form-control" name="query" id="query" type="search" placeholder="What do you want to eat?" />
-						<input class="btn btn-primary" type="submit" value="Search" />
-					</form>
+					{% include 'foodies/search_form_tmpl.html' %}
 				</div>
+				{% endif %}
 			</div>
 		</nav>
 		<!--/.Navbar-->

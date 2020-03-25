@@ -16,20 +16,35 @@ from django.db.models import Q
 def index(request):
     user_list=UserProfile.objects.order_by('-id')[:6]
     category_list = Category.objects.order_by('-likes')[:6]
+    categories_for_meals = Category.objects.order_by('-likes')[:3]
+    meal_by_category = [
+        {
+            'name' : categories_for_meals[0].name,
+            'meals'    : Meal.objects.filter(category=categories_for_meals[0])[:6]
+        },
+        {
+            'name' : categories_for_meals[1].name,
+            'meals'    : Meal.objects.filter(category=categories_for_meals[1])[:6]
+        },
+        {
+            'name' : categories_for_meals[2].name,
+            'meals'    : Meal.objects.filter(category=categories_for_meals[2])[:6]
+        },
+    ]
     meal_list = Meal.objects.order_by('-views')[:6]
+
     context_dict = {        
-        'categories': category_list,
-        'meals': meal_list,  
-        'user_info':user_list 
+        'categories'        : category_list,
+        'meals'             : meal_list,  
+        'user_info'         : user_list,
+        'meal_by_category'  : meal_by_category
     }
-    visitor_cookie_handler(request)
     return render(request, 'foodies/index.html', context=context_dict)
 
 
 
 def about(request):
     context_dict = {}
-    visitor_cookie_handler(request)
     context_dict['visits'] = request.session['visits']
     return render(request, 'foodies/about.html', context=context_dict)
 
@@ -37,8 +52,12 @@ def about(request):
 def show_category(request, category_name_slug):
     context_dict = {}
 
+    # visitor_cookie_handler(request)
+
     try:
         category = Category.objects.get(slug=category_name_slug)
+        category.views = int(category.views) + 1
+        category.save()
 
         meals = Meal.objects.filter(category=category)
 
@@ -738,6 +757,8 @@ def request_meal(request, meal_id):
 def show_meal_details(request, meal_id):
     
     meal_details = Meal.objects.filter(id=meal_id).first()
+    meal_details.views = int(meal_details.views) + 1
+    meal_details.save()
     return render(request, 'foodies/meal_details.html',  {'meal_id':meal_id,'meal_details':meal_details})
 
 def search(request):
