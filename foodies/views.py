@@ -134,6 +134,8 @@ def add_meal(request):
 
 @login_required
 def edit_meal(request, meal_id):
+    profile_title = "Update Meal"
+
     try:
         user = User.objects.get(username=request.user.username)
     except User.DoesNotExist:
