@@ -28,7 +28,7 @@ SECRET_KEY = '@v9*m_19^%ql1f3d3az4wuj7*2uv9=05i#nt0xwjpvdc7l62ib'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'MealsWithFoodies.pythonanywhere.com',
+    'mealswithfoodies.pythonanywhere.com',
     '127.0.0.1',
 ]
 
@@ -123,8 +123,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [STATIC_DIR, '/static/css/']
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [STATIC_DIR, 'static/css/']
 
 MEDIA_ROOT = MEDIA_DIR
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'
