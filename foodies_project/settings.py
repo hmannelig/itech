@@ -28,7 +28,7 @@ SECRET_KEY = '@v9*m_19^%ql1f3d3az4wuj7*2uv9=05i#nt0xwjpvdc7l62ib'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'efra.pythonanywhere.com',
+    'mealswithfoodies.pythonanywhere.com',
     '127.0.0.1',
 ]
 
@@ -124,7 +124,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [STATIC_DIR, '/static/css/']
+STATICFILES_DIRS = [STATIC_DIR, '/static/']
 
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
+
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static/')
