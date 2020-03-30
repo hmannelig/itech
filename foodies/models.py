@@ -2,6 +2,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
     
+# model for the user profile
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     picture = models.ImageField(upload_to='profile_images', blank=True)
@@ -18,6 +19,7 @@ class UserProfile(models.Model):
     def __str__(self):
         return u'{0}'.format(self.user.username)
 
+# model for the categories
 class Category(models.Model):
     NAME_MAX_LENGTH = 30
     name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True, default="Category Not Selected")
@@ -25,16 +27,19 @@ class Category(models.Model):
     likes = models.IntegerField(default=0)
     slug = models.SlugField(unique=True)
     
+    # defining the auto creation of the slug
     def save(self, *args, **kwargs):
        self.slug = slugify(self.name)
        super(Category, self).save(*args, **kwargs)
 
+    # setting the plural of categorys
     class Meta:
         verbose_name_plural = 'Categories'
 
     def __str__(self):
         return self.name
 
+# model for the meals
 class Meal(models.Model):
     TITLE_MAX_LENGTH = 30
     title = models.CharField(max_length=TITLE_MAX_LENGTH)
@@ -49,6 +54,7 @@ class Meal(models.Model):
     def __str__(self):
         return self.title
 
+# model for the ingredient
 class Ingredient(models.Model):
     name = models.CharField(max_length=128, unique=True)
     vegetable = models.CharField(max_length=128, blank=True)
@@ -58,6 +64,7 @@ class Ingredient(models.Model):
     def __str__(self):
         return self.name
 
+# model for the review
 class Review(models.Model):
     title = models.CharField(max_length=50)
     date = models.DateField()
@@ -65,24 +72,26 @@ class Review(models.Model):
     content = models.CharField(max_length=200)
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
 
+    # setting the plural of review
     class Meta:
         verbose_name_plural = 'Reviews'
 
     def __str__(self):
         return self.title
 
-
-
+# model for the allergy
 class Allergy(models.Model):
     name = models.CharField(max_length=128, unique=True)
     users = models.ManyToManyField(UserProfile)
 
+    # setting the plural of allergy
     class Meta:
         verbose_name_plural = 'Allergies'
 
     def __str__(self):
         return self.name
 
+# model for the request
 class Request(models.Model):
     title = models.CharField(max_length=30)
     date = models.DateField()
@@ -93,12 +102,14 @@ class Request(models.Model):
     dinner = models.PositiveIntegerField(default=None)
     cooker = models.PositiveIntegerField(default=None)
 
+    # setting the plural of request
     class Meta:
         verbose_name_plural = 'Requests'
 
     def __str__(self):
         return self.name
 
+# model for the tag
 class Tags(models.Model):
     name = models.CharField(max_length=30, unique= True)
     meal = models.ManyToManyField(Meal)

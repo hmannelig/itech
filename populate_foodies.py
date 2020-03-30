@@ -9,11 +9,13 @@ from foodies.models import Category, Meal, User, UserProfile, Allergy, Review
 import random
 
 
-
+# populate function so the database has initial data
 def populate():
 
+    # path for the user profile pictures
     profile_picture_path = "profile_images/"
 
+    # Users of the system, with allergies, meals and reviews 
     users = [
         {
             'username'      : 'elpi',
@@ -142,8 +144,10 @@ def populate():
         }
     ]
 
+    # Users instances will be used to relate users to allergies and meals
     users_instances = []
     
+    # Example meals
     african_meals = [
         {
             'title': 'Egusi Soup from Nigeria',
@@ -228,6 +232,7 @@ def populate():
         }
     ]
 
+    # Example categories
     cats = {
         'African': {
             'meals': african_meals, 
@@ -251,38 +256,41 @@ def populate():
         }
     }
 
+    # Iterate all users 
     for user in users:
+        # Add each user to the database and obtain its instance
         instanced_user = add_users(user['username'], user['email'], user['password'], user['isCooker'], user['isDinner'], user['isBestCooker'], user['name'], user['address'], user['city'], user['specialty'], user['phone'], user['personalDescription'], user['picture'])
+        
+        # Check if the user is a cooker so we add it to users_instances collection
         if user['isCooker']:
             users_instances.append(instanced_user)
 
+        # iterate users allergies and create them
         for allergy in user['allergies']:
             add_allergy(instanced_user, allergy['name'])
         
+        # iterate users reviews and create them
         for review in user['reviews']:
             add_review(instanced_user, review['title'], review['date'], review['rating'], review['content'])
         
         print(f'- user {user} created')
 
+    # Iterate categories
     for cat, cat_data in cats.items():
+        # storing categories in the database and obtaining the instance
         c = add_cat(cat, views=cat_data['views'], likes=cat_data['likes'])
+        # Iterate meals, to add each meal into its category
         for p in cat_data['meals']:
+            # Obtaining a random user to relate with the meal
             user_selected = random.choice(users_instances)
+            # Creating the meal
             add_meal(c, user_selected, p['title'], p['price'], p['ingredients'], p['recipe'], p['views'], p['picture'])
 
     for c in Category.objects.all():
         for p in Meal.objects.filter(category=c):
             print(f'- {c}: {p}')
 
-# def add_user(user):
-#     u = User.objects.get_or_create(username=user['username'], email=user['email'])[0]
-#     u.save()
-#     u.set_password(user['password'])
-#     u.save()
-#
-#     uprof = UserProfile.objects.get_or_create(user=u, isCooker=user['isCooker'], isDinner=user['isDinner'])
-#     uprof.save()
-
+# function to add meals to the database
 def add_meal(cat, user, title, price, ingredients, recipe, views=0, picture=""):
     p = Meal.objects.get_or_create(category=cat, title=title, price=price, user=user, ingredients=ingredients, recipe=recipe)[0]
     p.price = price
@@ -291,6 +299,7 @@ def add_meal(cat, user, title, price, ingredients, recipe, views=0, picture=""):
     p.save()
     return p
 
+# function to add categries to the database
 def add_cat(name, views=0, likes=0):
     c = Category.objects.get_or_create(name=name)[0]
     c.views = views
@@ -298,15 +307,18 @@ def add_cat(name, views=0, likes=0):
     c.save()
     return c
 
+# function to add reviews to the database
 def add_review(user, title, date, rating, content):
     r = Review.objects.get_or_create(user=user, title=title, date=date, rating=rating, content=content)[0]
     return r
 
+# function to add allergies to the database
 def add_allergy(user, name):
     a = Allergy.objects.get_or_create(name=name)[0]
     a.users.add(user)
     return a
 
+# function to add users to the database
 def add_users(username, email, password, isCooker, isDiner, isBestCooker, name, address, city, specialty, phone, personalDescription, picture):
     user = User.objects.get_or_create(username=username, email=email)[0]
     user.set_password(password)

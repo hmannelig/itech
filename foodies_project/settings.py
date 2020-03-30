@@ -25,7 +25,7 @@ MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 SECRET_KEY = '@v9*m_19^%ql1f3d3az4wuj7*2uv9=05i#nt0xwjpvdc7l62ib'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'mealswithfoodies.pythonanywhere.com',
