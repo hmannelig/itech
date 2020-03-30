@@ -1,3 +1,5 @@
+<!-- HTML for displaying an allergy in the user profile, the user can edit or delete the allergy -->
+
 {% extends 'foodies/user_profile_base.html' %} 
 {% load static %} 
 
@@ -25,7 +27,7 @@ User Meals
 					</div>
 					<div class="col-sm-3">
 						<a class="btn btn-success" href="{% url 'foodies:edit_allergy' allergy.id %}">Edit</a>
-						<a class="btn btn-danger" href="{% url 'foodies:delete_allergy' allergy.id %}">Detele</a>
+						<a class="btn btn-danger" href="{% url 'foodies:delete_allergy' allergy.id %}">Delete</a>
 					</div>
 				</div>
 			</li>

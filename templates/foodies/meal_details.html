@@ -1,3 +1,6 @@
+<!-- HTML containing a meal detail(price, recipe, etc),  when the user wants to request a meal-->
+
+
 {% extends 'foodies/base.html' %}
 {% load static %}
 
@@ -97,7 +100,7 @@
                 <a href="{% url 'foodies:public_user_profile' meal_details.user.id %}" class="btn btn-primary">See cooker details</a>
             </div>
         </div>
-    </div>
 </div>
+
 
 {% endblock %}
