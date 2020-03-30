@@ -1,3 +1,6 @@
+<!-- HTML for the search form template-->
+
+
 <form id="search" method="GET" action="{% url 'foodies:search' %}" class="w-100 form-inline mt-3 position-relative">
     {% csrf_token %}
     <input class="form-control w-100" name="query" id="query" type="search" placeholder="Search city, category, meal" />
